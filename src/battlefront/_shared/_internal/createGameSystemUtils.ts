@@ -69,8 +69,11 @@ export function createGameSystemUtils<
   ): MissionPackMetadata | null => missionPackVersions[version] ?? null;
 
   const getMissionMatrixOptions = (
-    missionPackVersion: TMissionPackVersion,
+    missionPackVersion?: TMissionPackVersion,
   ): SelectOption<string>[] => {
+    if (!missionPackVersion) {
+      return [];
+    }
     const pack = missionPackVersions[missionPackVersion];
     if (!pack) {
       return [];
