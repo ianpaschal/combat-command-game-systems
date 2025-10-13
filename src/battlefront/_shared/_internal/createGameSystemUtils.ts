@@ -9,7 +9,8 @@ export interface GameSystemData<
   TFaction extends string,
   TAlignment extends string,
   TSeries extends string,
-  TMissionPackVersion extends string
+  TMissionPackVersion extends string,
+  TMissionMatrix extends string,
 > {
   forceDiagrams: Record<TForceDiagram, {
     displayName: string;
@@ -26,7 +27,7 @@ export interface GameSystemData<
   series: Record<TSeries, {
     displayName: string;
   }>;
-  missionPackVersions: Record<TMissionPackVersion, MissionPackMetadata>;
+  missionPackVersions: Record<TMissionPackVersion, MissionPackMetadata<TMissionMatrix>>;
 }
 
 export function createGameSystemUtils<
@@ -34,9 +35,10 @@ export function createGameSystemUtils<
   TFaction extends string,
   TAlignment extends string,
   TSeries extends string,
-  TMissionPackVersion extends string
+  TMissionPackVersion extends string,
+  TMissionMatrix extends string
 >(
-  gameSystemData: GameSystemData<TForceDiagram, TFaction, TAlignment, TSeries, TMissionPackVersion>,
+  gameSystemData: GameSystemData<TForceDiagram, TFaction, TAlignment, TSeries, TMissionPackVersion, TMissionMatrix>,
 ) {
   const { forceDiagrams, factions, alignments, series, missionPackVersions } = gameSystemData;
 
@@ -66,7 +68,7 @@ export function createGameSystemUtils<
 
   const getMissionPack = (
     version: TMissionPackVersion,
-  ): MissionPackMetadata | null => missionPackVersions[version] ?? null;
+  ): MissionPackMetadata<TMissionMatrix> | null => missionPackVersions[version] ?? null;
 
   const getMissionMatrixOptions = (
     missionPackVersion?: TMissionPackVersion,
@@ -78,17 +80,17 @@ export function createGameSystemUtils<
     if (!pack) {
       return [];
     }
-    return Object.entries(pack.matrixes).map(([value, { displayName: label }]) => ({
+    return Object.entries(pack.matrixes).map(([value, matrixData]) => ({
       value,
-      label,
+      label: (matrixData as { displayName: string }).displayName,
     }));
   };
 
   const getMissionOptions = (
     missionPackVersion?: TMissionPackVersion,
-    missionMatrix?: string,
+    missionMatrix?: TMissionMatrix,
     battlePlans?: [BattlePlan | undefined, BattlePlan | undefined],
-  ) => {
+  ): SelectOption<MissionName>[] => {
     if (!missionPackVersion) {
       return [];
     }
