@@ -288,7 +288,16 @@ Thank you for contributing to Combat Command Static Data!
 ## Publishing (Maintainers Only)
 
 Releases are handled by the maintainer.
-The process involves:
+
+### Set-Up
+
+Create `.npmrc`:
+```
+@ianpaschal:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken={YOUR_GITHUB_PAT}
+```
+
+### Release Workflow
 
 1. Ensure all changes are committed before publishing.
 2. `npm login --registry=https://npm.pkg.github.com`
