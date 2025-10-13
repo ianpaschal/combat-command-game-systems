@@ -3,14 +3,14 @@
   "version": "1.0.0-rc.1",
   "description": "Static data used by CombatCommand.net",
   "type": "module",
-  "main": "dist/index.mjs",
-  "types": "dist/index.d.mts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.mjs",
-    "./common": "./dist/common/index.mjs",
-    "./flamesOfWarV4": "./dist/battlefront/flamesOfWarV4/index.mjs",
-    "./teamYankeeV2": "./dist/battlefront/teamYankeeV2/index.mjs",
-    "./utils": "./dist/common/_internal/index.mjs"
+    ".": "./dist/index.js",
+    "./common": "./dist/common/index.js",
+    "./flamesOfWarV4": "./dist/battlefront/flamesOfWarV4/index.js",
+    "./teamYankeeV2": "./dist/battlefront/teamYankeeV2/index.js",
+    "./utils": "./dist/common/_internal/index.js"
   },
   "author": "Ian Paschal",
   "license": "UNLICENSED",
