@@ -45,3 +45,7 @@ export const defaultValues: GameSystemConfig = {
   missionPackVersion: MissionPackVersion.Apr2023,
   points: 100,
 };
+
+export function isValidGameSystemConfig(data: unknown): data is GameSystemConfig {
+  return gameSystemConfig.safeParse(data).success;
+}
