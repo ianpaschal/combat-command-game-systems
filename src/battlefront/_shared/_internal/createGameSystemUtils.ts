@@ -72,7 +72,7 @@ export function createGameSystemUtils<
 
   const getMissionMatrixOptions = (
     missionPackVersion?: TMissionPackVersion,
-  ): SelectOption<string>[] => {
+  ): SelectOption<TMissionMatrix>[] => {
     if (!missionPackVersion) {
       return [];
     }
@@ -81,7 +81,7 @@ export function createGameSystemUtils<
       return [];
     }
     return Object.entries(pack.matrixes).map(([value, matrixData]) => ({
-      value,
+      value: value as TMissionMatrix,
       label: (matrixData as { displayName: string }).displayName,
     }));
   };
