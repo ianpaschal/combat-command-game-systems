@@ -11,11 +11,12 @@ export enum MissionPackVersion {
 }
 
 export enum MissionMatrix {
+  None = 'none',
   Default = 'default',
   Extended = 'extended',
 }
 
-export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata> = {
+export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata<MissionMatrix>> = {
   [MissionPackVersion.Apr2023]: {
     displayName: 'April 2023',
     publishedAt: '2023-04-01T13:00:00+13:00',

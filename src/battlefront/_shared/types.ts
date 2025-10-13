@@ -43,9 +43,9 @@ export type MissionData = {
 
 export type MissionNameMetadata = GenericMetadata;
 
-export type MissionPackMetadata = GenericPublicationMetadata & {
+export type MissionPackMetadata<TMissionMatrix extends string> = GenericPublicationMetadata & {
   missions: Partial<Record<MissionName, MissionData>>;
-  matrixes: Record<string, MatrixData>;
+  matrixes: Partial<Record<TMissionMatrix, MatrixData>>;
 };
 
 export type RankingFactorMetadata = GenericMetadata & {

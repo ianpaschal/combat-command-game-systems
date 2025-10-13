@@ -4,7 +4,7 @@ import { DynamicPointsVersion } from '../data/dynamicPointsVersions';
 import { Era } from '../data/eras';
 import { LessonsFromTheFrontVersion } from '../data/lessonsFromTheFrontVersions';
 import { getMissionMatrixOptions } from '../data/missionPackUtils';
-import { MissionPackVersion } from '../data/missionPackVersions';
+import { MissionMatrix, MissionPackVersion } from '../data/missionPackVersions';
 
 export const gameSystemConfig = z.object({
   additionalRules: z.optional(z.object({
@@ -20,7 +20,9 @@ export const gameSystemConfig = z.object({
     errorMap: () => ({ message: 'Please select a LFTF version.' }),
   }),
   dynamicPointsVersion: z.optional(z.nativeEnum(DynamicPointsVersion)),
-  missionMatrix: z.union([z.literal('default'), z.literal('extended')]),
+  missionMatrix: z.nativeEnum(MissionMatrix, {
+    errorMap: () => ({ message: 'Please select a mission matrix.' }),
+  }),
   missionPackVersion: z.nativeEnum(MissionPackVersion, {
     errorMap: () => ({ message: 'Please select a mission pack version.' }),
   }),
@@ -41,7 +43,7 @@ export const defaultValues: GameSystemConfig = {
   dynamicPointsVersion: undefined,
   era: Era.LW,
   lessonsFromTheFrontVersion: LessonsFromTheFrontVersion.Mar2024,
-  missionMatrix: 'extended',
+  missionMatrix: MissionMatrix.Extended,
   missionPackVersion: MissionPackVersion.Apr2023,
   points: 100,
 };
