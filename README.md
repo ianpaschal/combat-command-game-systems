@@ -4,14 +4,14 @@ This package includes game system configurations, mission data, faction informat
 
 ## Supported Game Systems
 
-| Game System | Status |
-|-------------|--------|
-| **Flames of War, 4th Ed.** | ✅ Complete |
-| **Team Yankee, 2nd Ed.** | ⚠️ Usable, but missing Units |
-| **Fate of a Nation** | 🚧 Planned |
-| **'Nam** | 🚧 Planned |
-| **Checkpoint Charlie** | 🚧 Planned |
-| **Great War** | 🚧 Planned |
+| Game System | Status | Tournaments | Match Results | Lists |
+|:------------|:-------|:-----------:|:-------------:|:-----:|
+| **Flames of War, 4th Ed.** | Ready | ✅ | ✅ | ⚠️ |
+| **Team Yankee, 2nd Ed.** | Ready | ✅ | ✅ | - |
+| **Fate of a Nation** | Planned | - | - | - |
+| **'Nam** | Planned | - | - | - |
+| **Checkpoint Charlie** | Planned | - | - | - |
+| **Great War** | Planned | - | - | - |
 
 ## Features
 
