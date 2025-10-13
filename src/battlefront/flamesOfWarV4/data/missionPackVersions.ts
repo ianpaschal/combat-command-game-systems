@@ -10,6 +10,11 @@ export enum MissionPackVersion {
   Jul2024 = '2024_07',
 }
 
+export enum MissionMatrix {
+  Default = 'default',
+  Extended = 'extended',
+}
+
 export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata> = {
   [MissionPackVersion.Apr2023]: {
     displayName: 'April 2023',
@@ -232,7 +237,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
       },
     },
     matrixes: {
-      default: {
+      [MissionMatrix.Default]: {
         displayName: 'Battle Plans',
         entries: [
           {
@@ -312,7 +317,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
           },
         ],
       },
-      extended: {
+      [MissionMatrix.Extended]: {
         displayName: 'Extended Battle Plans',
         entries: [
           {
@@ -648,7 +653,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
       },
     },
     matrixes: {
-      default: {
+      [MissionMatrix.Default]: {
         displayName: 'Battle Plans',
         entries: [
           {
