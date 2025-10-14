@@ -7,6 +7,7 @@ export enum DynamicPointsVersion {
   MWDynamic2023 = 'mw_dynamic_2023',
   MWDynamic2024 = 'mw_dynamic_2024',
   MWDynamic2025 = 'mw_dynamic_2025',
+  LWOriginal = 'lw_original',
 }
 
 export const dynamicPointsVersions: Record<DynamicPointsVersion, DynamicPointsVersionMetadata<Era>> = {
@@ -33,6 +34,12 @@ export const dynamicPointsVersions: Record<DynamicPointsVersion, DynamicPointsVe
     publishedAt: '2024-12-13T13:00:00+13:00',
     activeAt: '2025-01-01T13:00:00+13:00',
     era: Era.MW,
+  },
+  [DynamicPointsVersion.LWOriginal]: {
+    displayName: 'Original Book',
+    publishedAt: '2015-01-01T00:00:00+00:00',
+    activeAt: '2015-01-01T00:00:00+00:00',
+    era: Era.LW,
   },
 } as const;
 
