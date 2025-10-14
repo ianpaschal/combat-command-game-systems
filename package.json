@@ -1,6 +1,6 @@
 {
   "name": "@ianpaschal/combat-command-game-systems",
-  "version": "1.0.0-rc.7",
+  "version": "1.0.0-rc.8",
   "description": "Static data used by CombatCommand.net",
   "type": "module",
   "main": "dist/index.js",
