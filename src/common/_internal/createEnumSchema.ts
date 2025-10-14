@@ -29,7 +29,14 @@ export function createEnumSchema<T extends Record<string, string>>(
   options?: {
     errorMap?: () => { message: string };
   },
-): z.ZodEnum<[T[keyof T], ...T[keyof T][]]> {
+) {
   const values = Object.values(enumObj) as [T[keyof T], ...T[keyof T][]];
-  return z.enum(values, options);
+  const literals = values.map((value) => z.literal(value));
+  
+  // z.union requires at least 2 elements, so handle single-element case
+  if (literals.length === 1) {
+    return literals[0];
+  }
+  
+  return z.union(literals as [z.ZodLiteral<T[keyof T]>, z.ZodLiteral<T[keyof T]>, ...z.ZodLiteral<T[keyof T]>[]], options);
 }
