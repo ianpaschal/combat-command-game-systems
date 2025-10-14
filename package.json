@@ -23,7 +23,7 @@
     "url": "https://github.com/ianpaschal/combat-command-game-systems.git"
   },
   "scripts": {
-    "prelint": "npx tsc --noEmit",
+    "prelint": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prebuild": "rm -rf ./dist",
     "build": "tsup",
