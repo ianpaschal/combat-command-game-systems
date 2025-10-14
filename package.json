@@ -8,6 +8,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./common": "./dist/common/index.js",
+    "./battlefront": "./dist/battlefront/index.js",
     "./flamesOfWarV4": "./dist/battlefront/flamesOfWarV4/index.js",
     "./teamYankeeV2": "./dist/battlefront/teamYankeeV2/index.js",
     "./utils": "./dist/common/_internal/index.js"
@@ -28,7 +29,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^2.13.0",
@@ -42,6 +44,7 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-import-newlines": "^1.4.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "husky": "^9.1.7",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"

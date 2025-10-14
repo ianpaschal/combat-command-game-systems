@@ -1,6 +1,6 @@
-import { BattlePlan } from './data/battlePlans';
-import { MatchOutcomeType } from './data/matchOutcomeTypes';
-import { MissionName } from './data/missionNames';
+import { BattlePlan } from './static/battlePlans';
+import { MatchOutcomeType } from './static/matchOutcomeTypes';
+import { MissionName } from './static/missionNames';
 import { GenericMetadata, GenericPublicationMetadata } from '../../common/types';
 
 export type AlignmentMetadata = GenericMetadata;

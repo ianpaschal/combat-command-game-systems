@@ -1,4 +1,4 @@
-import { SelectOption } from './types';
+import { SelectOption } from '../types';
 
 export enum CurrencyCode {
   EUR = 'eur', // Euro first as most widely used

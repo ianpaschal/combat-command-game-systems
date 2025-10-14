@@ -1,7 +1,7 @@
 import { SelectOption } from '../../../common/types';
-import { BattlePlan } from '../data/battlePlans';
-import { getMatchOutcomeTypeOptions, MatchOutcomeType } from '../data/matchOutcomeTypes';
-import { getMissionNameOptions ,MissionName } from '../data/missionNames';
+import { BattlePlan } from '../static/battlePlans';
+import { getMatchOutcomeTypeOptions, MatchOutcomeType } from '../static/matchOutcomeTypes';
+import { getMissionNameOptions ,MissionName } from '../static/missionNames';
 import { MissionData, MissionPackMetadata } from '../types';
 
 export interface GameSystemData<

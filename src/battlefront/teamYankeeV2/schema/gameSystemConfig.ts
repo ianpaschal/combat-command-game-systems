@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 import { GameSystem } from '../../../common';
-import { DynamicPointsVersion } from '../data/dynamicPointsVersions';
-import { Era } from '../data/eras';
-import { FieldManual101Version } from '../data/fieldManual101Versions';
-import { getMissionMatrixOptions } from '../data/missionPackUtils';
-import { MissionMatrix, MissionPackVersion } from '../data/missionPackVersions';
+import { DynamicPointsVersion } from '../static/dynamicPointsVersions';
+import { Era } from '../static/eras';
+import { FieldManual101Version } from '../static/fieldManual101Versions';
+import { getMissionMatrixOptions } from '../static/missionPackUtils';
+import { MissionMatrix, MissionPackVersion } from '../static/missionPackVersions';
 
 const schema = z.object({
   additionalRules: z.optional(z.object({

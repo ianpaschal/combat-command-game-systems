@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { BattlePlan } from '../data/battlePlans';
-import { MatchOutcomeType } from '../data/matchOutcomeTypes';
-import { MissionName } from '../data/missionNames';
+import { BattlePlan } from '../static/battlePlans';
+import { MatchOutcomeType } from '../static/matchOutcomeTypes';
+import { MissionName } from '../static/missionNames';
 
 const requiredNumberSchema = ({ message, min }: { message: string, min: number }) => z.preprocess(
   (val) => val === '' ? undefined : val,

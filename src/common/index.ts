@@ -1,5 +1,5 @@
-export * from './currencyCodes';
-export * from './gameSystems';
-export * from './tournamentPairingMethods';
-export * from './tournamentRoundPhases';
+export * from './static/currencyCodes';
+export * from './static/gameSystems';
+export * from './static/tournamentPairingMethods';
+export * from './static/tournamentRoundPhases';
 export type * from './types';

@@ -1,5 +1,5 @@
-import { StatKey } from '../data/rankingFactors';
 import { MatchResultDetails } from '../schema/matchResultDetails';
+import { StatKey } from '../static/rankingFactors';
 import { calculateMatchResultScore } from './calculateMatchResultScore';
 
 export const extractMatchResultStats = (

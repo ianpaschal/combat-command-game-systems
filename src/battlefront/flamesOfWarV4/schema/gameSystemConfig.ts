@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 import { GameSystem } from '../../../common';
-import { DynamicPointsVersion } from '../data/dynamicPointsVersions';
-import { Era } from '../data/eras';
-import { LessonsFromTheFrontVersion } from '../data/lessonsFromTheFrontVersions';
-import { getMissionMatrixOptions } from '../data/missionPackUtils';
-import { MissionMatrix, MissionPackVersion } from '../data/missionPackVersions';
+import { DynamicPointsVersion } from '../static/dynamicPointsVersions';
+import { Era } from '../static/eras';
+import { LessonsFromTheFrontVersion } from '../static/lessonsFromTheFrontVersions';
+import { getMissionMatrixOptions } from '../static/missionPackUtils';
+import { MissionMatrix, MissionPackVersion } from '../static/missionPackVersions';
 
 export const gameSystemConfigSchema = z.object({
   additionalRules: z.optional(z.object({

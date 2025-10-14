@@ -1,8 +1,8 @@
 import { getDisplayName } from '../../../common/_internal';
 import { getOptions } from '../../../common/_internal/getOptions';
-import { BattlePlan } from '../../_shared/data/battlePlans';
-import { MatchOutcomeType } from '../../_shared/data/matchOutcomeTypes';
-import { MissionName } from '../../_shared/data/missionNames';
+import { BattlePlan } from '../../_shared/static/battlePlans';
+import { MatchOutcomeType } from '../../_shared/static/matchOutcomeTypes';
+import { MissionName } from '../../_shared/static/missionNames';
 import { MissionPackMetadata } from '../../_shared/types';
 
 export enum MissionPackVersion {

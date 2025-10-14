@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { GameSystem } from '../../../common';
 import { createMatchResultDetailsSchema } from '../../_shared/schema/matchResultDetails';
-import { Faction } from '../data/factions';
+import { Faction } from '../static/factions';
 
 export const schema = createMatchResultDetailsSchema(Faction);
 

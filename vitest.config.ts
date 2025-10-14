@@ -6,5 +6,11 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.{test,spec}.{js,ts}'],
     exclude: ['node_modules', 'dist'],
+    coverage: {
+      include: [
+        'src/**/*.ts',
+        '!src/**/static/**',
+      ],
+    },
   },
 });
