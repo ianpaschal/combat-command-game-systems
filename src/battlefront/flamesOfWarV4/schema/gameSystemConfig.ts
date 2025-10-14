@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { GameSystem } from '../../../common';
+import { createEnumSchema } from '../../../common/_internal';
 import { DynamicPointsVersion } from '../static/dynamicPointsVersions';
 import { Era } from '../static/eras';
 import { LessonsFromTheFrontVersion } from '../static/lessonsFromTheFrontVersions';
@@ -15,16 +16,16 @@ export const gameSystemConfigSchema = z.object({
       z.literal('no'),
     ])),
   })),
-  era: z.nativeEnum(Era),
+  era: createEnumSchema(Era),
   points: z.coerce.number(),
-  lessonsFromTheFrontVersion: z.nativeEnum(LessonsFromTheFrontVersion, {
+  lessonsFromTheFrontVersion: createEnumSchema(LessonsFromTheFrontVersion, {
     errorMap: () => ({ message: 'Please select a LFTF version.' }),
   }),
-  dynamicPointsVersion: z.optional(z.nativeEnum(DynamicPointsVersion)),
-  missionMatrix: z.nativeEnum(MissionMatrix, {
+  dynamicPointsVersion: z.optional(createEnumSchema(DynamicPointsVersion)),
+  missionMatrix: createEnumSchema(MissionMatrix, {
     errorMap: () => ({ message: 'Please select a mission matrix.' }),
   }),
-  missionPackVersion: z.nativeEnum(MissionPackVersion, {
+  missionPackVersion: createEnumSchema(MissionPackVersion, {
     errorMap: () => ({ message: 'Please select a mission pack version.' }),
   }),
 }).superRefine((values, ctx) => {

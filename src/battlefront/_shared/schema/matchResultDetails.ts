@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createEnumSchema } from '../../../common/_internal';
 import { BattlePlan } from '../static/battlePlans';
 import { MatchOutcomeType } from '../static/matchOutcomeTypes';
 import { MissionName } from '../static/missionNames';
@@ -14,24 +15,24 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
 ) => z.object({
 
   // Per-player fields:
-  player0BattlePlan: z.nativeEnum(BattlePlan, {
+  player0BattlePlan: createEnumSchema(BattlePlan, {
     errorMap: () => ({ message: 'Please select a battle plan.' }),
   }),
   player0UnitsLost: requiredNumberSchema({
     message: 'Please enter a number of units lost',
     min: 0,
   }),
-  player0Faction: z.nativeEnum(factionEnum, {
+  player0Faction: createEnumSchema(factionEnum, {
     errorMap: () => ({ message: 'Please select a faction.' }),
   }),
-  player1BattlePlan: z.nativeEnum(BattlePlan, {
+  player1BattlePlan: createEnumSchema(BattlePlan, {
     errorMap: () => ({ message: 'Please select a battle plan.' }),
   }),
   player1UnitsLost: requiredNumberSchema({
     message: 'Please enter a number of units lost',
     min: 0,
   }),
-  player1Faction: z.nativeEnum(factionEnum, {
+  player1Faction: createEnumSchema(factionEnum, {
     errorMap: () => ({ message: 'Please select a faction.' }),
   }),
 
@@ -42,11 +43,11 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
   firstTurn: z.union([z.literal(0), z.literal(1)], {
     message: 'Please select who had the first turn.',
   }),
-  mission: z.nativeEnum(MissionName, {
+  mission: createEnumSchema(MissionName, {
     errorMap: () => ({ message: 'Please select a mission.' }),
   }),
-  outcomeType: z.enum(Object.values(MatchOutcomeType) as [MatchOutcomeType, ...MatchOutcomeType[]], {
-    message: 'Please select an outcome type.',
+  outcomeType: createEnumSchema(MatchOutcomeType, {
+    errorMap: () => ({ message: 'Please select an outcome type.' }),
   }),
   turnsPlayed: requiredNumberSchema({
     message: 'Please enter a number of turns',

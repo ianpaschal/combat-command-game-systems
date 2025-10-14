@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { GameSystem } from '../../../common';
+import { createEnumSchema } from '../../../common/_internal';
 import { DynamicPointsVersion } from '../static/dynamicPointsVersions';
 import { Era } from '../static/eras';
 import { FieldManual101Version } from '../static/fieldManual101Versions';
@@ -15,16 +16,16 @@ const schema = z.object({
       z.literal('no'),
     ])),
   })),
-  era: z.nativeEnum(Era),
+  era: createEnumSchema(Era),
   points: z.coerce.number(),
-  fieldManual101Version: z.nativeEnum(FieldManual101Version, {
+  fieldManual101Version: createEnumSchema(FieldManual101Version, {
     errorMap: () => ({ message: 'Please select a FM101 version.' }),
   }),
-  dynamicPointsVersion: z.optional(z.nativeEnum(DynamicPointsVersion)),
-  missionMatrix: z.nativeEnum(MissionMatrix, {
+  dynamicPointsVersion: z.optional(createEnumSchema(DynamicPointsVersion)),
+  missionMatrix: createEnumSchema(MissionMatrix, {
     errorMap: () => ({ message: 'Please select a mission matrix.' }),
   }),
-  missionPackVersion: z.nativeEnum(MissionPackVersion, {
+  missionPackVersion: createEnumSchema(MissionPackVersion, {
     errorMap: () => ({ message: 'Please select a mission pack version.' }),
   }),
 }).superRefine((values, ctx) => {
