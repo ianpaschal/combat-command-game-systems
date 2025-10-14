@@ -7,7 +7,7 @@ import { LessonsFromTheFrontVersion } from '../data/lessonsFromTheFrontVersions'
 import { getMissionMatrixOptions } from '../data/missionPackUtils';
 import { MissionMatrix, MissionPackVersion } from '../data/missionPackVersions';
 
-export const gameSystemConfig = z.object({
+export const gameSystemConfigSchema = z.object({
   additionalRules: z.optional(z.object({
     allowMidWarMonsters: z.optional(z.union([
       z.literal('yes'),
@@ -38,9 +38,9 @@ export const gameSystemConfig = z.object({
   }
 });
 
-export type GameSystemConfig = z.infer<typeof gameSystemConfig>;
+export type GameSystemConfig = z.infer<typeof gameSystemConfigSchema>;
 
-export const defaultValues: GameSystemConfig = {
+export const gameSystemConfigDefaultValues: GameSystemConfig = {
   dynamicPointsVersion: undefined,
   era: Era.LW,
   lessonsFromTheFrontVersion: LessonsFromTheFrontVersion.Mar2024,
@@ -50,17 +50,24 @@ export const defaultValues: GameSystemConfig = {
 };
 
 /**
- * @deprecated
- * 
+ * Useful to single import both schema and default values.
+ */
+export const gameSystemConfig = {
+  schema: gameSystemConfigSchema,
+  defaultValues: gameSystemConfigDefaultValues,
+};
+
+/**
  * @param data - Game system config data
  * @returns 
  */
 export function isValidGameSystemConfig(data: unknown): data is GameSystemConfig {
-  return gameSystemConfig.safeParse(data).success;
+  return gameSystemConfigSchema.safeParse(data).success;
 }
 
 /**
- * Gets a properly typed, valid Flames of War v4 gameSystemConfig from a tournament, or null if it does not exist.
+ * Gets a properly typed, valid Flames of War v4 game system config from a tournament, or null if it
+ * does not exist.
  * 
  * @param tournament 
  * @returns 
@@ -74,7 +81,7 @@ export const getValidGameSystemConfig = (
   if (tournament.gameSystem !== GameSystem.FlamesOfWarV4) {
     return null;
   }
-  const result = gameSystemConfig.safeParse(tournament.gameSystemConfig);
+  const result = gameSystemConfigSchema.safeParse(tournament.gameSystemConfig);
   if (result.success) {
     return tournament.gameSystemConfig as GameSystemConfig;
   }

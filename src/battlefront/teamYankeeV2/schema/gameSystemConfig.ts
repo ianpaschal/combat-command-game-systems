@@ -7,7 +7,7 @@ import { FieldManual101Version } from '../data/fieldManual101Versions';
 import { getMissionMatrixOptions } from '../data/missionPackUtils';
 import { MissionMatrix, MissionPackVersion } from '../data/missionPackVersions';
 
-export const gameSystemConfig = z.object({
+const schema = z.object({
   additionalRules: z.optional(z.object({
     allowMidWarMonsters: z.optional(z.union([
       z.literal('yes'),
@@ -38,9 +38,7 @@ export const gameSystemConfig = z.object({
   }
 });
 
-export type GameSystemConfig = z.infer<typeof gameSystemConfig>;
-
-export const defaultValues: GameSystemConfig = {
+const defaultValues: GameSystemConfig = {
   dynamicPointsVersion: undefined,
   era: Era.Default,
   fieldManual101Version: FieldManual101Version.Mar2024,
@@ -49,18 +47,27 @@ export const defaultValues: GameSystemConfig = {
   points: 100,
 };
 
+export type GameSystemConfig = z.infer<typeof schema>;
+
 /**
- * @deprecated
- * 
+ * Useful to single import both schema and default values.
+ */
+export const gameSystemConfig = {
+  schema,
+  defaultValues,
+};
+
+/**
  * @param data - Game system config data
  * @returns 
  */
 export function isValidGameSystemConfig(data: unknown): data is GameSystemConfig {
-  return gameSystemConfig.safeParse(data).success;
+  return schema.safeParse(data).success;
 }
 
 /**
- * Gets a properly typed, valid Flames of War v4 gameSystemConfig from a tournament, or null if it does not exist.
+ * Gets a properly typed, valid Team Yankee v2 game system config from a tournament, or null if it
+ * does not exist.
  * 
  * @param tournament 
  * @returns 
@@ -74,9 +81,8 @@ export const getValidGameSystemConfig = (
   if (tournament.gameSystem !== GameSystem.TeamYankeeV2) {
     return null;
   }
-  const result = gameSystemConfig.safeParse(tournament.gameSystemConfig);
-  if (result.success) {
-    return tournament.gameSystemConfig as GameSystemConfig;
+  if (!schema.safeParse(tournament.gameSystemConfig).success) {
+    return null;
   }
-  return null;
+  return tournament.gameSystemConfig as GameSystemConfig;
 };

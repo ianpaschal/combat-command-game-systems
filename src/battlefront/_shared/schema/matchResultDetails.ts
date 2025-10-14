@@ -9,7 +9,9 @@ const requiredNumberSchema = ({ message, min }: { message: string, min: number }
   z.coerce.number({ message }).min(min),
 );
 
-export const createMatchResultDetails = <TFaction extends Record<string, string>>(factionEnum: TFaction) => z.object({
+export const createMatchResultDetailsSchema = <TFaction extends Record<string, string>>(
+  factionEnum: TFaction,
+) => z.object({
 
   // Per-player fields:
   player0BattlePlan: z.nativeEnum(BattlePlan, {
@@ -34,8 +36,12 @@ export const createMatchResultDetails = <TFaction extends Record<string, string>
   }),
 
   // Shared fields:
-  attacker: z.union([z.literal(0), z.literal(1)], { message: 'Please select an attacker.' }),
-  firstTurn: z.union([z.literal(0), z.literal(1)], { message: 'Please select who had the first turn.' }),
+  attacker: z.union([z.literal(0), z.literal(1)], {
+    message: 'Please select an attacker.',
+  }),
+  firstTurn: z.union([z.literal(0), z.literal(1)], {
+    message: 'Please select who had the first turn.',
+  }),
   mission: z.nativeEnum(MissionName, {
     errorMap: () => ({ message: 'Please select a mission.' }),
   }),
@@ -46,7 +52,9 @@ export const createMatchResultDetails = <TFaction extends Record<string, string>
     message: 'Please enter a number of turns',
     min: 1,
   }),
-  winner: z.union([z.literal(-1), z.literal(0), z.literal(1)], { message: 'Please select a winner.' }),
+  winner: z.union([z.literal(-1), z.literal(0), z.literal(1)], {
+    message: 'Please select a winner.',
+  }),
   scoreOverride: z.optional(z.object({
     player0Score: requiredNumberSchema({
       message: 'Please enter a score',
@@ -67,4 +75,4 @@ export const createMatchResultDetails = <TFaction extends Record<string, string>
   }
 });
 
-export type MatchResultDetails<TFaction extends Record<string, string> = Record<string, string>> = z.infer<ReturnType<typeof createMatchResultDetails<TFaction>>>;
+export type MatchResultDetails<TFaction extends Record<string, string> = Record<string, string>> = z.infer<ReturnType<typeof createMatchResultDetailsSchema<TFaction>>>;
