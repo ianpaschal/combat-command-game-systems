@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { GameSystem } from '../../../common';
 import { DynamicPointsVersion } from '../data/dynamicPointsVersions';
 import { Era } from '../data/eras';
 import { LessonsFromTheFrontVersion } from '../data/lessonsFromTheFrontVersions';
@@ -48,6 +49,34 @@ export const defaultValues: GameSystemConfig = {
   points: 100,
 };
 
+/**
+ * @deprecated
+ * 
+ * @param data - Game system config data
+ * @returns 
+ */
 export function isValidGameSystemConfig(data: unknown): data is GameSystemConfig {
   return gameSystemConfig.safeParse(data).success;
 }
+
+/**
+ * Gets a properly typed, valid Flames of War v4 gameSystemConfig from a tournament, or null if it does not exist.
+ * 
+ * @param tournament 
+ * @returns 
+ */
+export const getValidGameSystemConfig = (
+  tournament: {
+    gameSystem: GameSystem;
+    gameSystemConfig: unknown;
+  },
+): GameSystemConfig | null => {
+  if (tournament.gameSystem !== GameSystem.FlamesOfWarV4) {
+    return null;
+  }
+  const result = gameSystemConfig.safeParse(tournament.gameSystemConfig);
+  if (result.success) {
+    return tournament.gameSystemConfig as GameSystemConfig;
+  }
+  return null;
+};
