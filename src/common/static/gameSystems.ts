@@ -1,5 +1,5 @@
-import { getDisplayName, getOptions } from './_internal';
-import { GameSystemMetadata } from './types';
+import { getDisplayName, getOptions } from '../_internal';
+import { GameSystemMetadata } from '../types';
 
 export enum GameSystem {
   FlamesOfWarV4 = 'flames_of_war_v4',

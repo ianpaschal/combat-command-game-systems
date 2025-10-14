@@ -1,5 +1,5 @@
-import { getDisplayName, getOptions } from './_internal';
-import { TournamentPairingMethodMetadata } from './types';
+import { getDisplayName, getOptions } from '../_internal';
+import { TournamentPairingMethodMetadata } from '../types';
 
 export enum TournamentPairingMethod {
   Adjacent = 'adjacent',

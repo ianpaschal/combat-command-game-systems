@@ -1,5 +1,5 @@
-import { getDisplayName, getOptions } from './_internal';
-import { TournamentRoundPhaseMetadata } from './types';
+import { getDisplayName, getOptions } from '../_internal';
+import { TournamentRoundPhaseMetadata } from '../types';
 
 export enum TournamentRoundPhase {
   Pairing = 'pairing',
