@@ -5,11 +5,6 @@ import { BattlePlan } from '../static/battlePlans';
 import { MatchOutcomeType } from '../static/matchOutcomeTypes';
 import { MissionName } from '../static/missionNames';
 
-const requiredNumberSchema = ({ message, min }: { message: string, min: number }) => z.preprocess(
-  (val) => val === '' ? undefined : val,
-  z.coerce.number({ message }).min(min),
-);
-
 export const createMatchResultDetailsSchema = <TFaction extends Record<string, string>>(
   factionEnum: TFaction,
 ) => z.object({
@@ -18,23 +13,17 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
   player0BattlePlan: createEnumSchema(BattlePlan, {
     errorMap: () => ({ message: 'Please select a battle plan.' }),
   }),
-  player0UnitsLost: requiredNumberSchema({
+  player0UnitsLost: z.coerce.number({
     message: 'Please enter a number of units lost',
-    min: 0,
-  }),
-  player0Faction: createEnumSchema(factionEnum, {
-    errorMap: () => ({ message: 'Please select a faction.' }),
-  }),
+  }).min(0),
+  player0Faction: z.optional(createEnumSchema(factionEnum)),
   player1BattlePlan: createEnumSchema(BattlePlan, {
     errorMap: () => ({ message: 'Please select a battle plan.' }),
   }),
-  player1UnitsLost: requiredNumberSchema({
+  player1UnitsLost: z.coerce.number({
     message: 'Please enter a number of units lost',
-    min: 0,
-  }),
-  player1Faction: createEnumSchema(factionEnum, {
-    errorMap: () => ({ message: 'Please select a faction.' }),
-  }),
+  }).min(0),
+  player1Faction: z.optional(createEnumSchema(factionEnum)),
 
   // Shared fields:
   attacker: z.union([z.literal(0), z.literal(1)], {
@@ -49,22 +38,19 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
   outcomeType: createEnumSchema(MatchOutcomeType, {
     errorMap: () => ({ message: 'Please select an outcome type.' }),
   }),
-  turnsPlayed: requiredNumberSchema({
+  turnsPlayed: z.coerce.number({
     message: 'Please enter a number of turns',
-    min: 1,
-  }),
+  }).min(1),
   winner: z.union([z.literal(-1), z.literal(0), z.literal(1)], {
     message: 'Please select a winner.',
   }),
   scoreOverride: z.optional(z.object({
-    player0Score: requiredNumberSchema({
-      message: 'Please enter a score',
-      min: 0,
-    }),
-    player1Score: requiredNumberSchema({
-      message: 'Please enter a score',
-      min: 0,
-    }),
+    player0Score: z.coerce.number({
+      message: 'Please enter a score.',
+    }).min(0),
+    player1Score: z.coerce.number({
+      message: 'Please enter a score.',
+    }).min(0),
   })),
 }).superRefine((values, ctx) => {
   if (values.outcomeType !== 'time_out' && values.winner === undefined) {
