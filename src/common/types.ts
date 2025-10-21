@@ -16,6 +16,16 @@ export type SelectOption<T> = {
   label: string;
 };
 
+/**
+ * @example
+ * ```typescript
+ * type FlamesOfWarV4RankingFactor = RankingFactor<typeof StatKey>;
+ * ```
+ */
+export type RankingFactor<T extends Record<string, string>> = {
+  [K in keyof T]: `total_${T[K]}` | `average_${T[K]}` | `total_opponent_${T[K]}` | `average_opponent_${T[K]}`
+}[keyof T];
+
 export type GameSystemMetadata = GenericMetadata;
 
 export type TournamentPairingMethodMetadata = GenericMetadata;
