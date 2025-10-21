@@ -20,22 +20,12 @@ export enum RankingFactor {
   TotalWins = 'total_wins',
 }
 
-export enum StatKey {
+export enum RankingFactorRoot {
   Points = 'points',
   UnitsDestroyed = 'units_destroyed',
   UnitsLost = 'units_lost',
   Wins = 'wins',
 }
-
-/**
- * @deprecated
- */
-export const statKeys = [
-  'points',
-  'units_destroyed',
-  'units_lost',
-  'wins',
-] as const;
 
 export enum RankingFactorGroup {
   AverageOpponent = 'average_opponent',
@@ -43,16 +33,6 @@ export enum RankingFactorGroup {
   TotalOpponent = 'total_opponent',
   Total = 'total',
 }
-
-/**
- * @deprecated
- */
-export const rankingFactorGroups = [
-  'average_opponent',
-  'average',
-  'total_opponent',
-  'total',
-] as const;
 
 export const rankingFactors: Record<RankingFactor, RankingFactorMetadata> = {
   [RankingFactor.AverageOpponentPoints]: {
