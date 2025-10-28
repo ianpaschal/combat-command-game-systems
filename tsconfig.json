@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "declarationMap": false,
     "esModuleInterop": true,
     "module": "ESNext",
     "moduleResolution": "node",
     "outDir": "dist",
+    "rootDir": "src",
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2018"
   },
-  "include": ["src", "vitest.config.ts"]
+  "include": ["src"]
 }
