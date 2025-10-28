@@ -40,7 +40,7 @@ const schema = z.object({
 });
 
 const defaultValues: GameSystemConfig = {
-  dynamicPointsVersion: undefined,
+  dynamicPointsVersion: DynamicPointsVersion.Dynamic2025,
   era: Era.Default,
   fieldManual101Version: FieldManual101Version.Mar2024,
   missionMatrix: MissionMatrix.Extended,

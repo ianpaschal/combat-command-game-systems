@@ -1,10 +1,10 @@
 import { MatchResultDetails } from '../schema/matchResultDetails';
-import { BaseStatKey } from '../static/rankingFactors';
+import { BaseStats } from '../static/rankingFactors';
 import { calculateMatchResultScore } from './calculateMatchResultScore';
 
 export const extractMatchResultStats = (
   details: MatchResultDetails,
-): [Record<BaseStatKey, number>, Record<BaseStatKey, number>] => {
+): [BaseStats, BaseStats] => {
   const score = calculateMatchResultScore(details);
   return [
     {

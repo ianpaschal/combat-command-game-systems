@@ -41,6 +41,14 @@ export function createGameSystemUtils<
   gameSystemData: GameSystemData<TForceDiagram, TFaction, TAlignment, TSeries, TMissionPackVersion, TMissionMatrix>,
 ) {
   const { forceDiagrams, factions, alignments, series, missionPackVersions } = gameSystemData;
+  
+  const isValidMissionPackVersion = (version: unknown): version is TMissionPackVersion => (
+    Object.keys(missionPackVersions).includes(version as TMissionPackVersion)
+  );
+
+  // const isValidMissionMatrix = (matrix: unknown): matrix is TMissionMatrix => (
+  //   Object.keys(missionMa).includes(matrix as TMissionMatrix)
+  // );
 
   const getForceDiagramData = (forceDiagram: TForceDiagram) => {
     const data = forceDiagrams[forceDiagram];
@@ -57,23 +65,23 @@ export function createGameSystemUtils<
   };
 
   const getMission = (
-    missionPackVersion?: TMissionPackVersion,
+    missionPackVersion?: string,
     missionName?: MissionName,
   ): MissionData | null => {
-    if (!missionPackVersion || !missionName) {
+    if (!isValidMissionPackVersion(missionPackVersion) || !missionName) {
       return null;
     }
     return missionPackVersions[missionPackVersion].missions[missionName] ?? null;
   };
 
   const getMissionPack = (
-    version: TMissionPackVersion,
-  ): MissionPackMetadata<TMissionMatrix> | null => missionPackVersions[version] ?? null;
+    missionPackVersion: string,
+  ): MissionPackMetadata<TMissionMatrix> | null => isValidMissionPackVersion(missionPackVersion) ? missionPackVersions[missionPackVersion] : null;
 
   const getMissionMatrixOptions = (
-    missionPackVersion?: TMissionPackVersion,
+    missionPackVersion?: string,
   ): SelectOption<TMissionMatrix>[] => {
-    if (!missionPackVersion) {
+    if (!isValidMissionPackVersion(missionPackVersion)) {
       return [];
     }
     const pack = missionPackVersions[missionPackVersion];
@@ -87,11 +95,11 @@ export function createGameSystemUtils<
   };
 
   const getMissionOptions = (
-    missionPackVersion?: TMissionPackVersion,
+    missionPackVersion?: string,
     missionMatrix?: TMissionMatrix,
     battlePlans?: [BattlePlan | undefined, BattlePlan | undefined],
   ): SelectOption<MissionName>[] => {
-    if (!missionPackVersion) {
+    if (!isValidMissionPackVersion(missionPackVersion)) {
       return [];
     }
     const pack = missionPackVersions[missionPackVersion];
@@ -129,10 +137,10 @@ export function createGameSystemUtils<
   };
 
   const getMissionOutcomeOptions = (
-    missionPackVersion?: TMissionPackVersion,
+    missionPackVersion?: string,
     missionName?: MissionName,
   ): SelectOption<MatchOutcomeType>[] => {
-    if (!missionPackVersion || !missionName) {
+    if (!isValidMissionPackVersion(missionPackVersion) || !missionName) {
       return [];
     }
     const mission = getMission(missionPackVersion, missionName);

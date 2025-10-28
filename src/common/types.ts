@@ -22,9 +22,7 @@ export type SelectOption<T> = {
  * type FlamesOfWarV4RankingFactor = RankingFactor<typeof StatKey>;
  * ```
  */
-export type RankingFactor<T extends Record<string, string>> = {
-  [K in keyof T]: `total_${T[K]}` | `average_${T[K]}` | `total_opponent_${T[K]}` | `average_opponent_${T[K]}`
-}[keyof T];
+export type ExtendedRankingFactor<T extends string> = `total_${T}` | `average_${T}` | `total_opponent_${T}` | `average_opponent_${T}`;
 
 export type GameSystemMetadata = GenericMetadata;
 

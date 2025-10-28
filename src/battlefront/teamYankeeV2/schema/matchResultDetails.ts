@@ -11,9 +11,11 @@ export type MatchResultDetails = z.infer<typeof schema>;
 /*
  * React Hook Form doesn't like using undefined as a default value as it causes the inputs to flip
  * between being controlled and uncontrolled. But we also don't really want default values in there:
- * The form should start empty. Therefore we use empty strings as placeholder values.
+ * The form should start empty. Therefore we use empty strings as placeholder values. It is sadly
+ * necessary to cast it to the correct type or else React Hook Form will whine about empty strings
+ * not being valid match result details.
  */
-export const defaultValues: Record<keyof MatchResultDetails, '' | undefined> = {
+export const defaultValues = {
   attacker: '',
   firstTurn: '',
   mission: '',
@@ -27,7 +29,7 @@ export const defaultValues: Record<keyof MatchResultDetails, '' | undefined> = {
   scoreOverride: undefined, // Except here!
   turnsPlayed: '',
   winner: '',
-};
+} as unknown as MatchResultDetails;
 
 /**
  * Useful to single import both schema and default values.

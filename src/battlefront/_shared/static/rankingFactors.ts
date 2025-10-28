@@ -1,5 +1,7 @@
+import z from 'zod';
+
 import { getOptions } from '../../../common/_internal';
-import { RankingFactor as ExtendedRankingFactor } from '../../../common/types';
+import { ExtendedRankingFactor } from '../../../common/types';
 import { RankingFactorMetadata } from '../types';
 
 export enum BaseStatKey {
@@ -9,7 +11,16 @@ export enum BaseStatKey {
   Wins = 'wins',
 }
 
-export type RankingFactor = ExtendedRankingFactor<typeof BaseStatKey>;
+export type BaseStats = Record<BaseStatKey, number>;
+
+export const defaultBaseStats: BaseStats = {
+  points: 0,
+  units_destroyed: 0,
+  units_lost: 0,
+  wins: 0,
+};
+
+export type RankingFactor = ExtendedRankingFactor<`${BaseStatKey}`>;
 
 export const rankingFactors: Record<RankingFactor, RankingFactorMetadata> = {
   average_opponent_points: {
@@ -93,6 +104,11 @@ export const rankingFactors: Record<RankingFactor, RankingFactorMetadata> = {
     shortName: 'W',
   },
 } as const;
+
+export const rankingFactor = z.nativeEnum(Object.keys(rankingFactors).reduce((acc, key) => {
+  acc[key as RankingFactor] = key as RankingFactor;
+  return acc;
+}, {} as Record<RankingFactor, RankingFactor>));
 
 export const getRankingFactorOptions = () => getOptions(rankingFactors);
 
