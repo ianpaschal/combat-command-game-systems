@@ -109,4 +109,41 @@ describe('calculateMatchResultWinner', () => {
 
     expect(result).toBeUndefined();
   });
+
+  describe('when a score override is provided', () => {
+    const mission = {
+      attacker: 'battle_plan' as const,
+      firstTurn: 'attacker' as const,
+      victoryConditions: [],
+    } as MissionData;
+    const attacker = 0;
+    const outcomeType = MatchOutcomeType.ForceBroken;
+      
+    it('should return 0 when player 0 has the higher-scoring player.', () => {
+      const result = calculateMatchResultWinner(mission, attacker, outcomeType, {
+        player0Score: 9,
+        player1Score: 0,
+      });
+
+      expect(result).toEqual(0);
+    });
+
+    it('should return 1 when player 1 has the higher-scoring player.', () => {
+      const result = calculateMatchResultWinner(mission, attacker, outcomeType, {
+        player0Score: 1,
+        player1Score: 9,
+      });
+
+      expect(result).toEqual(1);
+    });
+
+    it('should return -1 (none) when players are tied.', () => {
+      const result = calculateMatchResultWinner(mission, attacker, outcomeType, {
+        player0Score: 3,
+        player1Score: 3,
+      });
+
+      expect(result).toEqual(-1);
+    });
+  });
 });
