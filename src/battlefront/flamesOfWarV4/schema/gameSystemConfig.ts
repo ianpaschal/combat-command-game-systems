@@ -1,14 +1,18 @@
 import { z } from 'zod';
 
-import { GameSystem } from '../../../common';
 import { createEnumSchema } from '../../../common/_internal';
 import { DynamicPointsVersion } from '../static/dynamicPointsVersions';
 import { Era } from '../static/eras';
 import { LessonsFromTheFrontVersion } from '../static/lessonsFromTheFrontVersions';
-import { getMissionMatrixOptions } from '../static/missionPackUtils';
 import { MissionMatrix, MissionPackVersion } from '../static/missionPackVersions';
+import { isDynamicPointsVersionValid, isMissionMatrixValid } from './gameSystemConfig.validators';
 
 export const gameSystemConfigSchema = z.object({
+  // TODO: Move gameSystem into gameSystemConfig
+  // /** Forced game system discriminator. */
+  // gameSystem: z.literal(GameSystem.TeamYankeeV2),
+
+  /** @deprecated */
   additionalRules: z.optional(z.object({
     allowMidWarMonsters: z.optional(z.union([
       z.literal('yes'),
@@ -16,12 +20,16 @@ export const gameSystemConfigSchema = z.object({
       z.literal('no'),
     ])),
   })),
+
+  /** Era for the tournament/match result ('Early-', 'Mid-' or 'Late-War') */
   era: createEnumSchema(Era),
+
+  /** Points for the tournament/match result (typically 100) */
   points: z.coerce.number(),
   lessonsFromTheFrontVersion: createEnumSchema(LessonsFromTheFrontVersion, {
     errorMap: () => ({ message: 'Please select a LFTF version.' }),
   }),
-  dynamicPointsVersion: z.optional(createEnumSchema(DynamicPointsVersion)),
+  dynamicPointsVersion: createEnumSchema(DynamicPointsVersion),
   missionMatrix: createEnumSchema(MissionMatrix, {
     errorMap: () => ({ message: 'Please select a mission matrix.' }),
   }),
@@ -29,62 +37,35 @@ export const gameSystemConfigSchema = z.object({
     errorMap: () => ({ message: 'Please select a mission pack version.' }),
   }),
 }).superRefine((values, ctx) => {
-  const matrixOptions = getMissionMatrixOptions(values.missionPackVersion).map(({ value }) => value);
-  if (!matrixOptions.includes(values.missionMatrix)) {
+  if (!isMissionMatrixValid(values)) {
     ctx.addIssue({
       message: 'Please select a valid mission matrix.',
       code: z.ZodIssueCode.custom,
-      path: ['details.missionMatrix'],
+      path: ['missionMatrix'],
+    });
+  }
+  if (!isDynamicPointsVersionValid(values)) {
+    ctx.addIssue({
+      message: 'Please select a valid dynamic points version for the selected era.',
+      code: z.ZodIssueCode.custom,
+      path: ['dynamicPointsVersion'],
     });
   }
 });
 
 export type GameSystemConfig = z.infer<typeof gameSystemConfigSchema>;
 
-export const gameSystemConfigDefaultValues: GameSystemConfig = {
-  dynamicPointsVersion: undefined,
-  era: Era.LW,
-  lessonsFromTheFrontVersion: LessonsFromTheFrontVersion.Mar2024,
-  missionMatrix: MissionMatrix.Extended,
-  missionPackVersion: MissionPackVersion.Apr2023,
-  points: 100,
-};
-
 /**
  * Useful to single import both schema and default values.
  */
 export const gameSystemConfig = {
   schema: gameSystemConfigSchema,
-  defaultValues: gameSystemConfigDefaultValues,
-};
-
-/**
- * @param data - Game system config data
- * @returns 
- */
-export function isValidGameSystemConfig(data: unknown): data is GameSystemConfig {
-  return gameSystemConfigSchema.safeParse(data).success;
-}
-
-/**
- * Gets a properly typed, valid Flames of War v4 game system config from a tournament, or null if it
- * does not exist.
- * 
- * @param tournament 
- * @returns 
- */
-export const getValidGameSystemConfig = (
-  tournament: {
-    gameSystem: GameSystem;
-    gameSystemConfig: unknown;
-  },
-): GameSystemConfig | null => {
-  if (tournament.gameSystem !== GameSystem.FlamesOfWarV4) {
-    return null;
-  }
-  const result = gameSystemConfigSchema.safeParse(tournament.gameSystemConfig);
-  if (result.success) {
-    return tournament.gameSystemConfig as GameSystemConfig;
-  }
-  return null;
-};
+  defaultValues: {
+    dynamicPointsVersion: DynamicPointsVersion.LWOriginal,
+    era: Era.LW,
+    lessonsFromTheFrontVersion: LessonsFromTheFrontVersion.Mar2024,
+    missionMatrix: MissionMatrix.Extended,
+    missionPackVersion: MissionPackVersion.Apr2023,
+    points: 100,
+  } satisfies GameSystemConfig,
+} as const;

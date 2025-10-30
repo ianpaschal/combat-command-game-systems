@@ -1,27 +1,23 @@
 import { z } from 'zod';
 
-import { GameSystem } from '../../../common';
 import { createEnumSchema } from '../../../common/_internal';
 import { DynamicPointsVersion } from '../static/dynamicPointsVersions';
 import { Era } from '../static/eras';
 import { FieldManual101Version } from '../static/fieldManual101Versions';
-import { getMissionMatrixOptions } from '../static/missionPackUtils';
 import { MissionMatrix, MissionPackVersion } from '../static/missionPackVersions';
+import { isDynamicPointsVersionValid, isMissionMatrixValid } from './gameSystemConfig.validators';
 
 const schema = z.object({
-  additionalRules: z.optional(z.object({
-    allowMidWarMonsters: z.optional(z.union([
-      z.literal('yes'),
-      z.literal('combat'),
-      z.literal('no'),
-    ])),
-  })),
+  // TODO: Move gameSystem into gameSystemConfig
+  // /** Forced game system discriminator. */
+  // gameSystem: z.literal(GameSystem.TeamYankeeV2),
+
   era: createEnumSchema(Era),
   points: z.coerce.number(),
   fieldManual101Version: createEnumSchema(FieldManual101Version, {
     errorMap: () => ({ message: 'Please select a FM101 version.' }),
   }),
-  dynamicPointsVersion: z.optional(createEnumSchema(DynamicPointsVersion)),
+  dynamicPointsVersion: createEnumSchema(DynamicPointsVersion),
   missionMatrix: createEnumSchema(MissionMatrix, {
     errorMap: () => ({ message: 'Please select a mission matrix.' }),
   }),
@@ -29,24 +25,21 @@ const schema = z.object({
     errorMap: () => ({ message: 'Please select a mission pack version.' }),
   }),
 }).superRefine((values, ctx) => {
-  const matrixOptions = getMissionMatrixOptions(values.missionPackVersion).map(({ value }) => value);
-  if (!matrixOptions.includes(values.missionMatrix)) {
+  if (!isMissionMatrixValid(values)) {
     ctx.addIssue({
       message: 'Please select a valid mission matrix.',
       code: z.ZodIssueCode.custom,
-      path: ['details.missionMatrix'],
+      path: ['missionMatrix'],
+    });
+  }
+  if (!isDynamicPointsVersionValid(values)) {
+    ctx.addIssue({
+      message: 'Please select a valid dynamic points version for the selected era.',
+      code: z.ZodIssueCode.custom,
+      path: ['dynamicPointsVersion'],
     });
   }
 });
-
-const defaultValues: GameSystemConfig = {
-  dynamicPointsVersion: DynamicPointsVersion.Dynamic2025,
-  era: Era.Default,
-  fieldManual101Version: FieldManual101Version.Mar2024,
-  missionMatrix: MissionMatrix.Extended,
-  missionPackVersion: MissionPackVersion.Apr2023,
-  points: 100,
-};
 
 export type GameSystemConfig = z.infer<typeof schema>;
 
@@ -55,35 +48,12 @@ export type GameSystemConfig = z.infer<typeof schema>;
  */
 export const gameSystemConfig = {
   schema,
-  defaultValues,
-};
-
-/**
- * @param data - Game system config data
- * @returns 
- */
-export function isValidGameSystemConfig(data: unknown): data is GameSystemConfig {
-  return schema.safeParse(data).success;
-}
-
-/**
- * Gets a properly typed, valid Team Yankee v2 game system config from a tournament, or null if it
- * does not exist.
- * 
- * @param tournament 
- * @returns 
- */
-export const getValidGameSystemConfig = (
-  tournament: {
-    gameSystem: GameSystem;
-    gameSystemConfig: unknown;
-  },
-): GameSystemConfig | null => {
-  if (tournament.gameSystem !== GameSystem.TeamYankeeV2) {
-    return null;
-  }
-  if (!schema.safeParse(tournament.gameSystemConfig).success) {
-    return null;
-  }
-  return tournament.gameSystemConfig as GameSystemConfig;
-};
+  defaultValues: {
+    dynamicPointsVersion: DynamicPointsVersion.Dynamic2025,
+    era: Era.Default,
+    fieldManual101Version: FieldManual101Version.Mar2024,
+    missionMatrix: MissionMatrix.Extended,
+    missionPackVersion: MissionPackVersion.Apr2023,
+    points: 100,
+  } satisfies GameSystemConfig,
+} as const;

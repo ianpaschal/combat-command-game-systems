@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { AlignmentMetadata } from '../../_shared/types';
 
@@ -15,8 +16,8 @@ export const alignments: Record<Alignment, AlignmentMetadata> = {
   },
 } as const;
 
-export const getAlignmentOptions = () => getOptions(alignments);
+export const getAlignmentOptions = (): SelectOption<Alignment>[] => getOptions(alignments);
 
 export const getAlignmentDisplayName = (
   key: Alignment,
-) => getDisplayName(alignments, key);
+): string | undefined => getDisplayName(alignments, key);

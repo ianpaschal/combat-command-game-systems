@@ -1,5 +1,5 @@
 import { getDisplayName, getOptions } from '../_internal';
-import { GameSystemMetadata } from '../types';
+import { GameSystemMetadata, SelectOption } from '../types';
 
 export enum GameSystem {
   FlamesOfWarV4 = 'flames_of_war_v4',
@@ -19,8 +19,8 @@ const gameSystems: Record<GameSystem, GameSystemMetadata> = {
   // },
 } as const;
 
-export const getGameSystemOptions = () => getOptions(gameSystems);
+export const getGameSystemOptions = (): SelectOption<GameSystem>[] => getOptions(gameSystems);
 
 export const getGameSystemDisplayName = (
   key: GameSystem,
-) => getDisplayName(gameSystems, key);
+): string | undefined => getDisplayName(gameSystems, key);

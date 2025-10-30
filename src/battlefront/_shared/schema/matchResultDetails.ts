@@ -4,9 +4,12 @@ import { createEnumSchema } from '../../../common/_internal';
 import { BattlePlan } from '../static/battlePlans';
 import { MatchOutcomeType } from '../static/matchOutcomeTypes';
 import { MissionName } from '../static/missionNames';
+import { isWinnerValid } from './matchResultDetails.validators';
+import { scoreOverride } from './scoreOverride';
 
 export const createMatchResultDetailsSchema = <TFaction extends Record<string, string>>(
   factionEnum: TFaction,
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) => z.object({
 
   // Per-player fields:
@@ -44,18 +47,11 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
   winner: z.union([z.literal(-1), z.literal(0), z.literal(1)], {
     message: 'Please select a winner.',
   }),
-  scoreOverride: z.optional(z.object({
-    player0Score: z.coerce.number({
-      message: 'Please enter a score.',
-    }).min(0),
-    player1Score: z.coerce.number({
-      message: 'Please enter a score.',
-    }).min(0),
-  })),
+  scoreOverride: z.optional(scoreOverride),
 }).superRefine((values, ctx) => {
-  if (values.outcomeType !== 'time_out' && values.winner === undefined) {
+  if (!isWinnerValid(values)) {
     ctx.addIssue({
-      message: 'Please select a winner',
+      message: 'Please select a winner.',
       code: z.ZodIssueCode.custom,
       path: ['winner'],
     });

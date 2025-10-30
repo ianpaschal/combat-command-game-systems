@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { FactionMetadata } from '../../_shared/types';
 import { Alignment } from './alignments';
@@ -113,8 +114,8 @@ export const factions: Record<Faction, FactionMetadata<Alignment>> = {
   },
 } as const;
 
-export const getFactionOptions = () => getOptions(factions);
+export const getFactionOptions = (): SelectOption<Faction>[] => getOptions(factions);
 
 export const getFactionDisplayName = (
   key: Faction,
-) => getDisplayName(factions, key);
+): string | undefined => getDisplayName(factions, key);

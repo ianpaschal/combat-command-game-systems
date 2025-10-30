@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { FieldManual101VersionMetadata } from '../types';
 
@@ -13,8 +14,8 @@ export const fieldManual101Versions: Record<FieldManual101Version, FieldManual10
   },
 } as const;
 
-export const getFieldManual101VersionOptions = () => getOptions(fieldManual101Versions);
+export const getFieldManual101VersionOptions = (): SelectOption<FieldManual101Version>[] => getOptions(fieldManual101Versions);
 
 export const getFieldManual101VersionDisplayName = (
   key: FieldManual101Version,
-) => getDisplayName(fieldManual101Versions, key);
+): string | undefined => getDisplayName(fieldManual101Versions, key);

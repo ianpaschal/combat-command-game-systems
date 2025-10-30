@@ -1,21 +1,12 @@
-import { createGameSystemUtils } from '../../_shared/_internal/createGameSystemUtils';
-import { alignments } from './alignments';
-import { factions } from './factions';
-import { forceDiagrams } from './forceDiagrams';
+import { createGetMission } from '../../_shared/_internal/createGetMission';
+import { createGetMissionMatrixOptions } from '../../_shared/_internal/createGetMissionMatrixOptions';
+import { createGetMissionOptions } from '../../_shared/_internal/createGetMissionOptions';
+import { createGetMissionOutcomeTypeOptions } from '../../_shared/_internal/createGetMissionOutcomeOptions';
+import { createGetMissionPack } from '../../_shared/_internal/createGetMissionPack';
 import { missionPackVersions } from './missionPackVersions';
-import { series } from './series';
 
-export const {
-  getForceDiagramData,
-  getMission,
-  getMissionMatrixOptions,
-  getMissionOptions,
-  getMissionOutcomeOptions,
-  getMissionPack,
-} = createGameSystemUtils({
-  forceDiagrams,
-  factions,
-  alignments,
-  series,
-  missionPackVersions,
-});
+export const getMission = createGetMission(missionPackVersions);
+export const getMissionMatrixOptions = createGetMissionMatrixOptions(missionPackVersions);
+export const getMissionOptions = createGetMissionOptions(missionPackVersions);
+export const getMissionOutcomeOptions = createGetMissionOutcomeTypeOptions(missionPackVersions);
+export const getMissionPack = createGetMissionPack(missionPackVersions);

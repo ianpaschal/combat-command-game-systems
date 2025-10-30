@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { LessonsFromTheFrontVersionMetadata } from '../types';
 
@@ -33,8 +34,8 @@ export const lessonsFromTheFrontVersions: Record<LessonsFromTheFrontVersion, Les
   },
 } as const;
 
-export const getLessonsFromTheFrontVersionOptions = () => getOptions(lessonsFromTheFrontVersions);
+export const getLessonsFromTheFrontVersionOptions = (): SelectOption<LessonsFromTheFrontVersion>[] => getOptions(lessonsFromTheFrontVersions);
 
 export const getLessonsFromTheFrontVersionDisplayName = (
   key: LessonsFromTheFrontVersion,
-) => getDisplayName(lessonsFromTheFrontVersions, key);
+): string | undefined => getDisplayName(lessonsFromTheFrontVersions, key);

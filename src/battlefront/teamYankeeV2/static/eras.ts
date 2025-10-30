@@ -1,8 +1,10 @@
+import { SelectOption } from '../../../common';
 import { getOptions } from '../../../common/_internal';
 import { EraMetadata } from '../../_shared/types';
 
 export enum Era {
   Default = 'default',
+  Early = 'early', // Used by Checkpoint Charlie, 'Nam, and Fate of a Nation
 }
 
 export const eras: Record<Era, EraMetadata> = {
@@ -10,9 +12,13 @@ export const eras: Record<Era, EraMetadata> = {
     displayName: 'World War III',
     shortName: 'WWIII',
   },
+  [Era.Early]: {
+    displayName: 'World War III (Early)',
+    shortName: 'Early',
+  },
 } as const;
 
-export const getEraOptions = () => getOptions(eras);
+export const getEraOptions = (): SelectOption<Era>[] => getOptions(eras);
 
 export const getEraDisplayName = (
   key: Era,

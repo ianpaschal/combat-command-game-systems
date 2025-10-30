@@ -28,9 +28,7 @@
     "prebuild": "rm -rf ./dist",
     "build": "tsup && npm run build:dts",
     "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist",
-    "test": "vitest",
-    "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test": "vitest run --reporter=verbose --coverage",
     "prepublish": "npm run build",
     "prepare": "husky"
   },

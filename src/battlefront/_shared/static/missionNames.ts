@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { MissionNameMetadata } from '../types';
 
@@ -191,8 +192,8 @@ export const missionNames: Record<MissionName, MissionNameMetadata> = {
   },
 } as const;
 
-export const getMissionNameOptions = () => getOptions(missionNames);
+export const getMissionNameOptions = (): SelectOption<MissionName>[] => getOptions(missionNames);
 
 export const getMissionDisplayName = (
   key?: MissionName,
-) => getDisplayName(missionNames, key);
+): string | undefined => getDisplayName(missionNames, key);

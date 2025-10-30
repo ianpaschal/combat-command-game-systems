@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { DynamicPointsVersionMetadata } from '../../_shared/types';
 import { Era } from './eras';
@@ -29,8 +30,8 @@ export const dynamicPointsVersions: Record<DynamicPointsVersion, DynamicPointsVe
   },
 } as const;
 
-export const getDynamicPointsVersionOptions = () => getOptions(dynamicPointsVersions);
+export const getDynamicPointsVersionOptions = (): SelectOption<DynamicPointsVersion>[] => getOptions(dynamicPointsVersions);
 
 export const getDynamicPointsVersionDisplayName = (
   key: DynamicPointsVersion,
-) => getDisplayName(dynamicPointsVersions, key);
+): string | undefined => getDisplayName(dynamicPointsVersions, key);

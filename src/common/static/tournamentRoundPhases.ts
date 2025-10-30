@@ -1,5 +1,5 @@
 import { getDisplayName, getOptions } from '../_internal';
-import { TournamentRoundPhaseMetadata } from '../types';
+import { SelectOption, TournamentRoundPhaseMetadata } from '../types';
 
 export enum TournamentRoundPhase {
   Pairing = 'pairing',
@@ -23,8 +23,8 @@ const tournamentRoundPhases: Record<TournamentRoundPhase, TournamentRoundPhaseMe
   },
 } as const;
 
-export const getTournamentRoundPhaseOptions = () => getOptions(tournamentRoundPhases);
+export const getTournamentRoundPhaseOptions = (): SelectOption<TournamentRoundPhase>[] => getOptions(tournamentRoundPhases);
 
 export const getTournamentRoundPhaseDisplayName = (
   key: TournamentRoundPhase,
-) => getDisplayName(tournamentRoundPhases, key);
+): string | undefined => getDisplayName(tournamentRoundPhases, key);
