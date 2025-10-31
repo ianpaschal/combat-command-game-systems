@@ -1,3 +1,5 @@
+<img width="2160" height="450" alt="backdrop" src="https://github.com/user-attachments/assets/a610b433-7a66-4d5b-9cf0-00e5cd324f0c" />
+
 # Combat Command: Game Systems
 
 This package includes game system configurations, mission data, faction information, and utility functions for various game systems on **[Combat Command](https://www.combatcommand.net)**.
