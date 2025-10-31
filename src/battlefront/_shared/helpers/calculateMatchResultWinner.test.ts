@@ -8,72 +8,61 @@ import { MatchOutcomeType } from '../static/matchOutcomeTypes';
 import { MissionData } from '../types';
 import { calculateMatchResultWinner } from './calculateMatchResultWinner';
 
-describe('calculateMatchResultWinner', () => {
+describe('calculateMatchResultWinner()', () => {
 
-  it('should return undefined when mission is null.', () => {
+  it('returns undefined when mission is null.', () => {
     const result = calculateMatchResultWinner(null);
-
     expect(result).toBeUndefined();
   });
 
-  it('should return undefined when attacker is undefined.', () => {
+  it('returns undefined when attacker is undefined.', () => {
     const mission = {
       attacker: 'battle_plan' as const,
       firstTurn: 'attacker' as const,
       victoryConditions: [],
     } as MissionData;
-
     const result = calculateMatchResultWinner(mission, undefined, MatchOutcomeType.ObjectiveTaken);
-
     expect(result).toBeUndefined();
   });
 
-  it('should return undefined when outcomeType is undefined.', () => {
+  it('returns undefined when outcomeType is undefined.', () => {
     const mission = {
       attacker: 'battle_plan' as const,
       firstTurn: 'attacker' as const,
       victoryConditions: [],
     } as MissionData;
-
     const result = calculateMatchResultWinner(mission, 0);
-
     expect(result).toBeUndefined();
   });
 
-  it('should return -1 (none) when a match times out.', () => {
+  it('returns -1 (none) when a match times out.', () => {
     const mission = {
       attacker: 'battle_plan' as const,
       firstTurn: 'attacker' as const,
       victoryConditions: [],
     } as MissionData;
-
     const result = calculateMatchResultWinner(mission, 0, MatchOutcomeType.TimeOut);
-
     expect(result).toEqual(-1);
   });
 
   describe('when the outcome type is "objective taken"', () => {
-    it('should return the attacker in asymmetrical missions (defender can repel).', () => {
+    it('returns the attacker in asymmetrical missions (defender can repel).', () => {
       const mission = {
         attacker: 'battle_plan' as const,
         firstTurn: 'attacker' as const,
         victoryConditions: [MatchOutcomeType.AttackRepelled],
       } as MissionData;
-
       const result = calculateMatchResultWinner(mission, 0, MatchOutcomeType.ObjectiveTaken);
-
       expect(result).toEqual(0);
     });
 
-    it('should return undefined when mission cannot repel attacks.', () => {
+    it('returns undefined when mission cannot repel attacks.', () => {
       const mission = {
         attacker: 'battle_plan' as const,
         firstTurn: 'attacker' as const,
         victoryConditions: [],
       } as MissionData;
-
       const result = calculateMatchResultWinner(mission, 0, MatchOutcomeType.ObjectiveTaken);
-
       expect(result).toBeUndefined();
     });
   });
@@ -91,14 +80,12 @@ describe('calculateMatchResultWinner', () => {
         firstTurn: 'attacker' as const,
         victoryConditions: [MatchOutcomeType.AttackRepelled],
       } as MissionData;
-
       const result = calculateMatchResultWinner(mission, attacker, MatchOutcomeType.AttackRepelled);
-
       expect(result).toEqual(defender);
     });
   });
 
-  it('should return undefined for other outcome types.', () => {
+  it('returns undefined for other outcome types.', () => {
     const mission = {
       attacker: 'battle_plan' as const,
       firstTurn: 'attacker' as const,
@@ -106,7 +93,6 @@ describe('calculateMatchResultWinner', () => {
     } as MissionData;
 
     const result = calculateMatchResultWinner(mission, 0, MatchOutcomeType.MaxPointsReached);
-
     expect(result).toBeUndefined();
   });
 
@@ -119,30 +105,27 @@ describe('calculateMatchResultWinner', () => {
     const attacker = 0;
     const outcomeType = MatchOutcomeType.ForceBroken;
       
-    it('should return 0 when player 0 has the higher-scoring player.', () => {
+    it('returns 0 when player 0 has the higher-scoring player.', () => {
       const result = calculateMatchResultWinner(mission, attacker, outcomeType, {
         player0Score: 9,
         player1Score: 0,
       });
-
       expect(result).toEqual(0);
     });
 
-    it('should return 1 when player 1 has the higher-scoring player.', () => {
+    it('returns 1 when player 1 has the higher-scoring player.', () => {
       const result = calculateMatchResultWinner(mission, attacker, outcomeType, {
         player0Score: 1,
         player1Score: 9,
       });
-
       expect(result).toEqual(1);
     });
 
-    it('should return -1 (none) when players are tied.', () => {
+    it('returns -1 (none) when players are tied.', () => {
       const result = calculateMatchResultWinner(mission, attacker, outcomeType, {
         player0Score: 3,
         player1Score: 3,
       });
-
       expect(result).toEqual(-1);
     });
   });

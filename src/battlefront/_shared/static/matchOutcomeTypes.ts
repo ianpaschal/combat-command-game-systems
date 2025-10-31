@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { MatchOutcomeTypeMetadata } from '../types';
 
@@ -27,8 +28,8 @@ export const matchOutcomeTypes: Record<MatchOutcomeType, MatchOutcomeTypeMetadat
   },
 } as const;
 
-export const getMatchOutcomeTypeOptions = () => getOptions(matchOutcomeTypes);
+export const getMatchOutcomeTypeOptions = (): SelectOption<MatchOutcomeType>[] => getOptions(matchOutcomeTypes);
 
 export const getMatchOutcomeTypeDisplayName = (
   key?: MatchOutcomeType,
-) => getDisplayName(matchOutcomeTypes, key);
+): string | undefined => getDisplayName(matchOutcomeTypes, key);

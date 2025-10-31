@@ -1,7 +1,7 @@
 import z from 'zod';
 
 import { getOptions } from '../../../common/_internal';
-import { ExtendedRankingFactor } from '../../../common/types';
+import { ExtendedRankingFactor, SelectOption } from '../../../common/types';
 import { RankingFactorMetadata } from '../types';
 
 export enum BaseStatKey {
@@ -110,7 +110,7 @@ export const rankingFactor = z.nativeEnum(Object.keys(rankingFactors).reduce((ac
   return acc;
 }, {} as Record<RankingFactor, RankingFactor>));
 
-export const getRankingFactorOptions = () => getOptions(rankingFactors);
+export const getRankingFactorOptions = (): SelectOption<RankingFactor>[] => getOptions(rankingFactors);
 
 export const getRankingFactorDisplayName = (
   key: RankingFactor,

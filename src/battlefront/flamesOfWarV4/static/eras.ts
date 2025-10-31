@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getOptions } from '../../../common/_internal';
 import { EraMetadata } from '../../_shared/types';
 
@@ -22,7 +23,7 @@ export const eras: Record<Era, EraMetadata> = {
   },
 } as const;
 
-export const getEraOptions = () => getOptions(eras);
+export const getEraOptions = (): SelectOption<Era>[] => getOptions(eras);
 
 export const getEraDisplayName = (
   key: Era,

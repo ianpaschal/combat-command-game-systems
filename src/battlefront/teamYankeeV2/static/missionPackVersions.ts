@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName } from '../../../common/_internal';
 import { getOptions } from '../../../common/_internal/getOptions';
 import { BattlePlan } from '../../_shared/static/battlePlans';
@@ -241,7 +242,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
         displayName: 'Battle Plans',
         entries: [
           {
-            selector: (a, b) => a === BattlePlan.Attack && b === BattlePlan.Attack,
+            selector: (a, b): boolean => a === BattlePlan.Attack && b === BattlePlan.Attack,
             missions: [
               [MissionName.Breakthrough],
               [MissionName.Counterattack],
@@ -252,7 +253,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => {
+            selector: (a, b): boolean => {
               const plans = new Set([a,b]);
               return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Maneuver);
             },
@@ -266,7 +267,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => {
+            selector: (a, b): boolean => {
               const plans = new Set([a,b]);
               return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Defend);
             },
@@ -280,7 +281,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => a === BattlePlan.Maneuver && b === BattlePlan.Maneuver,
+            selector: (a, b): boolean => a === BattlePlan.Maneuver && b === BattlePlan.Maneuver,
             missions: [
               [MissionName.Breakthrough],
               [MissionName.Counterattack],
@@ -291,7 +292,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => {
+            selector: (a, b): boolean => {
               const plans = new Set([a,b]);
               return plans.has(BattlePlan.Maneuver) && plans.has(BattlePlan.Defend);
             },
@@ -305,7 +306,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => a === BattlePlan.Defend && b === BattlePlan.Defend,
+            selector: (a, b): boolean => a === BattlePlan.Defend && b === BattlePlan.Defend,
             missions: [
               [MissionName.Breakthrough],
               [MissionName.Counterattack],
@@ -321,7 +322,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
         displayName: 'Extended Battle Plans',
         entries: [
           {
-            selector: (a, b) => a === BattlePlan.Attack && b === BattlePlan.Attack,
+            selector: (a, b): boolean => a === BattlePlan.Attack && b === BattlePlan.Attack,
             missions: [
               [MissionName.Counterattack, MissionName.Counterstrike],
               [MissionName.DustUp],
@@ -332,7 +333,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => {
+            selector: (a, b): boolean => {
               const plans = new Set([a,b]);
               return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Maneuver);
             },
@@ -346,7 +347,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => {
+            selector: (a, b): boolean => {
               const plans = new Set([a,b]);
               return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Defend);
             },
@@ -360,7 +361,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => a === BattlePlan.Maneuver && b === BattlePlan.Maneuver,
+            selector: (a, b): boolean => a === BattlePlan.Maneuver && b === BattlePlan.Maneuver,
             missions: [
               [MissionName.Counterattack, MissionName.Counterstrike],
               [MissionName.DustUp],
@@ -371,7 +372,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             ],
           },
           {
-            selector: (a, b) => {
+            selector: (a, b): boolean => {
               const plans = new Set([a,b]);
               return plans.has(BattlePlan.Maneuver) && plans.has(BattlePlan.Defend);
             },
@@ -401,8 +402,8 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
   },
 } as const;
 
-export const getMissionPackVersionOptions = () => getOptions(missionPackVersions);
+export const getMissionPackVersionOptions = (): SelectOption<MissionPackVersion>[] => getOptions(missionPackVersions);
 
 export const getMissionPackVersionDisplayName = (
   key: MissionPackVersion,
-) => getDisplayName(missionPackVersions, key);
+): string | undefined => getDisplayName(missionPackVersions, key);

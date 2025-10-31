@@ -1,5 +1,5 @@
 import { getDisplayName, getOptions } from '../_internal';
-import { TournamentPairingMethodMetadata } from '../types';
+import { SelectOption, TournamentPairingMethodMetadata } from '../types';
 
 export enum TournamentPairingMethod {
   Adjacent = 'adjacent',
@@ -19,8 +19,8 @@ const tournamentPairingMethods: Record<TournamentPairingMethod, TournamentPairin
   },
 } as const;
 
-export const getTournamentPairingMethodOptions = () => getOptions(tournamentPairingMethods);
+export const getTournamentPairingMethodOptions = (): SelectOption<TournamentPairingMethod>[] => getOptions(tournamentPairingMethods);
 
 export const getTournamentPairingMethodDisplayName = (
   key: TournamentPairingMethod,
-) => getDisplayName(tournamentPairingMethods, key);
+): string | undefined => getDisplayName(tournamentPairingMethods, key);

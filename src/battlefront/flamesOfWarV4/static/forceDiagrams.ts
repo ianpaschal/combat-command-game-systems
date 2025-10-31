@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { ForceDiagramMetadata } from '../../_shared/types';
 import { Faction } from './factions';
@@ -231,8 +232,8 @@ export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, S
   },
 };
 
-export const getForceDiagramOptions = () => getOptions(forceDiagrams);
+export const getForceDiagramOptions = (): SelectOption<ForceDiagram>[] => getOptions(forceDiagrams);
 
 export const getForceDiagramDisplayName = (
   key: ForceDiagram,
-) => getDisplayName(forceDiagrams, key);
+): string | undefined => getDisplayName(forceDiagrams, key);

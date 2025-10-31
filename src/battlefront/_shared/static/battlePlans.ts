@@ -1,3 +1,4 @@
+import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
 import { BattlePlanMetadata } from '../types';
 
@@ -19,8 +20,8 @@ export const battlePlans: Record<BattlePlan, BattlePlanMetadata> = {
   },
 } as const;
 
-export const getBattlePlanOptions = () => getOptions(battlePlans);
+export const getBattlePlanOptions = (): SelectOption<BattlePlan>[] => getOptions(battlePlans);
 
 export const getBattlePlanDisplayName = (
   key?: BattlePlan,
-) => getDisplayName(battlePlans, key);
+): string | undefined => getDisplayName(battlePlans, key);

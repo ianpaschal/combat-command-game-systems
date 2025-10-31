@@ -7,14 +7,14 @@ import {
 import { SelectOption } from '../types';
 import { getOptions } from './getOptions';
 
-describe('getOptions', () => {
+describe('getOptions()', () => {
   const testItems = {
     item1: { displayName: 'First Item' },
     item2: { displayName: 'Second Item' },
     item3: { displayName: 'Third Item' },
   } as const;
 
-  it('should return an array of SelectOption objects.', () => {
+  it('returns an array of SelectOption objects.', () => {
     const result = getOptions(testItems);
     
     expect(Array.isArray(result)).toBe(true);
@@ -26,7 +26,7 @@ describe('getOptions', () => {
     });
   });
 
-  it('should return correct TypeScript types.', () => {
+  it('returns correct TypeScript types.', () => {
     const result = getOptions(testItems);
     
     // Type assertion to verify the return type:
