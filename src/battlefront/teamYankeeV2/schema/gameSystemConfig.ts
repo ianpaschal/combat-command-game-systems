@@ -17,7 +17,7 @@ const schema = z.object({
   fieldManual101Version: createEnumSchema(FieldManual101Version, {
     errorMap: () => ({ message: 'Please select a FM101 version.' }),
   }),
-  dynamicPointsVersion: createEnumSchema(DynamicPointsVersion),
+  dynamicPointsVersion: z.optional(createEnumSchema(DynamicPointsVersion)),
   missionMatrix: createEnumSchema(MissionMatrix, {
     errorMap: () => ({ message: 'Please select a mission matrix.' }),
   }),
