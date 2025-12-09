@@ -12,6 +12,9 @@ const schema = z.object({
   // /** Forced game system discriminator. */
   // gameSystem: z.literal(GameSystem.TeamYankeeV2),
 
+  /** @deprecated */
+  additionalRules: z.optional(z.object({})),
+    
   era: createEnumSchema(Era),
   points: z.coerce.number(),
   fieldManual101Version: createEnumSchema(FieldManual101Version, {
