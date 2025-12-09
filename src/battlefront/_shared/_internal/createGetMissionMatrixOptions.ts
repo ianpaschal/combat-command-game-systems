@@ -11,7 +11,7 @@ import { isValidMissionPackVersion } from './isValidMissionPackVersion';
 export const createGetMissionMatrixOptions = <TMissionPackVersion extends string, TMissionMatrix extends string>(
   missionPackVersions: Record<TMissionPackVersion, MissionPackMetadata<TMissionMatrix>>,
 ) => (
-  missionPackVersion?: TMissionPackVersion,
+  missionPackVersion?: TMissionPackVersion | string,
 ): SelectOption<TMissionMatrix>[] => {
   if (!isValidMissionPackVersion(missionPackVersions, missionPackVersion)) {
     return [];
