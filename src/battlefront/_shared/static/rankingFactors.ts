@@ -23,26 +23,30 @@ export const defaultBaseStats: BaseStats = {
 export type RankingFactor = ExtendedRankingFactor<`${BaseStatKey}`>;
 
 export const rankingFactors: Record<RankingFactor, RankingFactorMetadata> = {
+  
+  // Strength of Schedule: Average opponent value per round
   average_opponent_points: {
     desirability: 'higher',
-    displayName: 'Opponent\u2019s Avg. Points per Round',
-    shortName: 'AOP',
+    displayName: 'Strength of Schedule: Points per Round',
+    shortName: 'SPR',
   },
   average_opponent_units_destroyed: {
     desirability: 'higher',
-    displayName: 'Opponent\u2019s Avg. Units Destroyed per Round',
-    shortName: 'AOD',
+    displayName: 'Strength of Schedule: Units Destroyed per Round',
+    shortName: 'SDR',
   },
   average_opponent_units_lost: {
     desirability: 'lower',
-    displayName: 'Opponent\u2019s Avg. Units Lost per Round',
-    shortName: 'AOL',
+    displayName: 'Strength of Schedule: Units Lost per Round',
+    shortName: 'SLR',
   },
   average_opponent_wins: {
     desirability: 'higher',
-    displayName: 'Opponent\u2019s Avg. Wins per Round',
-    shortName: 'AOW',
+    displayName: 'Strength of Schedule: Wins per Round',
+    shortName: 'SWR',
   },
+
+  // Own: Average per round 
   average_points: {
     desirability: 'higher',
     displayName: 'Avg. Points per Round',
@@ -63,26 +67,30 @@ export const rankingFactors: Record<RankingFactor, RankingFactorMetadata> = {
     displayName: 'Avg. Wins per Round',
     shortName: 'AW',
   },
+
+  // Strength of Schedule: Totals
   total_opponent_points: {
     desirability: 'higher',
-    displayName: 'Total Opponent Points',
-    shortName: 'OP',
+    displayName: 'Strength of Schedule: Total Points',
+    shortName: 'SP',
   },
   total_opponent_units_destroyed: {
     desirability: 'higher',
-    displayName: 'Total Opponent Units Destroyed',
-    shortName: 'OD',
+    displayName: 'Strength of Schedule: Total Units Destroyed',
+    shortName: 'SD',
   },
   total_opponent_units_lost: {
     desirability: 'lower',
-    displayName: 'Total Opponent Units Lost',
-    shortName: 'OL',
+    displayName: 'Strength of Schedule: Total Units Lost',
+    shortName: 'SL',
   },
   total_opponent_wins: {
     desirability: 'higher',
-    displayName: 'Total Opponent Wins',
-    shortName: 'OW',
+    displayName: 'Strength of Schedule: Total Wins',
+    shortName: 'SW',
   },
+
+  // Own: Totals
   total_points: {
     desirability: 'higher',
     displayName: 'Total Points',
