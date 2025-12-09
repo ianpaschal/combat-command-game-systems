@@ -29,7 +29,7 @@ export const gameSystemConfigSchema = z.object({
   lessonsFromTheFrontVersion: createEnumSchema(LessonsFromTheFrontVersion, {
     errorMap: () => ({ message: 'Please select a LFTF version.' }),
   }),
-  dynamicPointsVersion: createEnumSchema(DynamicPointsVersion),
+  dynamicPointsVersion: z.optional(createEnumSchema(DynamicPointsVersion)),
   missionMatrix: createEnumSchema(MissionMatrix, {
     errorMap: () => ({ message: 'Please select a mission matrix.' }),
   }),
@@ -44,7 +44,7 @@ export const gameSystemConfigSchema = z.object({
       path: ['missionMatrix'],
     });
   }
-  if (!isDynamicPointsVersionValid(values)) {
+  if (values.dynamicPointsVersion && !isDynamicPointsVersionValid(values)) {
     ctx.addIssue({
       message: 'Please select a valid dynamic points version for the selected era.',
       code: z.ZodIssueCode.custom,
