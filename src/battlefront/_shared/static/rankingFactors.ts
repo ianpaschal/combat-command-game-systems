@@ -27,23 +27,23 @@ export const rankingFactors: Record<RankingFactor, RankingFactorMetadata> = {
   // Strength of Schedule: Average opponent value per round
   average_opponent_points: {
     desirability: 'higher',
-    displayName: 'Strength of Schedule: Points per Round',
-    shortName: 'SPR',
+    displayName: 'Strength of Schedule: Avg. Opponent Points',
+    shortName: 'SAP',
   },
   average_opponent_units_destroyed: {
     desirability: 'higher',
-    displayName: 'Strength of Schedule: Units Destroyed per Round',
-    shortName: 'SDR',
+    displayName: 'Strength of Schedule: Avg. Opponent Units Destroyed',
+    shortName: 'SAD',
   },
   average_opponent_units_lost: {
     desirability: 'lower',
-    displayName: 'Strength of Schedule: Units Lost per Round',
-    shortName: 'SLR',
+    displayName: 'Strength of Schedule: Avg. Opponent Units Lost',
+    shortName: 'SAL',
   },
   average_opponent_wins: {
     desirability: 'higher',
-    displayName: 'Strength of Schedule: Wins per Round',
-    shortName: 'SWR',
+    displayName: 'Strength of Schedule: Avg. Opponent Wins',
+    shortName: 'SAW',
   },
 
   // Own: Average per round 
@@ -71,22 +71,22 @@ export const rankingFactors: Record<RankingFactor, RankingFactorMetadata> = {
   // Strength of Schedule: Totals
   total_opponent_points: {
     desirability: 'higher',
-    displayName: 'Strength of Schedule: Total Points',
+    displayName: 'Strength of Schedule: Total Opponent Points',
     shortName: 'SP',
   },
   total_opponent_units_destroyed: {
     desirability: 'higher',
-    displayName: 'Strength of Schedule: Total Units Destroyed',
+    displayName: 'Strength of Schedule: Total Opponent Units Destroyed',
     shortName: 'SD',
   },
   total_opponent_units_lost: {
     desirability: 'lower',
-    displayName: 'Strength of Schedule: Total Units Lost',
+    displayName: 'Strength of Schedule: Total Opponent Units Lost',
     shortName: 'SL',
   },
   total_opponent_wins: {
     desirability: 'higher',
-    displayName: 'Strength of Schedule: Total Wins',
+    displayName: 'Strength of Schedule: Total Opponent Wins',
     shortName: 'SW',
   },
 
