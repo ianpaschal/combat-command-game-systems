@@ -10,7 +10,7 @@ export const getValidMatchResultDetails = (
     details: unknown;
   },
 ): MatchResultDetails | null => {
-  if (matchResult.gameSystem !== GameSystem.FlamesOfWarV4) {
+  if (matchResult.gameSystem !== GameSystem.TeamYankeeV2) {
     return null;
   }
   if (!matchResultDetails.schema.safeParse(matchResult.details).success) {

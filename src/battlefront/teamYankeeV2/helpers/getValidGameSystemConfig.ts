@@ -1,5 +1,5 @@
 import { GameSystem } from '../../../common';
-import { GameSystemConfig,gameSystemConfig } from '../schema/gameSystemConfig';
+import { GameSystemConfig, gameSystemConfig } from '../schema/gameSystemConfig';
 
 /**
  * @deprecated
@@ -10,7 +10,7 @@ export const getValidGameSystemConfig = (
     gameSystemConfig: unknown;
   },
 ): GameSystemConfig | null => {
-  if (tournament.gameSystem !== GameSystem.FlamesOfWarV4) {
+  if (tournament.gameSystem !== GameSystem.TeamYankeeV2) {
     return null;
   }
   const result = gameSystemConfig.schema.safeParse(tournament.gameSystemConfig);
