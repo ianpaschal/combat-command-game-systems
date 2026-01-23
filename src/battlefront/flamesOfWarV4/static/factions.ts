@@ -12,6 +12,7 @@ export enum Faction {
   Hungary = 'hungary',
   Italy = 'italy',
   Japan = 'japan',
+  Poland = 'poland',
   Romania = 'romania',
   SovietUnion = 'soviet_union',
   UnitedStates = 'united_states',
@@ -24,7 +25,7 @@ export const factions: Record<Faction, FactionMetadata<Alignment>> = {
   },
   [Faction.Finland]: {
     displayName: 'Finland',
-    alignment: Alignment.Axis,
+    alignment: Alignment.Flexible,
   },
   [Faction.France]: {
     displayName: 'France',
@@ -50,9 +51,13 @@ export const factions: Record<Faction, FactionMetadata<Alignment>> = {
     displayName: 'Japan',
     alignment: Alignment.Axis,
   },
+  [Faction.Poland]: {
+    displayName: 'Poland',
+    alignment: Alignment.Allies,
+  },
   [Faction.Romania]: {
     displayName: 'Romania',
-    alignment: Alignment.Axis,
+    alignment: Alignment.Flexible,
   },
   [Faction.SovietUnion]: {
     displayName: 'Soviet Union',
@@ -69,3 +74,12 @@ export const getFactionOptions = (): SelectOption<Faction>[] => getOptions(facti
 export const getFactionDisplayName = (
   key: Faction,
 ): string | undefined => getDisplayName(factions, key);
+
+export const getFactionAlignment = (
+  key: string,
+): Alignment | undefined => {
+  if (key in factions) {
+    return factions[key as Faction].alignment;
+  }
+  return undefined;
+};

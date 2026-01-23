@@ -1,3 +1,4 @@
+export * from './helpers/getAlignmentDisplayName';
 export * from './helpers/getGameSystem';
 export * from './helpers/validateGameSystemConfig';
 export * from './helpers/validateMatchResultDetails';

@@ -21,9 +21,9 @@ export const matchResultDetails = {
    * See: "Placeholders in Form Fields Are Harmful" by Norman-Nielsen Group
    *      (https://www.nngroup.com/articles/form-design-placeholders/)
    * 
-   * Therefore we use empty strings as placeholder values. It is
-   * sadly necessary to cast it to the correct type or else React Hook Form will whine about empty
-   * strings not being valid match result details.
+   * Therefore we use empty strings as placeholder values. It is sadly necessary to cast it to the
+   * correct type or else React Hook Form will whine about empty strings not being valid match
+   * result details.
    */
   defaultValues: {
     attacker: '',

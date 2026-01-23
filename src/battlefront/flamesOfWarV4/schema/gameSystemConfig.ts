@@ -61,9 +61,9 @@ export type GameSystemConfig = z.infer<typeof gameSystemConfigSchema>;
 export const gameSystemConfig = {
   schema: gameSystemConfigSchema,
   defaultValues: {
-    dynamicPointsVersion: DynamicPointsVersion.LWOriginal,
+    dynamicPointsVersion: DynamicPointsVersion.LWDynamic2026,
     era: Era.LW,
-    lessonsFromTheFrontVersion: LessonsFromTheFrontVersion.Mar2024,
+    lessonsFromTheFrontVersion: LessonsFromTheFrontVersion.Aug2025,
     missionMatrix: MissionMatrix.Extended,
     missionPackVersion: MissionPackVersion.Apr2023,
     points: 100,
