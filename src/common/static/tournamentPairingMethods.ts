@@ -3,7 +3,7 @@ import { SelectOption, TournamentPairingMethodMetadata } from '../types';
 
 export enum TournamentPairingMethod {
   Adjacent = 'adjacent',
-  // AdjacentAlignment = 'adjacent_alignment',
+  AdjacentAlignment = 'adjacent_alignment',
   Random = 'random',
 }
 
@@ -11,9 +11,9 @@ const tournamentPairingMethods: Record<TournamentPairingMethod, TournamentPairin
   [TournamentPairingMethod.Adjacent]: {
     displayName: 'Adjacent',
   },
-  // [TournamentPairingMethod.AdjacentAlignment]: {
-  //   displayName: 'Adjacent (Red vs. Blue)',
-  // },
+  [TournamentPairingMethod.AdjacentAlignment]: {
+    displayName: 'Adjacent (Red vs. Blue)',
+  },
   [TournamentPairingMethod.Random]: {
     displayName: 'Random',
   },

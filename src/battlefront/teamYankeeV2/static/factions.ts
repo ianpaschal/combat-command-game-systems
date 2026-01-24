@@ -119,3 +119,12 @@ export const getFactionOptions = (): SelectOption<Faction>[] => getOptions(facti
 export const getFactionDisplayName = (
   key: Faction,
 ): string | undefined => getDisplayName(factions, key);
+
+export const getFactionAlignment = (
+  key: string,
+): Alignment | undefined => {
+  if (key in factions) {
+    return factions[key as Faction].alignment;
+  }
+  return undefined;
+};

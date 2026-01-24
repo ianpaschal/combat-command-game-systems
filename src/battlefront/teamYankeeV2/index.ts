@@ -18,6 +18,7 @@ export * from './helpers/isGameSystemConfigValid';
 export * from './helpers/isMatchResultDetailsValid';
 export * from './schema/gameSystemConfig';
 export * from './schema/matchResultDetails';
+export * from './schema/registrationDetails';
 export * from './static/alignments';
 export * from './static/dynamicPointsVersions';
 export * from './static/eras';

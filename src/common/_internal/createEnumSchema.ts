@@ -40,3 +40,37 @@ export function createEnumSchema<T extends Record<string, string>>(
   const literals = values.map((value) => z.literal(value));
   return z.union(literals as [z.ZodLiteral<T[keyof T]>, z.ZodLiteral<T[keyof T]>, ...z.ZodLiteral<T[keyof T]>[]], options);
 }
+
+/**
+ * Creates a Zod enum schema from the keys of a Record object.
+ *
+ * @param record - The Record object whose keys will become the enum values
+ * @returns A Zod schema that validates against the record's keys
+ *
+ * @example
+ * ```typescript
+ * const factions = {
+ *   axis: { name: 'Axis' },
+ *   allies: { name: 'Allies' },
+ * };
+ *
+ * const factionSchema = createEnumSchemaFromKeys(factions);
+ * // Equivalent to: z.enum(['axis', 'allies'])
+ * ```
+ */
+export function createEnumSchemaFromKeys<K extends string>(
+  record: Record<K, unknown>,
+): z.ZodLiteral<K> | z.ZodUnion<[z.ZodLiteral<K>, z.ZodLiteral<K>, ...z.ZodLiteral<K>[]]> {
+  const keys = Object.keys(record) as K[];
+
+  if (keys.length === 0) {
+    throw new Error('createEnumSchemaFromKeys requires a non-empty record. The provided record has no keys.');
+  }
+
+  if (keys.length === 1) {
+    return z.literal(keys[0]);
+  }
+
+  const literals = keys.map((key) => z.literal(key));
+  return z.union(literals as [z.ZodLiteral<K>, z.ZodLiteral<K>, ...z.ZodLiteral<K>[]]);
+}

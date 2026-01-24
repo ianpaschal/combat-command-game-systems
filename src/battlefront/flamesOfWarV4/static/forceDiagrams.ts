@@ -237,3 +237,21 @@ export const getForceDiagramOptions = (): SelectOption<ForceDiagram>[] => getOpt
 export const getForceDiagramDisplayName = (
   key: ForceDiagram,
 ): string | undefined => getDisplayName(forceDiagrams, key);
+
+export const getForceDiagramFaction = (
+  key: string,
+): Faction | undefined => {
+  if (key in forceDiagrams) {
+    return forceDiagrams[key as ForceDiagram].faction;
+  }
+  return undefined;
+};
+
+export const getForceDiagramSeries = (
+  key: string,
+): Series | undefined => {
+  if (key in forceDiagrams) {
+    return forceDiagrams[key as ForceDiagram].series;
+  }
+  return undefined;
+};
