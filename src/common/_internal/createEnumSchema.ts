@@ -63,6 +63,10 @@ export function createEnumSchemaFromKeys<K extends string>(
 ): z.ZodLiteral<K> | z.ZodUnion<[z.ZodLiteral<K>, z.ZodLiteral<K>, ...z.ZodLiteral<K>[]]> {
   const keys = Object.keys(record) as K[];
 
+  if (keys.length === 0) {
+    throw new Error('createEnumSchemaFromKeys requires a non-empty record. The provided record has no keys.');
+  }
+
   if (keys.length === 1) {
     return z.literal(keys[0]);
   }
