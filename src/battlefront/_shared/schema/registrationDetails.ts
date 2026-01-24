@@ -18,8 +18,8 @@ export const createRegistrationDetailsSchema = <
   },
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) => z.object({
-  alignment: emptyToUndefined(createEnumSchemaFromKeys(context.alignments).nullable().optional()),
-  faction: emptyToUndefined(createEnumSchemaFromKeys(context.factions).nullable().optional()),
+  alignment: emptyToUndefined(createEnumSchemaFromKeys(context.alignments).transform((val) => val as TAlignment).optional()),
+  faction: emptyToUndefined(createEnumSchemaFromKeys(context.factions).transform((val) => val as TFaction).optional()),
 }).superRefine((data, ctx) => {
   const { alignments, factions } = context;
 
@@ -59,7 +59,7 @@ export const createRegistrationDetailsSchema = <
   }
 });
 
-export type RegistrationDetails<
+export type GenericRegistrationDetails<
   TAlignment extends string = string,
   TFaction extends string = string,
 > = z.infer<ReturnType<typeof createRegistrationDetailsSchema<TAlignment, TFaction>>>;
