@@ -46,8 +46,8 @@ export const dynamicPointsVersions: Record<DynamicPointsVersion, DynamicPointsVe
   },
   [DynamicPointsVersion.LWDynamic2026Proposed]: {
     displayName: 'Dynamic (2026 - Proposed)',
-    publishedAt: '2015-01-01T00:00:00+00:00',
-    activeAt: '2015-01-01T00:00:00+00:00',
+    publishedAt: '2025-11-20T00:00:00+00:00',
+    activeAt: '2025-11-20T00:00:00+00:00',
     era: Era.LW,
   },
   [DynamicPointsVersion.LWDynamic2026]: {
