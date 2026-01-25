@@ -59,12 +59,11 @@ describe('TeamYankeeV2.gameSystemConfig', () => {
       expect(result.success).toBe(false);
       expect(getSchemaFieldErrors(result, 'missionMatrix')).toContain('Please select a mission matrix.');
     });
-    // NOTE: There is no combination right now which would be invalid, so test is skipped.
-    it.skip('should emit an error if value is not an valid mission matrix for the selected mission pack version.', () => {
+    it('should emit an error if value is not a valid mission matrix for the selected mission pack version.', () => {
       const result = gameSystemConfig.schema.safeParse({
         ...validData,
         missionPackVersion: MissionPackVersion.Apr2023,
-        missionMatrix: MissionMatrix.Extended,
+        missionMatrix: MissionMatrix.None,
       });
       expect(result.success).toBe(false);
       expect(getSchemaFieldErrors(result, 'missionMatrix')).toContain('Please select a valid mission matrix.');
