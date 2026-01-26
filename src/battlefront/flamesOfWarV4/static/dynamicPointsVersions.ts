@@ -4,6 +4,7 @@ import { DynamicPointsVersionMetadata } from '../../_shared/types';
 import { Era } from './eras';
 
 export enum DynamicPointsVersion {
+  EWOriginal = 'ew_original',
   MWOriginal = 'mw_original',
   MWDynamic2023 = 'mw_dynamic_2023',
   MWDynamic2024 = 'mw_dynamic_2024',
@@ -14,6 +15,12 @@ export enum DynamicPointsVersion {
 }
 
 export const dynamicPointsVersions: Record<DynamicPointsVersion, DynamicPointsVersionMetadata<Era>> = {
+  [DynamicPointsVersion.EWOriginal]: {
+    displayName: 'Original Book',
+    publishedAt: '2026-02-21T00:00:00+00:00',
+    activeAt: '2026-02-21T00:00:00+00:00',
+    era: Era.EW,
+  },
   [DynamicPointsVersion.MWOriginal]: {
     displayName: 'Original Book',
     publishedAt: '2015-01-01T00:00:00+00:00',
