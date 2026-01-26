@@ -13,8 +13,8 @@ export const eras: Record<Era, EraMetadata> = {
     shortName: 'WWIII',
   },
   [Era.Early]: {
-    displayName: 'World War III (Early)',
-    shortName: 'Early',
+    displayName: 'Checkpoint Charlie', // Aka Checkpoint Charlie
+    shortName: 'CC',
   },
 } as const;
 
