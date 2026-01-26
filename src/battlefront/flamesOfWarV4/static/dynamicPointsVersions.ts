@@ -1,5 +1,5 @@
 import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
+import { getDisplayName } from '../../../common/_internal';
 import { DynamicPointsVersionMetadata } from '../../_shared/types';
 import { Era } from './eras';
 
@@ -58,7 +58,18 @@ export const dynamicPointsVersions: Record<DynamicPointsVersion, DynamicPointsVe
   },
 } as const;
 
-export const getDynamicPointsVersionOptions = (): SelectOption<DynamicPointsVersion>[] => getOptions(dynamicPointsVersions);
+export const getDynamicPointsVersionOptions = (
+  era?: string,
+): SelectOption<DynamicPointsVersion>[] => {
+  if (!era) {
+    return [];
+  }
+  const versions = Object.entries(dynamicPointsVersions) as [DynamicPointsVersion, DynamicPointsVersionMetadata<Era>][];
+  return versions.filter(([_, metadata]) => metadata.era === era).map(([key, { displayName }]) => ({
+    value: key,
+    label: displayName,
+  }));
+};
 
 export const getDynamicPointsVersionDisplayName = (
   key: DynamicPointsVersion,
