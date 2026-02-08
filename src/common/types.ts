@@ -1,3 +1,7 @@
+import z from 'zod';
+
+import { TournamentPairingConfig } from './schemas/tournamentPairingConfig';
+
 export interface GenericMetadata {
   displayName: string;
 }
@@ -26,6 +30,13 @@ export type ExtendedRankingFactor<T extends string> = `total_${T}` | `average_${
 
 export type GameSystemMetadata = GenericMetadata;
 
-export type TournamentPairingMethodMetadata = GenericMetadata;
+export type TournamentPairingMethodMetadata = GenericMetadata & {
+  schema: z.ZodType<TournamentPairingConfig>,
+  values: TournamentPairingConfig,
+};
+
+export type TournamentPairingOrderMethodMetadata = GenericMetadata;
+
+export type TournamentPairingPolicyMetadata = GenericMetadata;
 
 export type TournamentRoundPhaseMetadata = GenericMetadata;

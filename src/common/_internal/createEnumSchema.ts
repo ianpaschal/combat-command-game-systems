@@ -24,7 +24,7 @@ import { z } from 'zod';
  * });
  * ```
  */
-export function createEnumSchema<T extends Record<string, string>>(
+export function createEnumSchema<T extends Record<string, string | number>>(
   enumObj: T,
   options?: {
     errorMap?: () => { message: string };
