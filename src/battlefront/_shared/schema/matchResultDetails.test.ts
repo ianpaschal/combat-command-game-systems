@@ -39,7 +39,7 @@ describe('createMatchResultDetailsSchema()', () => {
         player0BattlePlan: null,
       });
       expect(result.success).toBe(false);
-      expect(getSchemaFieldErrors(result, 'player0BattlePlan')).toContain('Please select a battle plan.');
+      expect(getSchemaFieldErrors(result, 'player0BattlePlan')).toContain('Please select a battle plan');
     });
   });
 
@@ -50,7 +50,7 @@ describe('createMatchResultDetailsSchema()', () => {
         player1BattlePlan: null,
       });
       expect(result.success).toBe(false);
-      expect(getSchemaFieldErrors(result, 'player1BattlePlan')).toContain('Please select a battle plan.');
+      expect(getSchemaFieldErrors(result, 'player1BattlePlan')).toContain('Please select a battle plan');
     });
   });
 
@@ -61,7 +61,7 @@ describe('createMatchResultDetailsSchema()', () => {
         mission: 'custom',
       });
       expect(result.success).toBe(false);
-      expect(getSchemaFieldErrors(result, 'mission')).toContain('Please select a mission.');
+      expect(getSchemaFieldErrors(result, 'mission')).toContain('Please select a mission');
     });
   });
 
@@ -72,7 +72,7 @@ describe('createMatchResultDetailsSchema()', () => {
         outcomeType: null,
       });
       expect(result.success).toBe(false);
-      expect(getSchemaFieldErrors(result, 'outcomeType')).toContain('Please select an outcome type.');
+      expect(getSchemaFieldErrors(result, 'outcomeType')).toContain('Please select an outcome type');
     });
   });
   

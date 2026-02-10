@@ -14,14 +14,14 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
 
   // Per-player fields:
   player0BattlePlan: createEnumSchema(BattlePlan, {
-    errorMap: () => ({ message: 'Please select a battle plan.' }),
+    errorMap: () => ({ message: 'Please select a battle plan' }),
   }),
   player0UnitsLost: z.coerce.number({
     message: 'Please enter a number of units lost',
   }).min(0),
   player0Faction: z.optional(createEnumSchema(factionEnum)),
   player1BattlePlan: createEnumSchema(BattlePlan, {
-    errorMap: () => ({ message: 'Please select a battle plan.' }),
+    errorMap: () => ({ message: 'Please select a battle plan' }),
   }),
   player1UnitsLost: z.coerce.number({
     message: 'Please enter a number of units lost',
@@ -30,28 +30,28 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
 
   // Shared fields:
   attacker: z.union([z.literal(0), z.literal(1)], {
-    message: 'Please select an attacker.',
+    errorMap: () => ({ message: 'Please select an attacker' }),
   }),
   firstTurn: z.union([z.literal(0), z.literal(1)], {
-    message: 'Please select who had the first turn.',
+    errorMap: () => ({ message: 'Please select who had the first turn' }),
   }),
   mission: createEnumSchema(MissionName, {
-    errorMap: () => ({ message: 'Please select a mission.' }),
+    errorMap: () => ({ message: 'Please select a mission' }),
   }),
   outcomeType: createEnumSchema(MatchOutcomeType, {
-    errorMap: () => ({ message: 'Please select an outcome type.' }),
+    errorMap: () => ({ message: 'Please select an outcome type' }),
   }),
   turnsPlayed: z.coerce.number({
     message: 'Please enter a number of turns',
   }).min(1),
   winner: z.union([z.literal(-1), z.literal(0), z.literal(1)], {
-    message: 'Please select a winner.',
+    errorMap: () => ({ message: 'Please select a winner' }),
   }),
   scoreOverride: z.optional(scoreOverride),
 }).superRefine((values, ctx) => {
   if (!isWinnerValid(values)) {
     ctx.addIssue({
-      message: 'Please select a winner.',
+      message: 'Please select a winner',
       code: z.ZodIssueCode.custom,
       path: ['winner'],
     });
