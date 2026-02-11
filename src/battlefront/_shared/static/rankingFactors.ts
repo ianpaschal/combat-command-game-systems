@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod';
 
 import { getOptions } from '../../../common/_internal';
 import { ExtendedRankingFactor, SelectOption } from '../../../common/types';

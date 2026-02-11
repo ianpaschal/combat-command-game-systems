@@ -89,11 +89,8 @@ describe('createEnumSchemaFromKeys()', () => {
     expect(schema.parse('only')).toBe('only');
   });
 
-  it('throws an error for an empty record.', () => {
-    const emptyRecord = {};
-
-    expect(() => createEnumSchemaFromKeys(emptyRecord)).toThrow(
-      'createEnumSchemaFromKeys requires a non-empty record. The provided record has no keys.',
-    );
+  it('returns a string schema for an empty record.', () => {
+    const schema = createEnumSchemaFromKeys({});
+    expect(schema instanceof z.ZodString).toBe(true);
   });
 });

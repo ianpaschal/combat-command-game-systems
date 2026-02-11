@@ -60,17 +60,21 @@ export function createEnumSchema<T extends Record<string, string | number>>(
  */
 export function createEnumSchemaFromKeys<K extends string>(
   record: Record<K, unknown>,
-): z.ZodLiteral<K> | z.ZodUnion<[z.ZodLiteral<K>, z.ZodLiteral<K>, ...z.ZodLiteral<K>[]]> {
+  options?: {
+    errorMap?: () => { message: string };
+  },
+): z.ZodString | z.ZodLiteral<K> | z.ZodUnion<[z.ZodLiteral<K>, z.ZodLiteral<K>, ...z.ZodLiteral<K>[]]> {
   const keys = Object.keys(record) as K[];
 
   if (keys.length === 0) {
-    throw new Error('createEnumSchemaFromKeys requires a non-empty record. The provided record has no keys.');
+    const message = options?.errorMap?.().message;
+    return message ? z.string().min(1, message) : z.string().min(1);
   }
 
   if (keys.length === 1) {
-    return z.literal(keys[0]);
+    return z.literal(keys[0], options);
   }
 
   const literals = keys.map((key) => z.literal(key));
-  return z.union(literals as [z.ZodLiteral<K>, z.ZodLiteral<K>, ...z.ZodLiteral<K>[]]);
+  return z.union(literals as [z.ZodLiteral<K>, z.ZodLiteral<K>, ...z.ZodLiteral<K>[]], options);
 }
