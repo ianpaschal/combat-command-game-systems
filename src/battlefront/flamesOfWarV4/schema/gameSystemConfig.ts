@@ -65,7 +65,7 @@ export const gameSystemConfig = {
     era: Era.LW,
     lessonsFromTheFrontVersion: LessonsFromTheFrontVersion.Aug2025,
     missionMatrix: MissionMatrix.Extended,
-    missionPackVersion: MissionPackVersion.Apr2023,
+    missionPackVersion: MissionPackVersion.Apr2026,
     points: 100,
   } satisfies GameSystemConfig,
 } as const;

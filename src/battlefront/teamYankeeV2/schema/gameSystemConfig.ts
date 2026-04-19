@@ -56,7 +56,7 @@ export const gameSystemConfig = {
     era: Era.Default,
     fieldManual101Version: FieldManual101Version.Mar2024,
     missionMatrix: MissionMatrix.Extended,
-    missionPackVersion: MissionPackVersion.Apr2023,
+    missionPackVersion: MissionPackVersion.Apr2026,
     points: 100,
   } satisfies GameSystemConfig,
 } as const;
