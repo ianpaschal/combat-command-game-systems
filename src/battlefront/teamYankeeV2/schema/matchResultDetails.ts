@@ -21,23 +21,22 @@ export const matchResultDetails = {
    * See: "Placeholders in Form Fields Are Harmful" by Norman-Nielsen Group
    *      (https://www.nngroup.com/articles/form-design-placeholders/)
    * 
-   * Therefore we use empty strings as placeholder values. It is sadly necessary to cast it to the
-   * correct type or else React Hook Form will whine about empty strings not being valid match
-   * result details.
+   * Therefore we use null as a placeholder values. It is sadly necessary to cast it to the correct
+   * type or else React Hook Form will whine about null not being valid match result details.
    */
   defaultValues: {
-    attacker: '',
-    firstTurn: '',
-    mission: '',
-    outcomeType: '',
-    player0BattlePlan: '',
-    player0Faction: '',
+    attacker: null,
+    firstTurn: null,
+    mission: null,
+    outcomeType: null,
+    player0BattlePlan: null,
+    player0Faction: null,
     player0UnitsLost: '',
-    player1BattlePlan: '',
-    player1Faction: '',
+    player1BattlePlan: null,
+    player1Faction: null,
     player1UnitsLost: '',
     scoreOverride: undefined, // Except here!
     turnsPlayed: '',
-    winner: '',
+    winner: null,
   } as unknown as MatchResultDetails,
 } as const;
