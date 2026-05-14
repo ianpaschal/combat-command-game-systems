@@ -9,6 +9,7 @@ import { MissionPackMetadata } from '../../_shared/types';
 export enum MissionPackVersion {
   Apr2023 = '2023_04',
   Apr2026 = '2026_04',
+  Apr2026Combined = '2026_04_combined',
 }
 
 export enum MissionMatrix {
@@ -698,6 +699,444 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
             },
             missions: [
               [MissionName.Breakthrough],
+              [MissionName.Probe],
+              [MissionName.Counterattack],
+              [MissionName.Counterattack],
+              [MissionName.DustUp],
+              [MissionName.Encounter],
+            ],
+          },
+          {
+            selector: (a, b): boolean => {
+              const plans = new Set([a,b]);
+              return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Defend);
+            },
+            missions: [
+              [MissionName.Bridgehead],
+              [MissionName.Bridgehead],
+              [MissionName.NoRetreat],
+              [MissionName.NoRetreat],
+              [MissionName.Rearguard],
+              [MissionName.Rearguard],
+            ],
+          },
+          {
+            selector: (a, b): boolean => a === BattlePlan.Maneuver && b === BattlePlan.Maneuver,
+            missions: [
+              [MissionName.Breakthrough],
+              [MissionName.Counterattack],
+              [MissionName.DustUp],
+              [MissionName.Encounter],
+              [MissionName.FreeForAll],
+              [MissionName.FreeForAll],
+            ],
+          },
+          {
+            selector: (a, b): boolean => {
+              const plans = new Set([a,b]);
+              return plans.has(BattlePlan.Maneuver) && plans.has(BattlePlan.Defend);
+            },
+            missions: [
+              [MissionName.Breakthrough],
+              [MissionName.Bridgehead],
+              [MissionName.Probe],
+              [MissionName.NoRetreat],
+              [MissionName.NoRetreat],
+              [MissionName.FightingWithdrawal],
+            ],
+          },
+          {
+            selector: (a, b) => a === BattlePlan.Defend && b === BattlePlan.Defend,
+            missions: [
+              [MissionName.Breakthrough],
+              [MissionName.Counterattack],
+              [MissionName.DustUp],
+              [MissionName.Encounter],
+              [MissionName.FreeForAll],
+              [MissionName.FreeForAll],
+            ],
+          },
+        ],
+      },
+      [MissionMatrix.Extended]: {
+        displayName: 'Extended Battle Plans',
+        entries: [
+          {
+            selector: (a, b): boolean => a === BattlePlan.Attack && b === BattlePlan.Attack,
+            missions: [
+              [MissionName.AttackOrDie],
+              [MissionName.BiteAndHold],
+              [MissionName.CrossedLines],
+              [MissionName.HeadToHead],
+              [MissionName.KnifeFight],
+              [MissionName.StraightenTheLine],
+            ],
+          },
+          {
+            selector: (a, b): boolean => {
+              const plans = new Set([a,b]);
+              return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Maneuver);
+            },
+            missions: [
+              [MissionName.Breakthrough],
+              [MissionName.Bypass],
+              [MissionName.Contact],
+              [MissionName.Counterattack],
+              [MissionName.Rearguard],
+              [MissionName.ValleyOfDeath],
+            ],
+          },
+          {
+            selector: (a, b): boolean => {
+              const plans = new Set([a,b]);
+              return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Defend);
+            },
+            missions: [
+              [MissionName.Bridgehead],
+              [MissionName.Dogfight],
+              [MissionName.HoldThePocket],
+              [MissionName.KillingGround],
+              [MissionName.NoRetreat],
+              [MissionName.Rescue],
+            ],
+          },
+          {
+            selector: (a, b): boolean => a === BattlePlan.Maneuver && b === BattlePlan.Maneuver,
+            missions: [
+              [MissionName.Collision],
+              [MissionName.Confrontation],
+              [MissionName.HighGround],
+              [MissionName.KingOfTheHill],
+              [MissionName.LockedHorns],
+              [MissionName.ScoutsOut],
+            ],
+          },
+          {
+            selector: (a, b): boolean => {
+              const plans = new Set([a,b]);
+              return plans.has(BattlePlan.Maneuver) && plans.has(BattlePlan.Defend);
+            },
+            missions: [
+              [MissionName.Cornered],
+              [MissionName.Escape],
+              [MissionName.Outflanked],
+              [MissionName.Rearguard],
+              [MissionName.Roadblock],
+              [MissionName.Toehold],
+            ],
+          },
+          {
+            selector: (a, b) => a === BattlePlan.Defend && b === BattlePlan.Defend,
+            missions: [
+              [MissionName.NightPatrol],
+              [MissionName.NightPatrol],
+              [MissionName.NoMansLand],
+              [MissionName.NoMansLand],
+              [MissionName.Salient],
+              [MissionName.Salient],
+            ],
+          },
+        ],
+      },
+    },
+  },
+  [MissionPackVersion.Apr2026Combined]: {
+    displayName: 'April 2026 (Combined)',
+    publishedAt: '2026-04-25T13:00:00+13:00',
+    missions: {
+      [MissionName.AttackOrDie]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.BiteAndHold]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Breakthrough]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Bridgehead]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Bypass]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Collision]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Confrontation]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Contact]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Cornered]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Counterattack]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.CrossedLines]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Dogfight]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.DustUp]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Encounter]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Escape]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+  
+      [MissionName.FreeForAll]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.HeadToHead]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.HighGround]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.HoldThePocket]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.KillingGround]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.KingOfTheHill]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.KnifeFight]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.LockedHorns]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.NightPatrol]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.NoMansLand]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.NoRetreat]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Outflanked]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Rearguard]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Rescue]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Roadblock]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Salient]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.ScoutsOut]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.StraightenTheLine]: {
+        attacker: 'roll',
+        firstTurn: 'roll',
+        victoryConditions: [
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.Toehold]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+      [MissionName.ValleyOfDeath]: {
+        attacker: 'battle_plan',
+        firstTurn: 'attacker',
+        minTurns: 6,
+        victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
+          MatchOutcomeType.ObjectiveTaken,
+        ],
+      },
+    },
+    matrixes: {
+      [MissionMatrix.Default]: {
+        displayName: 'Battle Plans',
+        entries: [
+          {
+            selector: (a, b): boolean => a === BattlePlan.Attack && b === BattlePlan.Attack,
+            missions: [
+              [MissionName.Breakthrough],
+              [MissionName.Counterattack],
+              [MissionName.DustUp],
+              [MissionName.Encounter],
+              [MissionName.FreeForAll],
+              [MissionName.FreeForAll],
+            ],
+          },
+          {
+            selector: (a, b): boolean => {
+              const plans = new Set([a,b]);
+              return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Maneuver);
+            },
+            missions: [
+              [MissionName.Breakthrough],
               [MissionName.Contact],
               [MissionName.Counterattack],
               [MissionName.Counterattack],
@@ -791,7 +1230,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
               return plans.has(BattlePlan.Attack) && plans.has(BattlePlan.Defend);
             },
             missions: [
-              [MissionName.Bridgehead],
+              [MissionName.Bridgehead, MissionName.Toehold],
               [MissionName.Dogfight],
               [MissionName.HoldThePocket],
               [MissionName.KillingGround],
