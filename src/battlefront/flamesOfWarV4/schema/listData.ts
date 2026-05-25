@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-import { createEnumSchemaFromKeys } from '../../../common/_internal';
 import { commandCard } from '../../_shared/schema/commandCard';
 import { createFormationSchema } from '../../_shared/schema/formation';
 import { createListDataSchema, CreateListDataSchemaOptions } from '../../_shared/schema/listData';
@@ -12,15 +11,14 @@ import { ForceDiagram, forceDiagrams } from '../static/forceDiagrams';
 import { series } from '../static/series';
 import { Unit, units } from '../static/units';
 
-export { commandCard };
-
-export const formation = createFormationSchema(createEnumSchemaFromKeys(units, {
-  errorMap: () => ({ message: 'Please select a formation' }),
-}));
-
-export const unit = createUnitSchema(createEnumSchemaFromKeys(units, {
-  errorMap: () => ({ message: 'Please select a unit' }),
-}));
+const context = {
+  alignments,
+  factions,
+  eras,
+  series,
+  forceDiagrams,
+  units,
+} as const;
 
 export type ListDataFormData = {
   meta: {
@@ -36,14 +34,8 @@ export type ListDataFormData = {
 };
 
 export const listData = {
-  createSchema: (options?: CreateListDataSchemaOptions) => createListDataSchema({
-    alignments,
-    factions,
-    eras,
-    series,
-    forceDiagrams,
-    units,
-  }, options),
+  schema: createListDataSchema(context),
+  createSchema: (options?: CreateListDataSchemaOptions) => createListDataSchema(context, options),
   defaultValues: {
     meta: {
       forceDiagram: null,

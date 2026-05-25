@@ -4,6 +4,7 @@ import { createEnumSchemaFromKeys } from '../../../common/_internal';
 import { emptyToUndefined } from '../../../common/_internal/emptyToUndefined';
 import { AlignmentMetadata, FactionMetadata } from '../types';
 
+/** @deprecated Use `listData` instead. */
 export const createRegistrationDetailsSchema = <
   TAlignment extends string,
   TFaction extends string,
@@ -39,6 +40,7 @@ export const createRegistrationDetailsSchema = <
   }
 });
 
+/** @deprecated Use `ListData` instead. */
 export type GenericRegistrationDetails<
   TAlignment extends string = string,
   TFaction extends string = string,

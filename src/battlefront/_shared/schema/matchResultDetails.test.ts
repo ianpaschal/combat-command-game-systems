@@ -65,7 +65,7 @@ describe('createMatchResultDetailsSchema()', () => {
     });
   });
 
-  describe('.outcomeTYpe', () => {
+  describe('.outcomeType', () => {
     it('should emit an error if value is not an valid outcome type.', () => {
       const result = schema.safeParse({
         ...validData,
