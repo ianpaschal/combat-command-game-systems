@@ -1,4 +1,5 @@
 import * as FlamesOfWarV4 from '../../battlefront/flamesOfWarV4';
+import * as GreatWarV4 from '../../battlefront/greatWarV4';
 import * as TeamYankeeV2 from '../../battlefront/teamYankeeV2';
 import { GameSystem } from '../static/gameSystems';
 
@@ -8,6 +9,12 @@ export type GameSystemTypeMap = {
     gameSystem: GameSystem.FlamesOfWarV4,
     gameSystemConfig: FlamesOfWarV4.GameSystemConfig;
     matchResultDetails: FlamesOfWarV4.MatchResultDetails;
+  };
+  [GameSystem.GreatWarV4]: {
+    name: string;
+    gameSystem: GameSystem.GreatWarV4,
+    gameSystemConfig: GreatWarV4.GameSystemConfig;
+    matchResultDetails: GreatWarV4.MatchResultDetails;
   };
   [GameSystem.TeamYankeeV2]: {
     name: string;
@@ -44,10 +51,33 @@ export const gameSystemFixtures: GameSystemFixture[] = [
       mission: FlamesOfWarV4.MissionName.Encounter,
       outcomeType: FlamesOfWarV4.MatchOutcomeType.ObjectiveTaken,
       player0BattlePlan: FlamesOfWarV4.BattlePlan.Attack,
-      player0Faction: FlamesOfWarV4.Faction.UnitedStates,
+      player0Faction: FlamesOfWarV4.Faction.SovietUnion,
       player0UnitsLost: 2,
       player1BattlePlan: FlamesOfWarV4.BattlePlan.Defend,
       player1Faction: FlamesOfWarV4.Faction.Germany,
+      player1UnitsLost: 3,
+      turnsPlayed: 6,
+      winner: 0,
+    },
+  },
+  {
+    name: 'Great War v4',
+    gameSystem: GameSystem.GreatWarV4,
+    gameSystemConfig: {
+      pointsVersion: GreatWarV4.PointsVersion.Original,
+      missionPackVersion: GreatWarV4.MissionPackVersion.RuleBook,
+      points: 100,
+    },
+    matchResultDetails: {
+      attacker: 0,
+      firstTurn: 0,
+      mission: GreatWarV4.MissionName.Encounter,
+      outcomeType: GreatWarV4.MatchOutcomeType.ObjectiveTaken,
+      player0BattlePlan: GreatWarV4.BattlePlan.Attack,
+      player0Faction: GreatWarV4.Faction.Belgium,
+      player0UnitsLost: 2,
+      player1BattlePlan: GreatWarV4.BattlePlan.Defend,
+      player1Faction: GreatWarV4.Faction.Germany,
       player1UnitsLost: 3,
       turnsPlayed: 6,
       winner: 0,

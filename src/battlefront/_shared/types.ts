@@ -20,9 +20,9 @@ export type FactionMetadata<TAlignment extends string> = GenericMetadata & {
   alignment: TAlignment;
 };
 
-export type ForceDiagramMetadata<TFaction extends string, TSeries extends string> = GenericMetadata & {
+export type ForceDiagramMetadata<TFaction extends string, TSeries extends string = string> = GenericMetadata & {
   faction: TFaction;
-  series: TSeries;
+  series?: TSeries;
 };
 
 export type MatchOutcomeTypeMetadata = GenericMetadata;

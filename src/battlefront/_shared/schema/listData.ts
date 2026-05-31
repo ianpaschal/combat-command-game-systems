@@ -34,8 +34,8 @@ export const createListDataSchema = <
   context: {
     alignments: Record<TAlignment, AlignmentMetadata>;
     factions: Record<TFaction, FactionMetadata<TAlignment>>;
-    eras: Record<TEra, EraMetadata>;
-    series: Record<TSeries, SeriesMetadata<TEra>>;
+    eras?: Record<TEra, EraMetadata>;
+    series?: Record<TSeries, SeriesMetadata<TEra>>;
     forceDiagrams: Record<TForceDiagram, ForceDiagramMetadata<TFaction, TSeries>>;
     units: Record<string, UnitMetadata<TForceDiagram>>;
   },
@@ -53,7 +53,7 @@ export const createListDataSchema = <
     forceDiagram: z.string().optional(),
     faction: z.string().optional(),
     alignment: z.string().optional(),
-    era: z.string(),
+    era: z.string().optional(),
     pointsLimit: z.coerce.number({
       invalid_type_error: 'Please set a points limit.',
     }).min(0, 'Points limit must be 0 or greater.'),
@@ -71,7 +71,10 @@ export const createListDataSchema = <
   validateForceDiagram(ctx, data, context, options);
   validateFaction(ctx, data, context, options);
   validateAlignment(ctx, data, context, options);
-  validateEra(ctx, data, context);
+  
+  if (context.eras) {
+    validateEra(ctx, data, context);
+  }
 
   // Units & Formations
   if (!hasNoDuplicateIds(data)) {
