@@ -1,4 +1,7 @@
-import { createRegistrationDetailsSchema, GenericRegistrationDetails } from '../../_shared/schema/registrationDetails';
+import {
+  createRegistrationDetailsSchema,
+  GenericRegistrationDetails,
+} from '../../_shared/schema/registrationDetails';
 import { Alignment, alignments } from '../static/alignments';
 import { Faction, factions } from '../static/factions';
 

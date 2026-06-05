@@ -132,6 +132,7 @@ describe('calculateMatchResultDetails()', () => {
     } as MissionData;
     const details = {
       player0BattlePlan: BattlePlan.Attack,
+
       // player1BattlePlan is missing
       outcomeType: MatchOutcomeType.AttackRepelled,
     };

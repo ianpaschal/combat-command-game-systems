@@ -123,7 +123,7 @@ describe('createListDataSchema', () => {
 
   describe('.meta.era', () => {
     it('should not emit an era error if context has no eras.', () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const { eras: _eras, ...contextWithoutEras } = context;
       const result = createListDataSchema(contextWithoutEras).safeParse({ ...validData, meta: { ...validData.meta, era: 'not_an_era' } });
       expect(getIssueMessages(result, ['meta', 'era'])).toHaveLength(0);
