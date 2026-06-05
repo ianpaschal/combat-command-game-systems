@@ -39,7 +39,7 @@ export const createGetDiagramData = <
     faction: data.faction,
     factionDisplayName: factions[data.faction].displayName,
     id: forceDiagram,
-    series: data.series,
-    seriesDisplayName: series[data.series].displayName,
+    series: data.series!,
+    seriesDisplayName: series[data.series!].displayName,
   };
 };

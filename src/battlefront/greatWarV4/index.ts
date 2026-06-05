@@ -9,24 +9,25 @@ export * from '../_shared/static/battlePlans';
 export * from '../_shared/static/matchOutcomeTypes';
 export * from '../_shared/static/missionNames';
 export * from '../_shared/static/rankingFactors';
-export type * from '../_shared/types';
+export type {
+  AlignmentMetadata,
+  BattlePlanMetadata,
+  FactionMetadata,
+  ForceDiagramMetadata,
+  MatchOutcomeTypeMetadata,
+  RankingFactorMetadata,
+  UnitMetadata,
+} from '../_shared/types';
 
-// Team Yankee, 2nd Edition
-export * from './helpers/getValidGameSystemConfig';
-export * from './helpers/getValidMatchResultDetails';
-export * from './helpers/isGameSystemConfigValid';
-export * from './helpers/isMatchResultDetailsValid';
+// Great War, 4th Edition
 export * from './schema/gameSystemConfig';
 export * from './schema/listData';
 export * from './schema/matchResultDetails';
-export * from './schema/registrationDetails';
 export * from './static/alignments';
-export * from './static/dynamicPointsVersions';
-export * from './static/eras';
 export * from './static/factions';
-export * from './static/fieldManual101Versions';
 export * from './static/forceDiagrams';
 export * from './static/missionPackUtils';
 export * from './static/missionPackVersions';
-export * from './static/series';
+export * from './static/pointsVersions';
+export * from './static/units';
 export type * from './types';

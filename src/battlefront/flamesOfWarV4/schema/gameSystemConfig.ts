@@ -10,7 +10,7 @@ import { isDynamicPointsVersionValid, isMissionMatrixValid } from './gameSystemC
 export const gameSystemConfigSchema = z.object({
   // TODO: Move gameSystem into gameSystemConfig
   // /** Forced game system discriminator. */
-  // gameSystem: z.literal(GameSystem.TeamYankeeV2),
+  // gameSystem: z.literal(GameSystem.FlamesOfWarV4),
 
   /** @deprecated */
   additionalRules: z.optional(z.object({

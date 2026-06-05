@@ -1,10 +1,12 @@
 import * as FlamesOfWarV4 from '../../battlefront/flamesOfWarV4';
+import * as GreatWarV4 from '../../battlefront/greatWarV4';
 import * as TeamYankeeV2 from '../../battlefront/teamYankeeV2';
 import { GameSystem } from '../static/gameSystems';
 import { getGameSystem } from './getGameSystem';
 
 type GameSystemGameSystemConfig = {
   [GameSystem.FlamesOfWarV4]: FlamesOfWarV4.GameSystemConfig;
+  [GameSystem.GreatWarV4]: GreatWarV4.GameSystemConfig;
   [GameSystem.TeamYankeeV2]: TeamYankeeV2.GameSystemConfig;
 };
 

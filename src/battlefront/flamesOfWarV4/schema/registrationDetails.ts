@@ -2,16 +2,16 @@ import { createRegistrationDetailsSchema, GenericRegistrationDetails } from '../
 import { Alignment, alignments } from '../static/alignments';
 import { Faction, factions } from '../static/factions';
 
+/** @deprecated Use `ListData` instead. */
 export type RegistrationDetails = GenericRegistrationDetails<Alignment, Faction>;
 
+/** @deprecated Use `ListData` instead. */
 export type RegistrationDetailFormData = {
   alignment: null;
   faction: null;
 };
 
-/**
- * Useful to single import both schema and default values.
- */
+/** @deprecated Use `listData` instead. */
 export const registrationDetails = {
   createSchema: (
     requiredFields?: {

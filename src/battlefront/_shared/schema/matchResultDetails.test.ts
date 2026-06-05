@@ -65,7 +65,7 @@ describe('createMatchResultDetailsSchema()', () => {
     });
   });
 
-  describe('.outcomeTYpe', () => {
+  describe('.outcomeType', () => {
     it('should emit an error if value is not an valid outcome type.', () => {
       const result = schema.safeParse({
         ...validData,
@@ -76,7 +76,28 @@ describe('createMatchResultDetailsSchema()', () => {
     });
   });
   
+  describe('.attacker', () => {
+    it('should emit an error if value is not 0 or 1.', () => {
+      const result = schema.safeParse({ ...validData, attacker: null });
+      expect(result.success).toBe(false);
+      expect(getSchemaFieldErrors(result, 'attacker')).toContain('Please select an attacker');
+    });
+  });
+
+  describe('.firstTurn', () => {
+    it('should emit an error if value is not 0 or 1.', () => {
+      const result = schema.safeParse({ ...validData, firstTurn: null });
+      expect(result.success).toBe(false);
+      expect(getSchemaFieldErrors(result, 'firstTurn')).toContain('Please select who had the first turn');
+    });
+  });
+
   describe('.winner', () => {
+    it('should emit an error if value is not -1, 0, or 1.', () => {
+      const result = schema.safeParse({ ...validData, winner: null });
+      expect(result.success).toBe(false);
+      expect(getSchemaFieldErrors(result, 'winner')).toContain('Please select a winner');
+    });
     it('rejects values other than -1 if the outcome type is time_out.', () => {
       const result = schema.safeParse({
         ...validData,
