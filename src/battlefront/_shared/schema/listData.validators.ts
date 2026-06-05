@@ -251,24 +251,25 @@ export const validateFormation = (
     if (expectedEra) {
       const sourceData = context.units[formation.sourceId as string];
       if (sourceData) {
-        const sourceSeriesKey = context.forceDiagrams[sourceData.sourceForceDiagram]?.series;
-
         // Source force diagram is not a recognized key:
-        if (!sourceSeriesKey) {
+        if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: 'Formation source has an unrecognized force diagram.',
             path: ['formations'],
           });
         } else {
-          const sourceEra = context.series?.[sourceSeriesKey]?.era;
-          // Source era does not match the force diagram's era:
-          if (sourceEra && sourceEra !== expectedEra) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'Formation does not match the force diagram\'s era.',
-              path: ['formations'],
-            });
+          const sourceSeriesKey = context.forceDiagrams[sourceData.sourceForceDiagram]?.series;
+          if (sourceSeriesKey) {
+            const sourceEra = context.series?.[sourceSeriesKey]?.era;
+            // Source era does not match the force diagram's era:
+            if (sourceEra && sourceEra !== expectedEra) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Formation does not match the force diagram\'s era.',
+                path: ['formations'],
+              });
+            }
           }
         }
       }
@@ -327,24 +328,25 @@ export const validateUnit = (
     if (expectedEra) {
       const sourceData = context.units[unit.sourceId as string];
       if (sourceData) {
-        const sourceSeriesKey = context.forceDiagrams[sourceData.sourceForceDiagram]?.series;
-
         // Source force diagram is not a recognized key:
-        if (!sourceSeriesKey) {
+        if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: 'Unit source has an unrecognized force diagram.',
             path,
           });
         } else {
-          const sourceEra = context.series?.[sourceSeriesKey]?.era;
-          // Source era does not match the force diagram's era:
-          if (sourceEra && sourceEra !== expectedEra) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'Unit does not match the force diagram\'s era.',
-              path,
-            });
+          const sourceSeriesKey = context.forceDiagrams[sourceData.sourceForceDiagram]?.series;
+          if (sourceSeriesKey) {
+            const sourceEra = context.series?.[sourceSeriesKey]?.era;
+            // Source era does not match the force diagram's era:
+            if (sourceEra && sourceEra !== expectedEra) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Unit does not match the force diagram\'s era.',
+                path,
+              });
+            }
           }
         }
       }

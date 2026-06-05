@@ -5,7 +5,7 @@ export enum GameSystem {
   FlamesOfWarV4 = 'flames_of_war_v4',
 
   /* It's unclear what version should be used for Great War. It probably has not
-   * had 3 pervious versions published, however an article on the Battlefront
+   * had 3 previous versions published, however an article on the Battlefront
    * website announcing the 2019 release states that:
    *
    *   "This new edition updates the rules of the Great War game to Version 4

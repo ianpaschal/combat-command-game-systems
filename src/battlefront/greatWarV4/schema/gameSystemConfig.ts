@@ -11,7 +11,7 @@ const schema = z.object({
   // gameSystem: z.literal(GameSystem.GreatWarV4),
 
   points: z.coerce.number(),
-  pointsVersion: z.optional(createEnumSchema(PointsVersion)),
+  pointsVersion: createEnumSchema(PointsVersion),
   missionPackVersion: createEnumSchema(MissionPackVersion, {
     errorMap: () => ({ message: 'Please select a mission pack version.' }),
   }),

@@ -6,7 +6,7 @@ import {
 
 import { MissionPackVersion } from '../static/missionPackVersions';
 import { PointsVersion } from '../static/pointsVersions';
-import { GameSystemConfig,gameSystemConfig } from './gameSystemConfig';
+import { GameSystemConfig, gameSystemConfig } from './gameSystemConfig';
 
 describe('GreatWarV4.gameSystemConfig', () => {
 
