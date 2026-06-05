@@ -8,7 +8,7 @@ import { isPointsVersionValid } from './gameSystemConfig.validators';
 const schema = z.object({
   // TODO: Move gameSystem into gameSystemConfig
   // /** Forced game system discriminator. */
-  // gameSystem: z.literal(GameSystem.TeamYankeeV2),
+  // gameSystem: z.literal(GameSystem.GreatWarV4),
 
   points: z.coerce.number(),
   pointsVersion: z.optional(createEnumSchema(PointsVersion)),

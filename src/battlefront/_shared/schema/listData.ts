@@ -72,9 +72,7 @@ export const createListDataSchema = <
   validateFaction(ctx, data, context, options);
   validateAlignment(ctx, data, context, options);
   
-  if (context.eras) {
-    validateEra(ctx, data, context);
-  }
+  validateEra(ctx, data, context);
 
   // Units & Formations
   if (!hasNoDuplicateIds(data)) {

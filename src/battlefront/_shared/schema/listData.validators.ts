@@ -131,17 +131,29 @@ export const validateAlignment = (
 
   // Missing but required:
   if (options?.requiredFields?.alignment && !value) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Please select an alignment.', path });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Please select an alignment.',
+      path,
+    });
   }
 
   // Exists but not a recognized alignment key:
   if (value && !(value in context.alignments)) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Please select an alignment.', path });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Please select an alignment.',
+      path,
+    });
   }
 
   // Exists but does not match the selected faction's alignment:
   if (value && data.meta.faction && context.factions[data.meta.faction]?.alignment !== value) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Alignment does not match the selected faction.', path });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Alignment does not match the selected faction.',
+      path,
+    });
   }
 };
 
@@ -167,7 +179,11 @@ export const validateEra = (
 
   // Not a recognized era key:
   if (!value || !(value in context.eras)) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Please select an era.', path });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Please select an era.',
+      path,
+    });
   }
 
   // Does not match the era implied by the selected force diagram's series:
@@ -175,7 +191,11 @@ export const validateEra = (
     const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
     const expected = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expected && value !== expected) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Era does not match the force diagram.', path });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Era does not match the force diagram.',
+        path,
+      });
     }
   }
 };
@@ -193,12 +213,20 @@ export const validateLegality = (
 ): void => {
   // At least one formation:
   if (data.formations.length === 0) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'At least one formation is required.', path: ['formations'] });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'At least one formation is required.',
+      path: ['formations'],
+    });
   }
 
   // At least one unit:
   if (data.units.length === 0) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'At least one unit is required.', path: ['units'] });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'At least one unit is required.',
+      path: ['units'],
+    });
   }
 };
 
@@ -227,12 +255,20 @@ export const validateFormation = (
 
         // Source force diagram is not a recognized key:
         if (!sourceSeriesKey) {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Formation source has an unrecognized force diagram.', path: ['formations'] });
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Formation source has an unrecognized force diagram.',
+            path: ['formations'],
+          });
         } else {
           const sourceEra = context.series?.[sourceSeriesKey]?.era;
           // Source era does not match the force diagram's era:
           if (sourceEra && sourceEra !== expectedEra) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Formation does not match the force diagram\'s era.', path: ['formations'] });
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Formation does not match the force diagram\'s era.',
+              path: ['formations'],
+            });
           }
         }
       }
@@ -295,12 +331,20 @@ export const validateUnit = (
 
         // Source force diagram is not a recognized key:
         if (!sourceSeriesKey) {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Unit source has an unrecognized force diagram.', path });
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Unit source has an unrecognized force diagram.',
+            path,
+          });
         } else {
           const sourceEra = context.series?.[sourceSeriesKey]?.era;
           // Source era does not match the force diagram's era:
           if (sourceEra && sourceEra !== expectedEra) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Unit does not match the force diagram\'s era.', path });
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Unit does not match the force diagram\'s era.',
+              path,
+            });
           }
         }
       }
@@ -309,6 +353,10 @@ export const validateUnit = (
 
   // `formationId` does not reference an existing formation (and is not 'support'):
   if (unit.formationId !== 'support' && !new Set(data.formations.map((f) => f.id)).has(unit.formationId)) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Unit references a non-existent formation.', path });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Unit references a non-existent formation.',
+      path,
+    });
   }
 };
