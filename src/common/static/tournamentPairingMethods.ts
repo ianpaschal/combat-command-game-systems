@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
 import { getDisplayName, getOptions } from '../_internal';
-import { TournamentPairingConfig, tournamentPairingConfig } from '../schemas/tournamentPairingConfig';
+import {
+  TournamentPairingConfig,
+  tournamentPairingConfig,
+} from '../schemas/tournamentPairingConfig';
 import { SelectOption, TournamentPairingMethodMetadata } from '../types';
 import { TournamentPairingPolicy } from './tournamentPairingPolicy';
 

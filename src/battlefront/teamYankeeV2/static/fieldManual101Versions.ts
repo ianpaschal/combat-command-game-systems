@@ -7,6 +7,7 @@ export enum FieldManual101Version {
 }
 
 export const fieldManual101Versions: Record<FieldManual101Version, FieldManual101VersionMetadata> = {
+
   // Presumably several missing...
   [FieldManual101Version.Mar2024]: {
     displayName: 'March 2024',

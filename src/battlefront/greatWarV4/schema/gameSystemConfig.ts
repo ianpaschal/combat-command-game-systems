@@ -6,6 +6,7 @@ import { PointsVersion } from '../static/pointsVersions';
 import { isPointsVersionValid } from './gameSystemConfig.validators';
 
 const schema = z.object({
+
   // TODO: Move gameSystem into gameSystemConfig
   // /** Forced game system discriminator. */
   // gameSystem: z.literal(GameSystem.GreatWarV4),

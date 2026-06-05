@@ -19,6 +19,7 @@ export const lessonsFromTheFrontVersions: Record<LessonsFromTheFrontVersion, Les
     displayName: 'October 2019',
     publishedAt: '2019-10-01T13:00:00+13:00',
   },
+
   // Presumably 1 or 2 missing...
   [LessonsFromTheFrontVersion.Mar2023]: {
     displayName: 'March 2023',

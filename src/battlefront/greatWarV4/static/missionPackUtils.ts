@@ -1,8 +1,14 @@
 import { SelectOption } from '../../../common';
-import { getMatchOutcomeTypeOptions, MatchOutcomeType } from '../../_shared/static/matchOutcomeTypes';
+import {
+  getMatchOutcomeTypeOptions,
+  MatchOutcomeType,
+} from '../../_shared/static/matchOutcomeTypes';
 import { MissionPackMetadata } from '../types';
 import { getMissionNameOptions, MissionName } from './missionNames';
-import { MissionPackVersion, missionPackVersions as rawMissionPackVersions } from './missionPackVersions';
+import {
+  MissionPackVersion,
+  missionPackVersions as rawMissionPackVersions,
+} from './missionPackVersions';
 
 const missionPackVersions = rawMissionPackVersions as Record<MissionPackVersion, MissionPackMetadata>;
 

@@ -211,6 +211,7 @@ export const validateLegality = (
   ctx: z.RefinementCtx,
   data: GenericListData,
 ): void => {
+
   // At least one formation:
   if (data.formations.length === 0) {
     ctx.addIssue({
@@ -251,6 +252,7 @@ export const validateFormation = (
     if (expectedEra) {
       const sourceData = context.units[formation.sourceId as string];
       if (sourceData) {
+
         // Source force diagram is not a recognized key:
         if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
           ctx.addIssue({
@@ -262,6 +264,7 @@ export const validateFormation = (
           const sourceSeriesKey = context.forceDiagrams[sourceData.sourceForceDiagram]?.series;
           if (sourceSeriesKey) {
             const sourceEra = context.series?.[sourceSeriesKey]?.era;
+
             // Source era does not match the force diagram's era:
             if (sourceEra && sourceEra !== expectedEra) {
               ctx.addIssue({
@@ -328,6 +331,7 @@ export const validateUnit = (
     if (expectedEra) {
       const sourceData = context.units[unit.sourceId as string];
       if (sourceData) {
+
         // Source force diagram is not a recognized key:
         if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
           ctx.addIssue({
@@ -339,6 +343,7 @@ export const validateUnit = (
           const sourceSeriesKey = context.forceDiagrams[sourceData.sourceForceDiagram]?.series;
           if (sourceSeriesKey) {
             const sourceEra = context.series?.[sourceSeriesKey]?.era;
+
             // Source era does not match the force diagram's era:
             if (sourceEra && sourceEra !== expectedEra) {
               ctx.addIssue({
