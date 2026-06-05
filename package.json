@@ -10,6 +10,7 @@
     "./common": "./dist/common/index.js",
     "./battlefront": "./dist/battlefront/index.js",
     "./flamesOfWarV4": "./dist/battlefront/flamesOfWarV4/index.js",
+    "./greatWarV4": "./dist/battlefront/greatWarV4/index.js",
     "./teamYankeeV2": "./dist/battlefront/teamYankeeV2/index.js",
     "./utils": "./dist/common/_internal/index.js"
   },
