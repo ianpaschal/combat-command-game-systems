@@ -1,7 +1,7 @@
 import { MatchResultDetails } from './matchResultDetails';
 
 export const isWinnerValid = (
-  values: MatchResultDetails,
+  values: Pick<MatchResultDetails, 'winner' | 'outcomeType'>,
 ): boolean => {
   if (values.outcomeType === 'time_out' && values.winner !== -1) {
     return false;

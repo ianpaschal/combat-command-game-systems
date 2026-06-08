@@ -2,8 +2,9 @@ import { z } from 'zod';
 
 import { createMatchResultDetailsSchema } from '../../_shared/schema/matchResultDetails';
 import { Faction } from '../static/factions';
+import { MissionName } from '../static/missionNames';
 
-const schema = createMatchResultDetailsSchema(Faction);
+const schema = createMatchResultDetailsSchema(Faction, MissionName);
 
 export type MatchResultDetails = z.infer<typeof schema>;
 

@@ -3,7 +3,7 @@ import { MatchOutcomeType } from '../static/matchOutcomeTypes';
 import { MissionData } from '../types';
 
 export const calculateMatchResultWinner = (
-  mission: MissionData | null,
+  mission: Omit<MissionData, 'attacker'> | null,
   attacker?: 0 | 1,
   outcomeType?: MatchOutcomeType,
   scoreOverride?: ScoreOverride,

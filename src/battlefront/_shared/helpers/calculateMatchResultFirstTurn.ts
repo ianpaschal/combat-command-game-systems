@@ -1,7 +1,7 @@
 import { MissionData } from '../types';
 
 export const calculateMatchResultFirstTurn = (
-  mission: MissionData | null,
+  mission: Omit<MissionData, 'attacker'> | null,
   attacker?: 0 | 1,
 ): 0 | 1 | undefined => {
   if (!mission || attacker === undefined) {

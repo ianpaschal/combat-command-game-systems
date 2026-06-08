@@ -3,12 +3,15 @@ import { z } from 'zod';
 import { createEnumSchema } from '../../../common/_internal';
 import { BattlePlan } from '../static/battlePlans';
 import { MatchOutcomeType } from '../static/matchOutcomeTypes';
-import { MissionName } from '../static/missionNames';
 import { isWinnerValid } from './matchResultDetails.validators';
 import { scoreOverride } from './scoreOverride';
 
-export const createMatchResultDetailsSchema = <TFaction extends Record<string, string>>(
+export const createMatchResultDetailsSchema = <
+  TFaction extends Record<string, string>,
+  TMissionName extends Record<string, string>,
+>(
   factionEnum: TFaction,
+  missionNameEnum: TMissionName,
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) => z.object({
 
@@ -35,7 +38,7 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
   firstTurn: z.union([z.literal(0), z.literal(1)], {
     errorMap: () => ({ message: 'Please select who had the first turn' }),
   }),
-  mission: createEnumSchema(MissionName, {
+  mission: createEnumSchema(missionNameEnum, {
     errorMap: () => ({ message: 'Please select a mission' }),
   }),
   outcomeType: createEnumSchema(MatchOutcomeType, {
@@ -58,4 +61,7 @@ export const createMatchResultDetailsSchema = <TFaction extends Record<string, s
   }
 });
 
-export type MatchResultDetails<TFaction extends Record<string, string> = Record<string, string>> = z.infer<ReturnType<typeof createMatchResultDetailsSchema<TFaction>>>;
+export type MatchResultDetails<
+  TFaction extends Record<string, string> = Record<string, string>,
+  TMissionName extends Record<string, string> = Record<string, string>,
+> = z.infer<ReturnType<typeof createMatchResultDetailsSchema<TFaction, TMissionName>>>;

@@ -3,7 +3,7 @@ import {
   getMatchOutcomeTypeOptions,
   MatchOutcomeType,
 } from '../../_shared/static/matchOutcomeTypes';
-import { MissionPackMetadata } from '../types';
+import { MissionData, MissionPackMetadata } from '../types';
 import { getMissionNameOptions, MissionName } from './missionNames';
 import {
   MissionPackVersion,
@@ -28,7 +28,7 @@ const getMissionPackData = (
 export const getMission = (
   missionPackVersion?: MissionPackVersion,
   missionName?: MissionName,
-): MissionPackMetadata['missions'][MissionName] | null => {
+): MissionData | null => {
   if (!isValidMissionPackVersion(missionPackVersion) || !missionName) {
     return null;
   }

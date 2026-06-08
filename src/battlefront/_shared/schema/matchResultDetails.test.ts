@@ -25,7 +25,7 @@ describe('createMatchResultDetailsSchema()', () => {
     winner: 1 as const,
   };
 
-  const schema = createMatchResultDetailsSchema({} as const);
+  const schema = createMatchResultDetailsSchema({} as const, MissionName);
 
   it('accepts valid data.', () => {
     const result = schema.safeParse(validData);

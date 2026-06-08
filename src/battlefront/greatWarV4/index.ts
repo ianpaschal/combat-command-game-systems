@@ -7,7 +7,6 @@ export * from '../_shared/helpers/calculateMatchResultWinner';
 export * from '../_shared/helpers/extractMatchResultStats';
 export * from '../_shared/static/battlePlans';
 export * from '../_shared/static/matchOutcomeTypes';
-export * from '../_shared/static/missionNames';
 export * from '../_shared/static/rankingFactors';
 export type {
   AlignmentMetadata,
@@ -18,6 +17,7 @@ export type {
   RankingFactorMetadata,
   UnitMetadata,
 } from '../_shared/types';
+export * from './static/missionNames';
 
 // Great War, 4th Edition
 export * from './schema/gameSystemConfig';

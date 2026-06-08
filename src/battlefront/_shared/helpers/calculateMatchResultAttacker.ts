@@ -2,7 +2,9 @@ import { BattlePlan } from '../static/battlePlans';
 import { MissionData } from '../types';
 
 export const calculateMatchResultAttacker = (
-  mission: MissionData | null,
+  mission: Omit<MissionData, 'attacker'> & {
+    attacker?: MissionData['attacker'];
+  } | null,
   battlePlans?: [BattlePlan | undefined, BattlePlan | undefined],
 ): 0 | 1 | undefined => {
   if (!mission || !battlePlans || !battlePlans[0] || !battlePlans[1]) {
