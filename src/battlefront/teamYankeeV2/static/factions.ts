@@ -1,7 +1,8 @@
 import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
-import { FactionMetadata } from '../../_shared/types';
+import { getDisplayName } from '../../../common/_internal';
+import { FactionMetadata } from '../types';
 import { Alignment } from './alignments';
+import { Era } from './eras';
 
 export enum Faction {
   Anzac = 'anzac',
@@ -27,94 +28,184 @@ export enum Faction {
   WestGermany = 'west_germany',
 }
 
-export const factions: Record<Faction, FactionMetadata<Alignment>> = {
+export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   [Faction.Anzac]: {
     displayName: 'ANZAC',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Belgium]: {
     displayName: 'Belgium',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Canada]: {
     displayName: 'Canada',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Cuba]: {
     displayName: 'Cuba',
-    alignment: Alignment.WarsawPact,
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Czechoslovakia]: {
     displayName: 'Czechoslovakia',
-    alignment: Alignment.WarsawPact,
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Denmark]: {
     displayName: 'Denmark',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.EastGermany]: {
     displayName: 'East Germany',
-    alignment: Alignment.WarsawPact,
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Finland]: {
     displayName: 'Finland',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.France]: {
     displayName: 'France',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.GreatBritain]: {
     displayName: 'Great Britain',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Iran]: {
     displayName: 'Iran',
-    alignment: Alignment.WarsawPact,
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Iraq]: {
     displayName: 'Iraq',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Israel]: {
     displayName: 'Israel',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Netherlands]: {
     displayName: 'The Netherlands',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Norway]: {
     displayName: 'Norway',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Poland]: {
     displayName: 'Poland',
-    alignment: Alignment.WarsawPact,
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.SovietUnion]: {
     displayName: 'Soviet Union',
-    alignment: Alignment.WarsawPact,
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Sweden]: {
     displayName: 'Sweden',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Syria]: {
     displayName: 'Syria',
-    alignment: Alignment.WarsawPact,
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.UnitedStates]: {
     displayName: 'United States',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.WestGermany]: {
     displayName: 'West Germany',
-    alignment: Alignment.Nato,
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
-} as const;
+};
 
-export const getFactionOptions = (): SelectOption<Faction>[] => getOptions(factions);
+export type GetFactionOptionsFilters = {
+  alignment?: Alignment;
+  era?: Era;
+};
+
+export const getFactionOptions = (
+  filters?: GetFactionOptionsFilters,
+): SelectOption<Faction>[] => {
+  const entries = Object.entries(factions) as [Faction, FactionMetadata<Era, Alignment>][];
+  const filtered = filters ? (
+    entries.filter(([, f]) => {
+      if (filters.era !== undefined && filters.alignment !== undefined) {
+        return f.alignment[filters.era] === filters.alignment;
+      }
+      if (filters.era !== undefined) {
+        return f.alignment[filters.era] !== undefined;
+      }
+      if (filters.alignment !== undefined) {
+        return Object.values(f.alignment).some((a) => a === filters.alignment);
+      }
+      return true;
+    })
+  ) : entries;
+  return filtered.map(([key, { displayName }]) => ({
+    value: key,
+    label: displayName,
+  }));
+};
 
 export const getFactionDisplayName = (
   key: Faction,
@@ -122,9 +213,10 @@ export const getFactionDisplayName = (
 
 export const getFactionAlignment = (
   key: string,
+  era: Era,
 ): Alignment | undefined => {
   if (key in factions) {
-    return factions[key as Faction].alignment;
+    return factions[key as Faction].alignment[era];
   }
   return undefined;
 };

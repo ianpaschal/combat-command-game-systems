@@ -1,5 +1,5 @@
 import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
+import { getDisplayName } from '../../../common/_internal';
 import { ForceDiagramMetadata } from '../../_shared/types';
 import { Alignment } from './alignments';
 import { Era } from './eras';
@@ -234,7 +234,28 @@ export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, S
   },
 };
 
-export const getForceDiagramOptions = (): SelectOption<ForceDiagram>[] => getOptions(forceDiagrams);
+export type GetForceDiagramOptionsFilters = {
+  faction?: Faction;
+  alignment?: Alignment;
+  series?: Series;
+};
+
+export const getForceDiagramOptions = (filters?: GetForceDiagramOptionsFilters): SelectOption<ForceDiagram>[] => {
+  const entries = Object.entries(forceDiagrams) as [ForceDiagram, ForceDiagramMetadata<Faction, Series>][];
+  const filtered = filters ? (
+    entries.filter(([, fd]) => ((
+      filters.faction === undefined || fd.faction === filters.faction
+    ) && (
+      filters.alignment === undefined || (fd.series !== undefined && factions[fd.faction].alignment[series[fd.series].era] === filters.alignment)
+    ) && (
+      filters.series === undefined || fd.series === filters.series
+    )))
+  ) : entries;
+  return filtered.map(([key, { displayName }]) => ({
+    value: key,
+    label: displayName,
+  }));
+};
 
 export const getForceDiagramDisplayName = (
   key: ForceDiagram,
@@ -262,7 +283,11 @@ export const getForceDiagramAlignment = (
   key?: string,
 ): Alignment | undefined => {
   const faction = getForceDiagramFaction(key);
-  return faction ? factions[faction].alignment : undefined;
+  const era = getForceDiagramEra(key);
+  if (!faction || !era) {
+    return undefined;
+  }
+  return factions[faction].alignment[era as Era] ?? undefined;
 };
 
 export const getForceDiagramEra = (

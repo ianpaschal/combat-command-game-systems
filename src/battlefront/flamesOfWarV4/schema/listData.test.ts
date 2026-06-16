@@ -10,6 +10,7 @@ import { Era } from '../static/eras';
 import { Faction } from '../static/factions';
 import { ForceDiagram } from '../static/forceDiagrams';
 import { Unit } from '../static/units';
+import { gameSystemConfig } from './gameSystemConfig';
 import { ListData, listData } from './listData';
 
 describe('FlamesOfWarV4.listData', () => {
@@ -127,6 +128,21 @@ describe('FlamesOfWarV4.listData', () => {
     });
 
     it.skip('should emit an error if .slotId is not a valid Flames of War V4 slot ID.', () => {});
+  });
+
+  describe('.getDefaultValues', () => {
+    it('returns default values with era and pointsLimit seeded from config.', () => {
+      const result = listData.getDefaultValues(gameSystemConfig.defaultValues);
+      expect(result.meta.era).toBe(gameSystemConfig.defaultValues.era);
+      expect(result.meta.pointsLimit).toBe(gameSystemConfig.defaultValues.points);
+      expect(result.meta.faction).toBeNull();
+      expect(result.meta.alignment).toBeNull();
+      expect(result.meta.forceDiagram).toBeNull();
+    });
+
+    it('throws if config is not a valid game system config.', () => {
+      expect(() => listData.getDefaultValues({ invalid: true })).toThrow();
+    });
   });
 
   describe('.commandCards[n]', () => {

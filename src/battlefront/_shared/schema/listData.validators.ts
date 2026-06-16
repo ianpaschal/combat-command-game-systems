@@ -148,12 +148,20 @@ export const validateAlignment = (
   }
 
   // Exists but does not match the selected faction's alignment:
-  if (value && data.meta.faction && context.factions[data.meta.faction]?.alignment !== value) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Alignment does not match the selected faction.',
-      path,
-    });
+  if (value && data.meta.faction) {
+    const alignmentData = context.factions[data.meta.faction]?.alignment;
+    const alignment = typeof alignmentData === 'string' ? (
+      alignmentData
+    ) : (
+      data.meta.era ? alignmentData?.[data.meta.era] : undefined
+    );
+    if (alignment !== undefined && alignment !== value) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Alignment does not match the selected faction.',
+        path,
+      });
+    }
   }
 };
 

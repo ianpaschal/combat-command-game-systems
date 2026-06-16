@@ -11,7 +11,6 @@ export * from '../_shared/static/rankingFactors';
 export type {
   AlignmentMetadata,
   BattlePlanMetadata,
-  FactionMetadata,
   ForceDiagramMetadata,
   MatchOutcomeTypeMetadata,
   RankingFactorMetadata,

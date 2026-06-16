@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 import { createEnumSchemaFromKeys } from '../../../common/_internal';
+import { emptyToUndefined } from '../../../common/_internal/emptyToUndefined';
 import {
   AlignmentMetadata,
   EraMetadata,
-  FactionMetadata,
   ForceDiagramMetadata,
   SeriesMetadata,
   UnitMetadata,
@@ -27,13 +27,15 @@ import { createUnitSchema } from './unit';
 export const createListDataSchema = <
   TAlignment extends string,
   TFaction extends string,
-  TEra extends string,
-  TSeries extends string,
-  TForceDiagram extends string,
+  TEra extends string = never,
+  TSeries extends string = never,
+  TForceDiagram extends string = never,
 >(
   context: {
     alignments: Record<TAlignment, AlignmentMetadata>;
-    factions: Record<TFaction, FactionMetadata<TAlignment>>;
+    factions: Record<TFaction, AlignmentMetadata & {
+      alignment: Partial<Record<string, string>> | string;
+    }>;
     eras?: Record<TEra, EraMetadata>;
     series?: Record<TSeries, SeriesMetadata<TEra>>;
     forceDiagrams: Record<TForceDiagram, ForceDiagramMetadata<TFaction, TSeries>>;
@@ -50,10 +52,10 @@ export const createListDataSchema = <
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 ) => z.object({
   meta: z.object({
-    forceDiagram: z.string().optional(),
-    faction: z.string().optional(),
-    alignment: z.string().optional(),
-    era: z.string().optional(),
+    forceDiagram: emptyToUndefined(z.string()),
+    faction: emptyToUndefined(z.string()),
+    alignment: emptyToUndefined(z.string()),
+    era: emptyToUndefined(z.string()),
     pointsLimit: z.coerce.number({
       invalid_type_error: 'Please set a points limit.',
     }).min(0, 'Points limit must be 0 or greater.'),

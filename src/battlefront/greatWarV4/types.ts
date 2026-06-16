@@ -16,3 +16,7 @@ export type MissionNameMetadata = GenericMetadata;
 export type MissionPackMetadata = GenericPublicationMetadata & {
   missions: Partial<Record<MissionName, MissionData>>;
 };
+
+export type FactionMetadata<TAlignment extends string> = GenericMetadata & {
+  alignment: TAlignment;
+};

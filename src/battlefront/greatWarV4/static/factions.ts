@@ -1,6 +1,6 @@
 import { SelectOption } from '../../../common';
 import { getDisplayName, getOptions } from '../../../common/_internal';
-import { FactionMetadata } from '../../_shared/types';
+import { FactionMetadata } from '../types';
 import { Alignment } from './alignments';
 
 export enum Faction {

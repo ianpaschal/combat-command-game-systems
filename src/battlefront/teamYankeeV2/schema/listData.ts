@@ -1,3 +1,4 @@
+import { merge } from 'lodash';
 import { z } from 'zod';
 
 import { commandCard } from '../../_shared/schema/commandCard';
@@ -10,6 +11,7 @@ import { Faction, factions } from '../static/factions';
 import { ForceDiagram, forceDiagrams } from '../static/forceDiagrams';
 import { series } from '../static/series';
 import { Unit, units } from '../static/units';
+import { gameSystemConfig } from './gameSystemConfig';
 
 const context = {
   alignments,
@@ -33,21 +35,32 @@ export type ListDataFormData = {
   commandCards: z.infer<typeof commandCard>[];
 };
 
+const defaultValues: ListDataFormData = {
+  meta: {
+    forceDiagram: null,
+    faction: null,
+    alignment: null,
+    era: null,
+    pointsLimit: 100,
+  },
+  formations: [],
+  units: [],
+  commandCards: [],
+};
+
 export const listData = {
   schema: createListDataSchema(context),
   createSchema: (options?: CreateListDataSchemaOptions) => createListDataSchema(context, options),
-  defaultValues: {
-    meta: {
-      forceDiagram: null,
-      faction: null,
-      alignment: null,
-      era: null,
-      pointsLimit: 100,
-    },
-    formations: [],
-    units: [],
-    commandCards: [],
-  } satisfies ListDataFormData,
+  defaultValues,
+  getDefaultValues: (config: unknown): ListDataFormData => {
+    const { era, points } = gameSystemConfig.schema.parse(config);
+    return merge({}, defaultValues, {
+      meta: {
+        era,
+        pointsLimit: points,
+      },
+    });
+  },
 } as const;
 
 export type ListData = z.infer<ReturnType<typeof listData.createSchema>>;

@@ -52,10 +52,29 @@ describe('createListDataSchema', () => {
   });
 
   describe('.meta.forceDiagram', () => {
+    it('should treat null the same as undefined when required.', () => {
+      const result = createListDataSchema(context, {
+        requiredFields: { forceDiagram: true },
+      }).safeParse({
+        ...validData,
+        meta: {
+          ...validData.meta,
+          forceDiagram: null,
+        },
+      });
+      expect(result.success).toBe(false);
+      expect(getIssueMessages(result, ['meta', 'forceDiagram'])).toContain('Please select a force diagram.');
+    });
     it('should emit an error if value is missing and required.', () => {
       const result = createListDataSchema(context, {
         requiredFields: { forceDiagram: true },
-      }).safeParse({ ...validData, meta: { ...validData.meta, forceDiagram: undefined } });
+      }).safeParse({
+        ...validData,
+        meta: {
+          ...validData.meta,
+          forceDiagram: undefined,
+        },
+      });
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'forceDiagram'])).toContain('Please select a force diagram.');
     });
