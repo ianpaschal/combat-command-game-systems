@@ -1,5 +1,3 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
 import { LessonsFromTheFrontVersionMetadata } from '../types';
 
 export enum LessonsFromTheFrontVersion {
@@ -34,9 +32,3 @@ export const lessonsFromTheFrontVersions: Record<LessonsFromTheFrontVersion, Les
     publishedAt: '2025-09-19T13:00:00+13:00',
   },
 } as const;
-
-export const getLessonsFromTheFrontVersionOptions = (): SelectOption<LessonsFromTheFrontVersion>[] => getOptions(lessonsFromTheFrontVersions);
-
-export const getLessonsFromTheFrontVersionDisplayName = (
-  key: LessonsFromTheFrontVersion,
-): string | undefined => getDisplayName(lessonsFromTheFrontVersions, key);

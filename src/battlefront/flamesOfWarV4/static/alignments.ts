@@ -1,5 +1,3 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
 import { AlignmentMetadata } from '../../_shared/types';
 
 export enum Alignment {
@@ -19,9 +17,3 @@ export const alignments: Record<Alignment, AlignmentMetadata> = {
     displayName: 'Flexible', // Romania, Finland, Italy can play as Axis or Allies
   },
 } as const;
-
-export const getAlignmentOptions = (): SelectOption<Alignment>[] => getOptions(alignments);
-
-export const getAlignmentDisplayName = (
-  key: Alignment,
-): string | undefined => getDisplayName(alignments, key);

@@ -6,14 +6,15 @@ import {
 
 import { Alignment } from './alignments';
 import { Faction } from './factions';
-import { ForceDiagram, getForceDiagramOptions } from './forceDiagrams';
+import { ForceDiagram } from './forceDiagrams';
+import { getForceDiagramOptions } from './forceDiagrams.helpers';
 
 describe('GreatWarV4.getForceDiagramOptions', () => {
   it('returns all force diagrams when called with no filters.', () => {
     const result = getForceDiagramOptions();
     expect(result.length).toBeGreaterThan(0);
-    expect(result.some((o) => o.value === ForceDiagram.German)).toBe(true);
-    expect(result.some((o) => o.value === ForceDiagram.American)).toBe(true);
+    expect(result.some(({ value }) => value === ForceDiagram.German)).toBe(true);
+    expect(result.some(({ value }) => value === ForceDiagram.American)).toBe(true);
   });
 
   it('returns all force diagrams when called with an empty filter object.', () => {
@@ -26,7 +27,7 @@ describe('GreatWarV4.getForceDiagramOptions', () => {
     it('returns only force diagrams for the given faction.', () => {
       const result = getForceDiagramOptions({ faction: Faction.Germany });
       expect(result.length).toBeGreaterThan(0);
-      expect(result.every((o) => o.value === ForceDiagram.German)).toBe(true);
+      expect(result.every(({ value }) => value === ForceDiagram.German)).toBe(true);
     });
 
     it('returns an empty array if no force diagrams match.', () => {
@@ -41,9 +42,9 @@ describe('GreatWarV4.getForceDiagramOptions', () => {
       const allied = getForceDiagramOptions({ alignment: Alignment.AlliedPowers });
       expect(central.length).toBeGreaterThan(0);
       expect(allied.length).toBeGreaterThan(0);
-      expect(central.some((o) => o.value === ForceDiagram.German)).toBe(true);
-      expect(allied.some((o) => o.value === ForceDiagram.American)).toBe(true);
-      expect(central.some((o) => o.value === ForceDiagram.American)).toBe(false);
+      expect(central.some(({ value }) => value === ForceDiagram.German)).toBe(true);
+      expect(allied.some(({ value }) => value === ForceDiagram.American)).toBe(true);
+      expect(central.some(({ value }) => value === ForceDiagram.American)).toBe(false);
     });
   });
 
@@ -51,7 +52,7 @@ describe('GreatWarV4.getForceDiagramOptions', () => {
     it('returns force diagrams matching all provided filters.', () => {
       const result = getForceDiagramOptions({ alignment: Alignment.AlliedPowers, faction: Faction.France });
       expect(result.length).toBeGreaterThan(0);
-      expect(result.every((o) => o.value === ForceDiagram.French)).toBe(true);
+      expect(result.every(({ value }) => value === ForceDiagram.French)).toBe(true);
     });
   });
 });

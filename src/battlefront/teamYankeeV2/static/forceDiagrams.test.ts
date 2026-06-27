@@ -6,15 +6,16 @@ import {
 
 import { Alignment } from './alignments';
 import { Faction } from './factions';
-import { ForceDiagram, getForceDiagramOptions } from './forceDiagrams';
+import { ForceDiagram } from './forceDiagrams';
+import { getForceDiagramOptions } from './forceDiagrams.helpers';
 import { Series } from './series';
 
 describe('TeamYankeeV2.getForceDiagramOptions', () => {
   it('returns all force diagrams when called with no filters.', () => {
     const result = getForceDiagramOptions();
     expect(result.length).toBeGreaterThan(0);
-    expect(result.some((o) => o.value === ForceDiagram.American)).toBe(true);
-    expect(result.some((o) => o.value === ForceDiagram.Soviet)).toBe(true);
+    expect(result.some(({ value }) => value === ForceDiagram.American)).toBe(true);
+    expect(result.some(({ value }) => value === ForceDiagram.Soviet)).toBe(true);
   });
 
   it('returns all force diagrams when called with an empty filter object.', () => {
@@ -27,7 +28,7 @@ describe('TeamYankeeV2.getForceDiagramOptions', () => {
     it('returns only force diagrams for the given faction.', () => {
       const result = getForceDiagramOptions({ faction: Faction.UnitedStates });
       expect(result.length).toBeGreaterThan(0);
-      expect(result.every((o) => o.value === ForceDiagram.American)).toBe(true);
+      expect(result.every(({ value }) => value === ForceDiagram.American)).toBe(true);
     });
 
     it('returns an empty array if no force diagrams match.', () => {
@@ -42,9 +43,9 @@ describe('TeamYankeeV2.getForceDiagramOptions', () => {
       const warsawPact = getForceDiagramOptions({ alignment: Alignment.WarsawPact });
       expect(nato.length).toBeGreaterThan(0);
       expect(warsawPact.length).toBeGreaterThan(0);
-      expect(nato.some((o) => o.value === ForceDiagram.American)).toBe(true);
-      expect(warsawPact.some((o) => o.value === ForceDiagram.Soviet)).toBe(true);
-      expect(nato.some((o) => o.value === ForceDiagram.Soviet)).toBe(false);
+      expect(nato.some(({ value }) => value === ForceDiagram.American)).toBe(true);
+      expect(warsawPact.some(({ value }) => value === ForceDiagram.Soviet)).toBe(true);
+      expect(nato.some(({ value }) => value === ForceDiagram.Soviet)).toBe(false);
     });
   });
 
@@ -52,8 +53,8 @@ describe('TeamYankeeV2.getForceDiagramOptions', () => {
     it('returns only force diagrams for the given series.', () => {
       const result = getForceDiagramOptions({ series: Series.NatoForces });
       expect(result.length).toBeGreaterThan(0);
-      expect(result.some((o) => o.value === ForceDiagram.NatoForcesAnzac)).toBe(true);
-      expect(result.some((o) => o.value === ForceDiagram.American)).toBe(false);
+      expect(result.some(({ value }) => value === ForceDiagram.NatoForcesAnzac)).toBe(true);
+      expect(result.some(({ value }) => value === ForceDiagram.American)).toBe(false);
     });
   });
 
@@ -61,9 +62,9 @@ describe('TeamYankeeV2.getForceDiagramOptions', () => {
     it('returns force diagrams matching all provided filters.', () => {
       const result = getForceDiagramOptions({ alignment: Alignment.Nato, series: Series.Default });
       expect(result.length).toBeGreaterThan(0);
-      expect(result.some((o) => o.value === ForceDiagram.American)).toBe(true);
-      expect(result.some((o) => o.value === ForceDiagram.NatoForcesAnzac)).toBe(false);
-      expect(result.some((o) => o.value === ForceDiagram.Soviet)).toBe(false);
+      expect(result.some(({ value }) => value === ForceDiagram.American)).toBe(true);
+      expect(result.some(({ value }) => value === ForceDiagram.NatoForcesAnzac)).toBe(false);
+      expect(result.some(({ value }) => value === ForceDiagram.Soviet)).toBe(false);
     });
   });
 });

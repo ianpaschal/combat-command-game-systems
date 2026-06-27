@@ -1,18 +1,10 @@
 import { z } from 'zod';
 
-import { createEnumSchemaFromKeys } from '../../../common/_internal';
-import { emptyToUndefined } from '../../../common/_internal/emptyToUndefined';
-import {
-  AlignmentMetadata,
-  EraMetadata,
-  ForceDiagramMetadata,
-  SeriesMetadata,
-  UnitMetadata,
-} from '../types';
-import { commandCard } from './commandCard';
-import { createFormationSchema } from './formation';
 import {
   hasNoDuplicateIds,
+  ListDataContext,
+  ListDataOptions,
+  ListDataShape,
   validateAlignment,
   validateCommandCard,
   validateEra,
@@ -22,58 +14,26 @@ import {
   validateLegality,
   validateUnit,
 } from './listData.validators';
-import { createUnitSchema } from './unit';
 
-export const createListDataSchema = <
-  TAlignment extends string,
-  TFaction extends string,
-  TEra extends string = never,
-  TSeries extends string = never,
-  TForceDiagram extends string = never,
->(
-  context: {
-    alignments: Record<TAlignment, AlignmentMetadata>;
-    factions: Record<TFaction, AlignmentMetadata & {
-      alignment: Partial<Record<string, string>> | string;
-    }>;
-    eras?: Record<TEra, EraMetadata>;
-    series?: Record<TSeries, SeriesMetadata<TEra>>;
-    forceDiagrams: Record<TForceDiagram, ForceDiagramMetadata<TFaction, TSeries>>;
-    units: Record<string, UnitMetadata<TForceDiagram>>;
-  },
-  options?: {
-    requiredFields?: {
-      forceDiagram?: boolean;
-      faction?: boolean;
-      alignment?: boolean;
-    };
-    requireLegal?: boolean;
-  },
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-) => z.object({
-  meta: z.object({
-    forceDiagram: emptyToUndefined(z.string()),
-    faction: emptyToUndefined(z.string()),
-    alignment: emptyToUndefined(z.string()),
-    era: emptyToUndefined(z.string()),
-    pointsLimit: z.coerce.number({
-      invalid_type_error: 'Please set a points limit.',
-    }).min(0, 'Points limit must be 0 or greater.'),
-  }),
-  formations: z.array(createFormationSchema(createEnumSchemaFromKeys(context.units, {
-    errorMap: () => ({ message: 'Please select a formation.' }),
-  }))),
-  units: z.array(createUnitSchema(createEnumSchemaFromKeys(context.units, {
-    errorMap: () => ({ message: 'Please select a unit.' }),
-  }))),
-  commandCards: z.array(commandCard),
-}).superRefine((data, ctx) => {
+export type { ListDataContext, ListDataOptions, ListDataShape } from './listData.validators';
+
+/**
+ * Applies the cross-field validation rules shared by every game system's list data schema.
+ * Each game system builds its own concrete `z.object({...})` (since `meta` shape varies, e.g.
+ * `era`), then calls this from its own `.superRefine()`.
+ */
+export const applyListDataRefinements = (
+  data: ListDataShape,
+  ctx: z.RefinementCtx,
+  context: ListDataContext,
+  options?: ListDataOptions,
+): void => {
 
   // Validate all metadata fields:
   validateForceDiagram(ctx, data, context, options);
   validateFaction(ctx, data, context, options);
   validateAlignment(ctx, data, context, options);
-  
+
   validateEra(ctx, data, context);
 
   // Units & Formations
@@ -100,8 +60,4 @@ export const createListDataSchema = <
   if (options?.requireLegal) {
     validateLegality(ctx, data);
   }
-});
-
-export type GenericListData = z.infer<ReturnType<typeof createListDataSchema>>;
-export type CreateListDataSchemaContext = Parameters<typeof createListDataSchema>[0];
-export type CreateListDataSchemaOptions = Parameters<typeof createListDataSchema>[1];
+};

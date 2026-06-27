@@ -16,11 +16,6 @@ export type EraMetadata = GenericMetadata & {
   shortName: string;
 };
 
-export type ForceDiagramMetadata<TFaction extends string, TSeries extends string = string> = GenericMetadata & {
-  faction: TFaction;
-  series?: TSeries;
-};
-
 export type MatchOutcomeTypeMetadata = GenericMetadata;
 
 export type MatrixData = GenericMetadata & {

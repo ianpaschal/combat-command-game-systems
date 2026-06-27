@@ -1,5 +1,3 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
 import { FieldManual101VersionMetadata } from '../types';
 
 export enum FieldManual101Version {
@@ -14,9 +12,3 @@ export const fieldManual101Versions: Record<FieldManual101Version, FieldManual10
     publishedAt: '2024-03-01T00:00:00+13:00',
   },
 } as const;
-
-export const getFieldManual101VersionOptions = (): SelectOption<FieldManual101Version>[] => getOptions(fieldManual101Versions);
-
-export const getFieldManual101VersionDisplayName = (
-  key: FieldManual101Version,
-): string | undefined => getDisplayName(fieldManual101Versions, key);

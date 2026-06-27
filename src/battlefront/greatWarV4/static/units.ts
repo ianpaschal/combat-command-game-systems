@@ -1,5 +1,3 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
 import { UnitMetadata } from '../../_shared/types';
 import { ForceDiagram } from './forceDiagrams';
 
@@ -111,9 +109,3 @@ export const units: Record<Unit, UnitMetadata<ForceDiagram>> = {
     isFormation: true,
   },
 } as const;
-
-export const getUnitOptions = (): SelectOption<Unit>[] => getOptions(units);
-
-export const getUnitDisplayName = (
-  key: Unit,
-): string | undefined => getDisplayName(units, key);

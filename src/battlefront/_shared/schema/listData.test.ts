@@ -3,6 +3,7 @@ import {
   expect,
   it,
 } from 'vitest';
+import { z } from 'zod';
 
 import { alignments } from '../../flamesOfWarV4/static/alignments';
 import { Alignment } from '../../flamesOfWarV4/static/alignments';
@@ -14,83 +15,92 @@ import { ForceDiagram, forceDiagrams } from '../../flamesOfWarV4/static/forceDia
 import { series } from '../../flamesOfWarV4/static/series';
 import { Unit, units } from '../../flamesOfWarV4/static/units';
 import { getIssueMessages } from '../_fixtures/getIssueMessages';
-import { createListDataSchema } from './listData';
+import {
+  applyListDataRefinements,
+  ListDataContext,
+  ListDataOptions,
+  ListDataShape,
+} from './listData';
 import { hasNoDuplicateIds } from './listData.validators';
 
-const context = {
+const context: ListDataContext = {
   alignments,
   factions,
   eras,
   series,
   forceDiagrams,
   units,
-} as const;
+};
 
-const validData = {
+const validData: ListDataShape = {
   meta: {
     forceDiagram: ForceDiagram.BerlinGerman,
     faction: Faction.Germany,
     alignment: Alignment.Axis,
     era: Era.LW,
-    pointsLimit: 100,
   },
   formations: [
     { id: 'form00', sourceId: Unit.LG469 },
   ],
   units: [
-    { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00', slotId: 'hq_0' },
-    { id: 'unit01', sourceId: Unit.LG469, formationId: 'form00', slotId: 'infantry_0' },
+    { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00' },
+    { id: 'unit01', sourceId: Unit.LG469, formationId: 'form00' },
   ],
   commandCards: [],
 };
 
-describe('createListDataSchema', () => {
+/**
+ * Runs `applyListDataRefinements` directly (no zod object/schema involved) and returns a
+ * `SafeParseReturnType`-shaped result so `getIssueMessages` can be reused as-is.
+ */
+const runRefinements = (
+  data: ListDataShape,
+  context: ListDataContext,
+  options?: ListDataOptions,
+): z.SafeParseReturnType<unknown, unknown> => {
+  const issues: z.ZodIssue[] = [];
+  const ctx: z.RefinementCtx = {
+    addIssue: (issue) => issues.push({ ...issue, path: issue.path ?? [] } as z.ZodIssue),
+    path: [],
+  };
+  applyListDataRefinements(data, ctx, context, options);
+  return issues.length === 0 ? (
+    { success: true, data }
+  ) : (
+    { success: false, error: new z.ZodError(issues) }
+  );
+};
+
+describe('applyListDataRefinements', () => {
 
   it('accepts valid data.', () => {
-    const result = createListDataSchema(context).safeParse(validData);
+    const result = runRefinements(validData, context);
     expect(result.success).toBe(true);
   });
 
   describe('.meta.forceDiagram', () => {
-    it('should treat null the same as undefined when required.', () => {
-      const result = createListDataSchema(context, {
-        requiredFields: { forceDiagram: true },
-      }).safeParse({
-        ...validData,
-        meta: {
-          ...validData.meta,
-          forceDiagram: null,
-        },
-      });
-      expect(result.success).toBe(false);
-      expect(getIssueMessages(result, ['meta', 'forceDiagram'])).toContain('Please select a force diagram.');
-    });
     it('should emit an error if value is missing and required.', () => {
-      const result = createListDataSchema(context, {
-        requiredFields: { forceDiagram: true },
-      }).safeParse({
-        ...validData,
-        meta: {
-          ...validData.meta,
-          forceDiagram: undefined,
-        },
-      });
+      const result = runRefinements(
+        { ...validData, meta: { ...validData.meta, forceDiagram: undefined } },
+        context,
+        { requiredFields: { forceDiagram: true } },
+      );
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'forceDiagram'])).toContain('Please select a force diagram.');
     });
     it('should emit an error if value is not a recognized force diagram key.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         meta: { ...validData.meta, forceDiagram: 'not_a_force_diagram' },
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'forceDiagram'])).toContain('Please select a force diagram.');
     });
     it('should emit an error if value does not match the selected faction.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         meta: { ...validData.meta, faction: Faction.SovietUnion },
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'forceDiagram'])).toContain('The selected force diagram is not a valid option for the selected faction.');
     });
@@ -98,17 +108,19 @@ describe('createListDataSchema', () => {
 
   describe('.meta.faction', () => {
     it('should emit an error if value is missing and required.', () => {
-      const result = createListDataSchema(context, {
-        requiredFields: { faction: true },
-      }).safeParse({ ...validData, meta: { ...validData.meta, faction: undefined } });
+      const result = runRefinements(
+        { ...validData, meta: { ...validData.meta, faction: undefined } },
+        context,
+        { requiredFields: { faction: true } },
+      );
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'faction'])).toContain('Please select a faction.');
     });
     it('should emit an error if value is not a recognized faction key.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         meta: { ...validData.meta, faction: 'not_a_faction' },
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'faction'])).toContain('Please select a faction.');
     });
@@ -116,25 +128,27 @@ describe('createListDataSchema', () => {
 
   describe('.meta.alignment', () => {
     it('should emit an error if value is missing and required.', () => {
-      const result = createListDataSchema(context, {
-        requiredFields: { alignment: true },
-      }).safeParse({ ...validData, meta: { ...validData.meta, alignment: undefined } });
+      const result = runRefinements(
+        { ...validData, meta: { ...validData.meta, alignment: undefined } },
+        context,
+        { requiredFields: { alignment: true } },
+      );
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'alignment'])).toContain('Please select an alignment.');
     });
     it('should emit an error if value is not a recognized alignment key.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         meta: { ...validData.meta, alignment: 'not_an_alignment' },
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'alignment'])).toContain('Please select an alignment.');
     });
     it('should emit an error if value does not match the selected faction.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         meta: { ...validData.meta, alignment: Alignment.Allies },
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'alignment'])).toContain('Alignment does not match the selected faction.');
     });
@@ -142,66 +156,54 @@ describe('createListDataSchema', () => {
 
   describe('.meta.era', () => {
     it('should not emit an era error if context has no eras.', () => {
-       
       const { eras: _eras, ...contextWithoutEras } = context;
-      const result = createListDataSchema(contextWithoutEras).safeParse({ ...validData, meta: { ...validData.meta, era: 'not_an_era' } });
+      const result = runRefinements(
+        { ...validData, meta: { ...validData.meta, era: 'not_an_era' } },
+        contextWithoutEras,
+      );
       expect(getIssueMessages(result, ['meta', 'era'])).toHaveLength(0);
     });
     it('should emit an error if value is missing.', () => {
-      const result = createListDataSchema(context).safeParse({ ...validData, meta: { ...validData.meta, era: undefined } });
+      const result = runRefinements({ ...validData, meta: { ...validData.meta, era: undefined } }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'era'])).not.toHaveLength(0);
     });
     it('should emit an error if value is not a recognized era key.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         meta: { ...validData.meta, era: 'not_an_era' },
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'era'])).toContain('Please select an era.');
     });
     it('should emit an error if value does not match the force diagram.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         meta: { ...validData.meta, era: Era.MW },
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['meta', 'era'])).toContain('Era does not match the force diagram.');
     });
   });
 
-  describe('.meta.pointsLimit', () => {
-    it('should emit an error if value is missing.', () => {
-      const result = createListDataSchema(context).safeParse({ ...validData, meta: { ...validData.meta, pointsLimit: undefined } });
-      expect(result.success).toBe(false);
-      expect(getIssueMessages(result, ['meta', 'pointsLimit'])).toContain('Please set a points limit.');
-    });
-    it('should emit an error if value is less than 0.', () => {
-      const result = createListDataSchema(context).safeParse({
-        ...validData,
-        meta: { ...validData.meta, pointsLimit: -1 },
-      });
-      expect(result.success).toBe(false);
-      expect(getIssueMessages(result, ['meta', 'pointsLimit'])).toContain('Points limit must be 0 or greater.');
-    });
-  });
-
   describe('.formations', () => {
     it('should emit an error if requireLegal is set and formations is empty.', () => {
-      const result = createListDataSchema(context, {
-        requireLegal: true,
-      }).safeParse({ ...validData, formations: [], units: [] });
+      const result = runRefinements(
+        { ...validData, formations: [], units: [] },
+        context,
+        { requireLegal: true },
+      );
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['formations'])).toContain('At least one formation is required.');
     });
     it('should emit an error if a formation does not match the force diagram era.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         formations: [{ id: 'form00', sourceId: Unit.MG101 }],
         units: [
-          { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00', slotId: 'hq_0' },
+          { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00' },
         ],
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['formations'])).toContain('Formation does not match the force diagram\'s era.');
     });
@@ -213,11 +215,14 @@ describe('createListDataSchema', () => {
           unit_with_unknown_fd: { displayName: 'Unknown', sourceForceDiagram: 'unknown_fd' },
         },
       } as typeof context;
-      const result = createListDataSchema(contextWithUnknownFd).safeParse({
-        ...validData,
-        formations: [{ id: 'form00', sourceId: 'unit_with_unknown_fd' }],
-        units: [],
-      });
+      const result = runRefinements(
+        {
+          ...validData,
+          formations: [{ id: 'form00', sourceId: 'unit_with_unknown_fd' }],
+          units: [],
+        },
+        contextWithUnknownFd,
+      );
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['formations'])).toContain('Formation source has an unrecognized force diagram.');
     });
@@ -225,38 +230,40 @@ describe('createListDataSchema', () => {
 
   describe('.units', () => {
     it('should emit an error if requireLegal is set and units is empty.', () => {
-      const result = createListDataSchema(context, {
-        requireLegal: true,
-      }).safeParse({ ...validData, formations: [], units: [] });
+      const result = runRefinements(
+        { ...validData, formations: [], units: [] },
+        context,
+        { requireLegal: true },
+      );
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['units'])).toContain('At least one unit is required.');
     });
     it('should emit an error if a unit references a non-existent formation.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         formations: [],
         units: [
-          { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00', slotId: 'hq_0' },
+          { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00' },
         ],
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['units'])).toContain('Unit references a non-existent formation.');
     });
     it('should accept empty formations and units.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         formations: [],
         units: [],
-      });
+      }, context);
       expect(result.success).toBe(true);
     });
     it('should emit an error if a unit does not match the force diagram era.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         units: [
-          { id: 'unit00', sourceId: Unit.MG101, formationId: 'form00', slotId: 'hq_0' },
+          { id: 'unit00', sourceId: Unit.MG101, formationId: 'form00' },
         ],
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['units'])).toContain('Unit does not match the force diagram\'s era.');
     });
@@ -268,12 +275,15 @@ describe('createListDataSchema', () => {
           unit_with_unknown_fd: { displayName: 'Unknown', sourceForceDiagram: 'unknown_fd' },
         },
       } as typeof context;
-      const result = createListDataSchema(contextWithUnknownFd).safeParse({
-        ...validData,
-        units: [
-          { id: 'unit00', sourceId: 'unit_with_unknown_fd', formationId: 'form00', slotId: 'hq_0' },
-        ],
-      });
+      const result = runRefinements(
+        {
+          ...validData,
+          units: [
+            { id: 'unit00', sourceId: 'unit_with_unknown_fd', formationId: 'form00' },
+          ],
+        },
+        contextWithUnknownFd,
+      );
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['units'])).toContain('Unit source has an unrecognized force diagram.');
     });
@@ -281,10 +291,10 @@ describe('createListDataSchema', () => {
 
   describe('.commandCards', () => {
     it('should emit an error if a command card references a non-existent target.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
-        commandCards: [{ id: 'card00', sourceId: 'some-card', appliedTo: 'nope00' }],
-      });
+        commandCards: [{ id: 'card00', appliedTo: 'nope00' }],
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['commandCards'])).toContain('Command card references a non-existent target.');
     });
@@ -292,13 +302,13 @@ describe('createListDataSchema', () => {
 
   describe('duplicate IDs', () => {
     it('should emit an error if any IDs are duplicated.', () => {
-      const result = createListDataSchema(context).safeParse({
+      const result = runRefinements({
         ...validData,
         units: [
-          { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00', slotId: 'hq_0' },
-          { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00', slotId: 'infantry_0' },
+          { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00' },
+          { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00' },
         ],
-      });
+      }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, [])).toContain('Duplicate IDs found.');
     });

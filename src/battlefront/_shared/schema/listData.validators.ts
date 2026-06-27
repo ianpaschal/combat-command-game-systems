@@ -1,10 +1,43 @@
 import { z } from 'zod';
 
-import {
-  CreateListDataSchemaContext,
-  CreateListDataSchemaOptions,
-  GenericListData,
-} from './listData';
+/**
+ * Static game-system data (factions, force diagrams, etc.) needed to validate a list. Deliberately
+ * non-generic - every game system's real context (`Record<Faction, ...>`, `Record<ForceDiagram,
+ * ...>`, etc.) is structurally assignable here, so no per-system type parameters are needed.
+ */
+export type ListDataContext = {
+  alignments: Record<string, unknown>;
+  factions: Record<string, { alignment: Partial<Record<string, string>> | string }>;
+  eras?: Record<string, unknown>;
+  series?: Record<string, { era: string }>;
+  forceDiagrams: Record<string, { faction: string; series?: string }>;
+  units: Record<string, { sourceForceDiagram: string }>;
+};
+
+export type ListDataOptions = {
+  requiredFields?: {
+    forceDiagram?: boolean;
+    faction?: boolean;
+    alignment?: boolean;
+  };
+  requireLegal?: boolean;
+};
+
+/**
+ * Structural shape of a list's data, as seen by the cross-field validators. Game systems without
+ * an `era` concept (e.g. GreatWarV4) simply never populate `meta.era`.
+ */
+export type ListDataShape = {
+  meta: {
+    forceDiagram?: string;
+    faction?: string;
+    alignment?: string;
+    era?: string;
+  };
+  formations: { id: string; sourceId: string }[];
+  units: { id: string; sourceId: string; formationId: string }[];
+  commandCards: { id: string; appliedTo: string }[];
+};
 
 /**
  * Checks that all IDs across formations, units, and command cards are unique within the list.
@@ -38,9 +71,9 @@ export const hasNoDuplicateIds = (
  */
 export const validateForceDiagram = (
   ctx: z.RefinementCtx,
-  data: GenericListData,
-  context: CreateListDataSchemaContext,
-  options: CreateListDataSchemaOptions,
+  data: ListDataShape,
+  context: ListDataContext,
+  options?: ListDataOptions,
 ): void => {
   const value = data.meta.forceDiagram;
   const path = ['meta', 'forceDiagram'];
@@ -84,9 +117,9 @@ export const validateForceDiagram = (
  */
 export const validateFaction = (
   ctx: z.RefinementCtx,
-  data: GenericListData,
-  context: CreateListDataSchemaContext,
-  options: CreateListDataSchemaOptions,
+  data: ListDataShape,
+  context: ListDataContext,
+  options?: ListDataOptions,
 ): void => {
   const value = data.meta.faction;
   const path = ['meta', 'faction'];
@@ -122,9 +155,9 @@ export const validateFaction = (
  */
 export const validateAlignment = (
   ctx: z.RefinementCtx,
-  data: GenericListData,
-  context: CreateListDataSchemaContext,
-  options: CreateListDataSchemaOptions,
+  data: ListDataShape,
+  context: ListDataContext,
+  options?: ListDataOptions,
 ): void => {
   const value = data.meta.alignment;
   const path = ['meta', 'alignment'];
@@ -175,8 +208,8 @@ export const validateAlignment = (
  */
 export const validateEra = (
   ctx: z.RefinementCtx,
-  data: GenericListData,
-  context: CreateListDataSchemaContext,
+  data: ListDataShape,
+  context: ListDataContext,
 ): void => {
   const value = data.meta.era;
   const path = ['meta', 'era'];
@@ -217,7 +250,7 @@ export const validateEra = (
  */
 export const validateLegality = (
   ctx: z.RefinementCtx,
-  data: GenericListData,
+  data: ListDataShape,
 ): void => {
 
   // At least one formation:
@@ -250,15 +283,15 @@ export const validateLegality = (
  */
 export const validateFormation = (
   ctx: z.RefinementCtx,
-  data: GenericListData,
-  formation: GenericListData['formations'][number],
-  context: CreateListDataSchemaContext,
+  data: ListDataShape,
+  formation: ListDataShape['formations'][number],
+  context: ListDataContext,
 ): void => {
   if (data.meta.forceDiagram) {
     const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
     const expectedEra = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expectedEra) {
-      const sourceData = context.units[formation.sourceId as string];
+      const sourceData = context.units[formation.sourceId];
       if (sourceData) {
 
         // Source force diagram is not a recognized key:
@@ -297,8 +330,8 @@ export const validateFormation = (
  */
 export const validateCommandCard = (
   ctx: z.RefinementCtx,
-  data: GenericListData,
-  commandCard: GenericListData['commandCards'][number],
+  data: ListDataShape,
+  commandCard: ListDataShape['commandCards'][number],
 ): void => {
 
   // `appliedTo` does not reference an existing formation or unit:
@@ -327,9 +360,9 @@ export const validateCommandCard = (
  */
 export const validateUnit = (
   ctx: z.RefinementCtx,
-  data: GenericListData,
-  unit: GenericListData['units'][number],
-  context: CreateListDataSchemaContext,
+  data: ListDataShape,
+  unit: ListDataShape['units'][number],
+  context: ListDataContext,
 ): void => {
   const path = ['units'];
 
@@ -337,7 +370,7 @@ export const validateUnit = (
     const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
     const expectedEra = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expectedEra) {
-      const sourceData = context.units[unit.sourceId as string];
+      const sourceData = context.units[unit.sourceId];
       if (sourceData) {
 
         // Source force diagram is not a recognized key:

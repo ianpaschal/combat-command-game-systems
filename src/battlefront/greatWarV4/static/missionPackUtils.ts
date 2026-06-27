@@ -4,7 +4,8 @@ import {
   MatchOutcomeType,
 } from '../../_shared/static/matchOutcomeTypes';
 import { MissionData, MissionPackMetadata } from '../types';
-import { getMissionNameOptions, MissionName } from './missionNames';
+import { MissionName } from './missionNames';
+import { getMissionNameOptions } from './missionNames.helpers';
 import {
   MissionPackVersion,
   missionPackVersions as rawMissionPackVersions,

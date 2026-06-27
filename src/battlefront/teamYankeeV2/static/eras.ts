@@ -1,5 +1,3 @@
-import { SelectOption } from '../../../common';
-import { getOptions } from '../../../common/_internal';
 import { EraMetadata } from '../../_shared/types';
 
 export enum Era {
@@ -17,13 +15,3 @@ export const eras: Record<Era, EraMetadata> = {
     shortName: 'WWIII',
   },
 } as const;
-
-export const getEraOptions = (): SelectOption<Era>[] => getOptions(eras);
-
-export const getEraDisplayName = (
-  key: Era,
-  useShortName: boolean = false,
-): string => {
-  const { displayName, shortName } = eras[key];
-  return useShortName ? shortName : displayName;
-};

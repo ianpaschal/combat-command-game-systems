@@ -1,5 +1,3 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
 import { MissionNameMetadata } from '../types';
 
 export enum MissionName {
@@ -59,9 +57,3 @@ export const missionNames: Record<MissionName, MissionNameMetadata> = {
     displayName: 'Through the Mud and Blood',
   },
 } as const;
-
-export const getMissionNameOptions = (): SelectOption<MissionName>[] => getOptions(missionNames);
-
-export const getMissionDisplayName = (
-  key?: MissionName,
-): string | undefined => getDisplayName(missionNames, key);

@@ -20,3 +20,8 @@ export type MissionPackMetadata = GenericPublicationMetadata & {
 export type FactionMetadata<TAlignment extends string> = GenericMetadata & {
   alignment: TAlignment;
 };
+
+export type ForceDiagramMetadata<TFaction extends string, TSeries extends string = string> = GenericMetadata & {
+  faction: TFaction;
+  series?: TSeries;
+};

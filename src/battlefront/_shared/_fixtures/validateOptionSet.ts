@@ -10,7 +10,7 @@ export const validateOptionSet = <T extends string>(
   result.forEach((option) => {
     expect(included).toContain(option.value);
   });
-  const resultValues = result.map((o) => o.value);
+  const resultValues = result.map(({ value }) => value);
   excluded.forEach((excludedValue) => {
     expect(resultValues).not.toContain(excludedValue);
   });

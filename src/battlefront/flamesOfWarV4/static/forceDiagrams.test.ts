@@ -6,15 +6,16 @@ import {
 
 import { Alignment } from './alignments';
 import { Faction } from './factions';
-import { ForceDiagram, getForceDiagramOptions } from './forceDiagrams';
+import { ForceDiagram } from './forceDiagrams';
+import { getForceDiagramOptions } from './forceDiagrams.helpers';
 import { Series } from './series';
 
 describe('FlamesOfWarV4.getForceDiagramOptions', () => {
   it('returns all force diagrams when called with no filters.', () => {
     const result = getForceDiagramOptions();
     expect(result.length).toBeGreaterThan(0);
-    expect(result.some((o) => o.value === ForceDiagram.BerlinGerman)).toBe(true);
-    expect(result.some((o) => o.value === ForceDiagram.BerlinSoviet)).toBe(true);
+    expect(result.some(({ value }) => value === ForceDiagram.BerlinGerman)).toBe(true);
+    expect(result.some(({ value }) => value === ForceDiagram.BerlinSoviet)).toBe(true);
   });
 
   it('returns all force diagrams when called with an empty filter object.', () => {
@@ -27,8 +28,8 @@ describe('FlamesOfWarV4.getForceDiagramOptions', () => {
     it('returns only force diagrams for the given faction.', () => {
       const result = getForceDiagramOptions({ faction: Faction.Germany });
       expect(result.length).toBeGreaterThan(0);
-      expect(result.some((o) => o.value === ForceDiagram.BerlinGerman)).toBe(true);
-      expect(result.some((o) => o.value === ForceDiagram.BerlinSoviet)).toBe(false);
+      expect(result.some(({ value }) => value === ForceDiagram.BerlinGerman)).toBe(true);
+      expect(result.some(({ value }) => value === ForceDiagram.BerlinSoviet)).toBe(false);
     });
 
     it('returns an empty array if no force diagrams match.', () => {
@@ -43,9 +44,9 @@ describe('FlamesOfWarV4.getForceDiagramOptions', () => {
       const allies = getForceDiagramOptions({ alignment: Alignment.Allies });
       expect(axis.length).toBeGreaterThan(0);
       expect(allies.length).toBeGreaterThan(0);
-      expect(axis.some((o) => o.value === ForceDiagram.BerlinGerman)).toBe(true);
-      expect(allies.some((o) => o.value === ForceDiagram.BerlinSoviet)).toBe(true);
-      expect(axis.some((o) => o.value === ForceDiagram.BerlinSoviet)).toBe(false);
+      expect(axis.some(({ value }) => value === ForceDiagram.BerlinGerman)).toBe(true);
+      expect(allies.some(({ value }) => value === ForceDiagram.BerlinSoviet)).toBe(true);
+      expect(axis.some(({ value }) => value === ForceDiagram.BerlinSoviet)).toBe(false);
     });
   });
 
@@ -53,9 +54,9 @@ describe('FlamesOfWarV4.getForceDiagramOptions', () => {
     it('returns only force diagrams for the given series.', () => {
       const result = getForceDiagramOptions({ series: Series.Berlin });
       expect(result.length).toBeGreaterThan(0);
-      expect(result.some((o) => o.value === ForceDiagram.BerlinGerman)).toBe(true);
-      expect(result.some((o) => o.value === ForceDiagram.BerlinSoviet)).toBe(true);
-      expect(result.some((o) => o.value === ForceDiagram.BulgeGerman)).toBe(false);
+      expect(result.some(({ value }) => value === ForceDiagram.BerlinGerman)).toBe(true);
+      expect(result.some(({ value }) => value === ForceDiagram.BerlinSoviet)).toBe(true);
+      expect(result.some(({ value }) => value === ForceDiagram.BulgeGerman)).toBe(false);
     });
   });
 
@@ -63,7 +64,7 @@ describe('FlamesOfWarV4.getForceDiagramOptions', () => {
     it('returns force diagrams matching all provided filters.', () => {
       const result = getForceDiagramOptions({ alignment: Alignment.Axis, series: Series.Berlin });
       expect(result.length).toBeGreaterThan(0);
-      expect(result.every((o) => o.value === ForceDiagram.BerlinGerman)).toBe(true);
+      expect(result.every(({ value }) => value === ForceDiagram.BerlinGerman)).toBe(true);
     });
   });
 });

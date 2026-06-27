@@ -11,22 +11,29 @@ export * from '../_shared/static/rankingFactors';
 export type {
   AlignmentMetadata,
   BattlePlanMetadata,
-  ForceDiagramMetadata,
   MatchOutcomeTypeMetadata,
   RankingFactorMetadata,
   UnitMetadata,
 } from '../_shared/types';
 export * from './static/missionNames';
+export * from './static/missionNames.helpers';
 
 // Great War, 4th Edition
+export * from './helpers/getListDisplayName';
 export * from './schema/gameSystemConfig';
 export * from './schema/listData';
 export * from './schema/matchResultDetails';
 export * from './static/alignments';
+export * from './static/alignments.helpers';
 export * from './static/factions';
+export * from './static/factions.helpers';
 export * from './static/forceDiagrams';
+export * from './static/forceDiagrams.helpers';
 export * from './static/missionPackUtils';
 export * from './static/missionPackVersions';
+export * from './static/missionPackVersions.helpers';
 export * from './static/pointsVersions';
+export * from './static/pointsVersions.helpers';
 export * from './static/units';
+export * from './static/units.helpers';
 export type * from './types';
