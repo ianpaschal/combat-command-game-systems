@@ -1,10 +1,5 @@
-import { z } from 'zod';
+export type ListDataId = string;
 
-export const listDataId = (
-  options?: {
-    errorMap?: z.ZodErrorMap;
-    message?: string;
-  },
-): z.ZodString => z.string(options).regex(/^[0-9a-z]{6}$/, 'Invalid list data ID format.');
-
-export type ListDataId = z.infer<ReturnType<typeof listDataId>>;
+export const isListDataId = (value: unknown): value is ListDataId => (
+  typeof value === 'string' && /^[0-9a-z]{6}$/.test(value)
+);

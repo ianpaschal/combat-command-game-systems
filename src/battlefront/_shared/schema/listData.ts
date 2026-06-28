@@ -1,5 +1,4 @@
-import { z } from 'zod';
-
+import { ValidationIssue } from '../../../common';
 import {
   hasNoDuplicateIds,
   ListDataContext,
@@ -18,46 +17,47 @@ import {
 export type { ListDataContext, ListDataOptions, ListDataShape } from './listData.validators';
 
 /**
- * Applies the cross-field validation rules shared by every game system's list data schema.
- * Each game system builds its own concrete `z.object({...})` (since `meta` shape varies, e.g.
- * `era`), then calls this from its own `.superRefine()`.
+ * Runs the cross-field validation rules shared by every game system's list data, returning any
+ * issues found. Each game system builds its own concrete `ListData`/`ListDataFormData` shape
+ * (since `meta` varies, e.g. `era`), then calls this from its own `validate` function.
  */
-export const applyListDataRefinements = (
+export const validateListDataShape = (
   data: ListDataShape,
-  ctx: z.RefinementCtx,
   context: ListDataContext,
   options?: ListDataOptions,
-): void => {
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
 
   // Validate all metadata fields:
-  validateForceDiagram(ctx, data, context, options);
-  validateFaction(ctx, data, context, options);
-  validateAlignment(ctx, data, context, options);
+  validateForceDiagram(issues, data, context, options);
+  validateFaction(issues, data, context, options);
+  validateAlignment(issues, data, context, options);
 
-  validateEra(ctx, data, context);
+  validateEra(issues, data, context);
 
   // Units & Formations
   if (!hasNoDuplicateIds(data)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Duplicate IDs found.',
       path: [],
     });
   }
 
   for (const formation of data.formations) {
-    validateFormation(ctx, data, formation, context);
+    validateFormation(issues, data, formation, context);
   }
 
   for (const unit of data.units) {
-    validateUnit(ctx, data, unit, context);
+    validateUnit(issues, data, unit, context);
   }
 
   for (const card of data.commandCards) {
-    validateCommandCard(ctx, data, card);
+    validateCommandCard(issues, data, card);
   }
 
   if (options?.requireLegal) {
-    validateLegality(ctx, data);
+    validateLegality(issues, data);
   }
+
+  return issues;
 };

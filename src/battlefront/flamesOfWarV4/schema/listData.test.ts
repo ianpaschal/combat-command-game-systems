@@ -4,18 +4,18 @@ import {
   it,
 } from 'vitest';
 
-import { getSchemaFieldErrors } from '../../../common/_internal/getSchemaFieldErrors';
+import { getIssueMessages } from '../../_shared/_fixtures/getIssueMessages';
 import { Alignment } from '../static/alignments';
 import { Era } from '../static/eras';
 import { Faction } from '../static/factions';
 import { ForceDiagram } from '../static/forceDiagrams';
 import { Unit } from '../static/units';
 import { gameSystemConfig } from './gameSystemConfig';
-import { ListData, listData } from './listData';
+import { listData,ListDataFormData } from './listData';
 
 describe('FlamesOfWarV4.listData', () => {
 
-  const validData: ListData = {
+  const validData: ListDataFormData = {
     meta: {
       forceDiagram: ForceDiagram.BerlinGerman,
       faction: Faction.Germany,
@@ -28,27 +28,57 @@ describe('FlamesOfWarV4.listData', () => {
     commandCards: [],
   };
 
-  it('accepts valid data.', () => {
-    const result = listData.schema.safeParse(validData);
+  it('accepts valid data.', async () => {
+    const result = await listData.validate(validData);
     expect(result.success).toBe(true);
   });
 
-  describe('.meta.forceDiagram', () => {
-    it('should emit an error if value is missing and required.', () => {
-      const result = listData.createSchema({ requiredFields: { forceDiagram: true } }).safeParse({
+  it('accepts data with unset optional meta fields.', async () => {
+    const result = await listData.validate({
+      ...validData,
+      meta: {
+        forceDiagram: null, faction: null, alignment: null, era: Era.LW, pointsLimit: 100,
+      },
+      formations: [],
+      units: [],
+    });
+    expect(result.success).toBe(true);
+  });
+
+  describe('.meta.era', () => {
+    it('should emit an error if value is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        meta: { ...validData.meta, forceDiagram: undefined },
+        meta: { ...validData.meta, era: null },
       });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('.meta.forceDiagram', () => {
+    it('should emit an error if value is missing and required.', async () => {
+      const result = await listData.validate({
+        ...validData,
+        meta: { ...validData.meta, forceDiagram: null },
+      }, { requiredFields: { forceDiagram: true } });
       expect(result.success).toBe(false);
     });
   });
 
   describe('.meta.pointsLimit', () => {
 
-    it('should emit an error if value is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if value is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        meta: { ...validData.meta, pointsLimit: undefined },
+        meta: { ...validData.meta, pointsLimit: undefined as unknown as number },
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should emit an error if value is negative.', async () => {
+      const result = await listData.validate({
+        ...validData,
+        meta: { ...validData.meta, pointsLimit: -1 },
       });
       expect(result.success).toBe(false);
     });
@@ -56,73 +86,73 @@ describe('FlamesOfWarV4.listData', () => {
 
   describe('.formations[n]', () => {
 
-    it('should emit an error if .id is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .id is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        formations: [{ sourceId: Unit.LG469 }],
+        formations: [{ sourceId: Unit.LG469 } as ListDataFormData['formations'][number]],
       });
       expect(result.success).toBe(false);
     });
 
-    it('should emit an error if .sourceId is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .sourceId is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        formations: [{ id: 'form00' }],
+        formations: [{ id: 'form00' } as ListDataFormData['formations'][number]],
       });
       expect(result.success).toBe(false);
-      expect(getSchemaFieldErrors(result, 'formations')).toContain('Please select a formation.');
+      expect(getIssueMessages(result, ['formations'])).toContain('Please select a formation.');
     });
 
-    it('should emit an error if .sourceId is not a valid Flames of War V4 unit ID.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .sourceId is not a valid Flames of War V4 unit ID.', async () => {
+      const result = await listData.validate({
         ...validData,
-        formations: [{ id: 'form00', sourceId: 'not_a_real_unit' }],
+        formations: [{ id: 'form00', sourceId: 'not_a_real_unit' as Unit }],
       });
       expect(result.success).toBe(false);
-      expect(getSchemaFieldErrors(result, 'formations')).toContain('Please select a formation.');
+      expect(getIssueMessages(result, ['formations'])).toContain('Please select a formation.');
     });
   });
 
   describe('.units[n]', () => {
 
-    it('should emit an error if .id is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .id is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        units: [{ sourceId: Unit.LG469, formationId: 'form00', slotId: 'hq_0' }],
+        units: [{ sourceId: Unit.LG469, formationId: 'form00', slotId: 'hq_0' } as ListDataFormData['units'][number]],
       });
       expect(result.success).toBe(false);
     });
 
-    it('should emit an error if .sourceId is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .sourceId is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        units: [{ id: 'unit00', formationId: 'form00', slotId: 'hq_0' }],
+        units: [{ id: 'unit00', formationId: 'form00', slotId: 'hq_0' } as ListDataFormData['units'][number]],
       });
       expect(result.success).toBe(false);
-      expect(getSchemaFieldErrors(result, 'units')).toContain('Please select a unit.');
+      expect(getIssueMessages(result, ['units'])).toContain('Please select a unit.');
     });
 
-    it('should emit an error if .sourceId is not a valid Flames of War V4 unit ID.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .sourceId is not a valid Flames of War V4 unit ID.', async () => {
+      const result = await listData.validate({
         ...validData,
-        units: [{ id: 'unit00', sourceId: 'not_a_real_unit', formationId: 'form00', slotId: 'hq_0' }],
+        units: [{ id: 'unit00', sourceId: 'not_a_real_unit' as Unit, formationId: 'form00', slotId: 'hq_0' }],
       });
       expect(result.success).toBe(false);
-      expect(getSchemaFieldErrors(result, 'units')).toContain('Please select a unit.');
+      expect(getIssueMessages(result, ['units'])).toContain('Please select a unit.');
     });
 
-    it('should emit an error if .formationId is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .formationId is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        units: [{ id: 'unit00', sourceId: Unit.LG469, slotId: 'hq_0' }],
+        units: [{ id: 'unit00', sourceId: Unit.LG469, slotId: 'hq_0' } as ListDataFormData['units'][number]],
       });
       expect(result.success).toBe(false);
     });
 
-    it('should emit an error if .slotId is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .slotId is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        units: [{ id: 'unit00', sourceId: Unit.LG469, formationId: 'form00' }],
+        units: [{ id: 'unit00', sourceId: Unit.LG469, formationId: 'form00' } as ListDataFormData['units'][number]],
       });
       expect(result.success).toBe(false);
     });
@@ -147,28 +177,28 @@ describe('FlamesOfWarV4.listData', () => {
 
   describe('.commandCards[n]', () => {
 
-    it('should emit an error if .id is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .id is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        commandCards: [{ sourceId: 'some-card', appliedTo: 'unit00' }],
+        commandCards: [{ sourceId: 'some-card', appliedTo: 'unit00' } as ListDataFormData['commandCards'][number]],
       });
       expect(result.success).toBe(false);
     });
 
-    it('should emit an error if .sourceId is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .sourceId is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        commandCards: [{ id: 'card00', appliedTo: 'unit00' }],
+        commandCards: [{ id: 'card00', appliedTo: 'unit00' } as ListDataFormData['commandCards'][number]],
       });
       expect(result.success).toBe(false);
     });
 
     it.todo('should emit an error if value is not a valid Flames of War V4 command card ID.');
 
-    it('should emit an error if .appliedTo is missing.', () => {
-      const result = listData.schema.safeParse({
+    it('should emit an error if .appliedTo is missing.', async () => {
+      const result = await listData.validate({
         ...validData,
-        commandCards: [{ id: 'card00', sourceId: 'some-card' }],
+        commandCards: [{ id: 'card00', sourceId: 'some-card' } as ListDataFormData['commandCards'][number]],
       });
       expect(result.success).toBe(false);
     });

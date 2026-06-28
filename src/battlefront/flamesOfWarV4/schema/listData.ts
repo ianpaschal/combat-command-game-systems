@@ -1,11 +1,5 @@
-import { z } from 'zod';
-
-import { createEnumSchemaFromKeys } from '../../../common/_internal';
-import { emptyToUndefined } from '../../../common/_internal/emptyToUndefined';
-import { commandCard } from '../../_shared/schema/commandCard';
-import { createFormationSchema } from '../../_shared/schema/formation';
-import { applyListDataRefinements, ListDataOptions } from '../../_shared/schema/listData';
-import { createUnitSchema } from '../../_shared/schema/unit';
+import { ValidateListDataResult, ValidationIssue } from '../../../common';
+import { ListDataOptions, validateListDataShape } from '../../_shared/schema/listData';
 import { Alignment, alignments } from '../static/alignments';
 import { Era, eras } from '../static/eras';
 import { Faction, factions } from '../static/factions';
@@ -31,9 +25,22 @@ export type ListDataFormData = {
     era: Era | null;
     pointsLimit: number;
   };
-  formations: z.infer<ReturnType<typeof createFormationSchema<z.ZodNativeEnum<typeof Unit>>>>[];
-  units: z.infer<ReturnType<typeof createUnitSchema<z.ZodNativeEnum<typeof Unit>>>>[];
-  commandCards: z.infer<typeof commandCard>[];
+  formations: { id: string; sourceId: Unit }[];
+  units: { id: string; sourceId: Unit; formationId: string; slotId: string }[];
+  commandCards: { id: string; sourceId: string; appliedTo: string }[];
+};
+
+export type ListData = {
+  meta: {
+    forceDiagram?: ForceDiagram;
+    faction?: Faction;
+    alignment?: Alignment;
+    era: Era;
+    pointsLimit: number;
+  };
+  formations: { id: string; sourceId: Unit }[];
+  units: { id: string; sourceId: Unit; formationId: string; slotId: string }[];
+  commandCards: { id: string; sourceId: string; appliedTo: string }[];
 };
 
 const defaultValues: ListDataFormData = {
@@ -49,29 +56,54 @@ const defaultValues: ListDataFormData = {
   commandCards: [],
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const createSchema = (options?: ListDataOptions) => z.object({
-  meta: z.object({
-    forceDiagram: emptyToUndefined(z.string()),
-    faction: emptyToUndefined(z.string()),
-    alignment: emptyToUndefined(z.string()),
-    era: z.string(),
-    pointsLimit: z.coerce.number({
-      invalid_type_error: 'Please set a points limit.',
-    }).min(0, 'Points limit must be 0 or greater.'),
-  }),
-  formations: z.array(createFormationSchema(createEnumSchemaFromKeys(context.units, {
-    errorMap: () => ({ message: 'Please select a formation.' }),
-  }))),
-  units: z.array(createUnitSchema(createEnumSchemaFromKeys(context.units, {
-    errorMap: () => ({ message: 'Please select a unit.' }),
-  }))),
-  commandCards: z.array(commandCard),
-}).superRefine((data, ctx) => applyListDataRefinements(data, ctx, context, options));
+const validate = async (
+  rawFormData: unknown,
+  options?: ListDataOptions,
+): Promise<ValidateListDataResult<ListData>> => {
+  const formData = rawFormData as ListDataFormData;
+  const meta = {
+    forceDiagram: formData.meta.forceDiagram || undefined,
+    faction: formData.meta.faction || undefined,
+    alignment: formData.meta.alignment || undefined,
+    era: formData.meta.era || undefined,
+  };
+
+  const issues: ValidationIssue[] = validateListDataShape({ ...formData, meta }, context, options);
+
+  for (const unit of formData.units) {
+    if (!unit.slotId) {
+      issues.push({ message: 'Please select a slot.', path: ['units'] });
+    }
+  }
+
+  const pointsLimit = Number(formData.meta.pointsLimit);
+  if (!Number.isFinite(pointsLimit)) {
+    issues.push({
+      message: 'Please set a points limit.',
+      path: ['meta', 'pointsLimit'],
+    });
+  } else if (pointsLimit < 0) {
+    issues.push({
+      message: 'Points limit must be 0 or greater.',
+      path: ['meta', 'pointsLimit'],
+    });
+  }
+
+  if (issues.length > 0) {
+    return { success: false, issues };
+  }
+
+  return {
+    success: true,
+    data: {
+      ...formData,
+      meta: { ...meta, era: meta.era as Era, pointsLimit },
+    },
+  };
+};
 
 export const listData = {
-  schema: createSchema(),
-  createSchema,
+  validate,
   defaultValues,
   getDefaultValues: (config: unknown): ListDataFormData => {
     const { era, points } = gameSystemConfig.schema.parse(config);
@@ -85,5 +117,3 @@ export const listData = {
     };
   },
 } as const;
-
-export type ListData = z.infer<ReturnType<typeof listData.createSchema>>;

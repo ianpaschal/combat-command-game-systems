@@ -3,28 +3,28 @@ import {
   expect,
   it,
 } from 'vitest';
-import { z } from 'zod';
 
+import { ValidateListDataResult } from '../../../common';
 import { getIssueMessages } from './getIssueMessages';
 
-const schema = z.object({
-  name: z.string(),
-  age: z.number(),
-});
+const success: ValidateListDataResult<unknown> = { success: true, data: {} };
+const failure: ValidateListDataResult<unknown> = {
+  success: false,
+  issues: [
+    { path: ['name'], message: 'Invalid name.' },
+  ],
+};
 
 describe('getIssueMessages()', () => {
   it('returns an empty array when the result is successful.', () => {
-    const result = schema.safeParse({ name: 'Alice', age: 30 });
-    expect(getIssueMessages(result, ['name'])).toEqual([]);
+    expect(getIssueMessages(success, ['name'])).toEqual([]);
   });
 
   it('returns messages matching the given path.', () => {
-    const result = schema.safeParse({ name: 123, age: 30 });
-    expect(getIssueMessages(result, ['name'])).not.toHaveLength(0);
+    expect(getIssueMessages(failure, ['name'])).not.toHaveLength(0);
   });
 
   it('returns an empty array when no issues match the given path.', () => {
-    const result = schema.safeParse({ name: 123, age: 30 });
-    expect(getIssueMessages(result, ['age'])).toHaveLength(0);
+    expect(getIssueMessages(failure, ['age'])).toHaveLength(0);
   });
 });

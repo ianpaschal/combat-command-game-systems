@@ -3,8 +3,8 @@ import {
   expect,
   it,
 } from 'vitest';
-import { z } from 'zod';
 
+import { ValidateListDataResult } from '../../../common';
 import { alignments } from '../../flamesOfWarV4/static/alignments';
 import { Alignment } from '../../flamesOfWarV4/static/alignments';
 import { eras } from '../../flamesOfWarV4/static/eras';
@@ -16,10 +16,10 @@ import { series } from '../../flamesOfWarV4/static/series';
 import { Unit, units } from '../../flamesOfWarV4/static/units';
 import { getIssueMessages } from '../_fixtures/getIssueMessages';
 import {
-  applyListDataRefinements,
   ListDataContext,
   ListDataOptions,
   ListDataShape,
+  validateListDataShape,
 } from './listData';
 import { hasNoDuplicateIds } from './listData.validators';
 
@@ -50,28 +50,23 @@ const validData: ListDataShape = {
 };
 
 /**
- * Runs `applyListDataRefinements` directly (no zod object/schema involved) and returns a
- * `SafeParseReturnType`-shaped result so `getIssueMessages` can be reused as-is.
+ * Wraps `validateListDataShape`'s issue array in a `ValidateListDataResult`-shaped result so
+ * `getIssueMessages` can be reused as-is.
  */
 const runRefinements = (
   data: ListDataShape,
-  context: ListDataContext,
+  testContext: ListDataContext = context,
   options?: ListDataOptions,
-): z.SafeParseReturnType<unknown, unknown> => {
-  const issues: z.ZodIssue[] = [];
-  const ctx: z.RefinementCtx = {
-    addIssue: (issue) => issues.push({ ...issue, path: issue.path ?? [] } as z.ZodIssue),
-    path: [],
-  };
-  applyListDataRefinements(data, ctx, context, options);
+): ValidateListDataResult<unknown> => {
+  const issues = validateListDataShape(data, testContext, options);
   return issues.length === 0 ? (
     { success: true, data }
   ) : (
-    { success: false, error: new z.ZodError(issues) }
+    { success: false, issues }
   );
 };
 
-describe('applyListDataRefinements', () => {
+describe('validateListDataShape', () => {
 
   it('accepts valid data.', () => {
     const result = runRefinements(validData, context);
@@ -293,7 +288,7 @@ describe('applyListDataRefinements', () => {
     it('should emit an error if a command card references a non-existent target.', () => {
       const result = runRefinements({
         ...validData,
-        commandCards: [{ id: 'card00', appliedTo: 'nope00' }],
+        commandCards: [{ id: 'card00', sourceId: 'some-card', appliedTo: 'nope00' }],
       }, context);
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['commandCards'])).toContain('Command card references a non-existent target.');

@@ -1,4 +1,5 @@
-import { z } from 'zod';
+import { ValidationIssue } from '../../../common';
+import { isListDataId } from '../../../common/schemas/listDataId';
 
 /**
  * Static game-system data (factions, force diagrams, etc.) needed to validate a list. Deliberately
@@ -34,9 +35,9 @@ export type ListDataShape = {
     alignment?: string;
     era?: string;
   };
-  formations: { id: string; sourceId: string }[];
-  units: { id: string; sourceId: string; formationId: string }[];
-  commandCards: { id: string; appliedTo: string }[];
+  formations: { id?: string; sourceId?: string }[];
+  units: { id?: string; sourceId?: string; formationId?: string; slotId?: string }[];
+  commandCards: { id?: string; sourceId?: string; appliedTo?: string }[];
 };
 
 /**
@@ -46,9 +47,9 @@ export type ListDataShape = {
  */
 export const hasNoDuplicateIds = (
   values: {
-    formations: { id: string }[];
-    units: { id: string }[];
-    commandCards: { id: string; appliedTo: string }[];
+    formations: { id?: string }[];
+    units: { id?: string }[];
+    commandCards: { id?: string }[];
   },
 ): boolean => {
   const allIds = [
@@ -64,13 +65,13 @@ export const hasNoDuplicateIds = (
  * - Missing but required (if `options.requiredFields.forceDiagram` is set)
  * - Value is a recognized force diagram key
  * - Force diagram belongs to the selected faction
- * @param ctx - Zod refinement context
+ * @param issues - Collected validation issues
  * @param data - The full list data being validated
  * @param context - Static game-system context (force diagrams, factions, etc.)
  * @param options - Schema creation options (required fields, legality)
  */
 export const validateForceDiagram = (
-  ctx: z.RefinementCtx,
+  issues: ValidationIssue[],
   data: ListDataShape,
   context: ListDataContext,
   options?: ListDataOptions,
@@ -80,8 +81,7 @@ export const validateForceDiagram = (
 
   // Missing but required:
   if (options?.requiredFields?.forceDiagram && !value) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Please select a force diagram.',
       path,
     });
@@ -89,8 +89,7 @@ export const validateForceDiagram = (
 
   // Exists but not a recognized force diagram key:
   if (value && !(value in context.forceDiagrams)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Please select a force diagram.',
       path,
     });
@@ -98,8 +97,7 @@ export const validateForceDiagram = (
 
   // Exists but does not belong to the selected faction:
   if (value && context.forceDiagrams[value]?.faction !== data.meta.faction) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'The selected force diagram is not a valid option for the selected faction.',
       path,
     });
@@ -110,13 +108,13 @@ export const validateForceDiagram = (
  * Validates the list's selected faction. Checks:
  * - Missing but required (if `options.requiredFields.faction` is set)
  * - Value is a recognized faction key
- * @param ctx - Zod refinement context
+ * @param issues - Collected validation issues
  * @param data - The full list data being validated
  * @param context - Static game-system context
  * @param options - Schema creation options (required fields, legality)
  */
 export const validateFaction = (
-  ctx: z.RefinementCtx,
+  issues: ValidationIssue[],
   data: ListDataShape,
   context: ListDataContext,
   options?: ListDataOptions,
@@ -126,8 +124,7 @@ export const validateFaction = (
 
   // Missing but required:
   if (options?.requiredFields?.faction && !value) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Please select a faction.',
       path,
     });
@@ -135,8 +132,7 @@ export const validateFaction = (
 
   // Exists but not a recognized faction key:
   if (value && !(value in context.factions)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Please select a faction.',
       path,
     });
@@ -148,13 +144,13 @@ export const validateFaction = (
  * - Missing but required (if `options.requiredFields.alignment` is set)
  * - Value is a recognized alignment key
  * - Alignment matches the alignment of the selected faction
- * @param ctx - Zod refinement context
+ * @param issues - Collected validation issues
  * @param data - The full list data being validated
  * @param context - Static game-system context
  * @param options - Schema creation options (required fields, legality)
  */
 export const validateAlignment = (
-  ctx: z.RefinementCtx,
+  issues: ValidationIssue[],
   data: ListDataShape,
   context: ListDataContext,
   options?: ListDataOptions,
@@ -164,8 +160,7 @@ export const validateAlignment = (
 
   // Missing but required:
   if (options?.requiredFields?.alignment && !value) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Please select an alignment.',
       path,
     });
@@ -173,8 +168,7 @@ export const validateAlignment = (
 
   // Exists but not a recognized alignment key:
   if (value && !(value in context.alignments)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Please select an alignment.',
       path,
     });
@@ -189,8 +183,7 @@ export const validateAlignment = (
       data.meta.era ? alignmentData?.[data.meta.era] : undefined
     );
     if (alignment !== undefined && alignment !== value) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+      issues.push({
         message: 'Alignment does not match the selected faction.',
         path,
       });
@@ -202,12 +195,12 @@ export const validateAlignment = (
  * Validates the list's selected era. Checks:
  * - Value is a recognized era key
  * - Era matches the era implied by the selected force diagram's series (if a force diagram is set)
- * @param ctx - Zod refinement context
+ * @param issues - Collected validation issues
  * @param data - The full list data being validated
  * @param context - Static game-system context
  */
 export const validateEra = (
-  ctx: z.RefinementCtx,
+  issues: ValidationIssue[],
   data: ListDataShape,
   context: ListDataContext,
 ): void => {
@@ -220,8 +213,7 @@ export const validateEra = (
 
   // Not a recognized era key:
   if (!value || !(value in context.eras)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Please select an era.',
       path,
     });
@@ -232,8 +224,7 @@ export const validateEra = (
     const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
     const expected = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expected && value !== expected) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+      issues.push({
         message: 'Era does not match the force diagram.',
         path,
       });
@@ -245,18 +236,17 @@ export const validateEra = (
  * Validates that the list meets minimum legal requirements. Checks:
  * - At least one formation is present
  * - At least one unit is present
- * @param ctx - Zod refinement context
+ * @param issues - Collected validation issues
  * @param data - The full list data being validated
  */
 export const validateLegality = (
-  ctx: z.RefinementCtx,
+  issues: ValidationIssue[],
   data: ListDataShape,
 ): void => {
 
   // At least one formation:
   if (data.formations.length === 0) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'At least one formation is required.',
       path: ['formations'],
     });
@@ -264,8 +254,7 @@ export const validateLegality = (
 
   // At least one unit:
   if (data.units.length === 0) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'At least one unit is required.',
       path: ['units'],
     });
@@ -276,18 +265,36 @@ export const validateLegality = (
  * Validates a single formation against the list's selected force diagram. Checks:
  * - Formation's source era matches the force diagram's era (if a force diagram is set and the era can be resolved)
  * - Formation's source force diagram is a recognized key (if a force diagram is set and expected era is resolved)
- * @param ctx - Zod refinement context
+ * @param issues - Collected validation issues
  * @param data - The full list data being validated
  * @param formation - The specific formation to validate
  * @param context - Static game-system context
  */
 export const validateFormation = (
-  ctx: z.RefinementCtx,
+  issues: ValidationIssue[],
   data: ListDataShape,
   formation: ListDataShape['formations'][number],
   context: ListDataContext,
 ): void => {
-  if (data.meta.forceDiagram) {
+
+  // `id` is missing or not a valid list data ID:
+  if (!isListDataId(formation.id)) {
+    issues.push({
+      message: 'Please set an ID.',
+      path: ['formations'],
+    });
+  }
+
+  // `sourceId` is missing, or not a recognized unit key (when the game system has any units yet):
+  const hasUnits = Object.keys(context.units).length > 0;
+  if (!formation.sourceId || (hasUnits && !(formation.sourceId in context.units))) {
+    issues.push({
+      message: 'Please select a formation.',
+      path: ['formations'],
+    });
+  }
+
+  if (data.meta.forceDiagram && formation.sourceId) {
     const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
     const expectedEra = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expectedEra) {
@@ -296,8 +303,7 @@ export const validateFormation = (
 
         // Source force diagram is not a recognized key:
         if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+          issues.push({
             message: 'Formation source has an unrecognized force diagram.',
             path: ['formations'],
           });
@@ -308,8 +314,7 @@ export const validateFormation = (
 
             // Source era does not match the force diagram's era:
             if (sourceEra && sourceEra !== expectedEra) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
+              issues.push({
                 message: 'Formation does not match the force diagram\'s era.',
                 path: ['formations'],
               });
@@ -324,15 +329,31 @@ export const validateFormation = (
 /**
  * Validates a single command card against the list. Checks:
  * - `appliedTo` references an existing formation or unit ID
- * @param ctx - Zod refinement context
+ * @param issues - Collected validation issues
  * @param data - The full list data being validated
  * @param commandCard - The specific command card to validate
  */
 export const validateCommandCard = (
-  ctx: z.RefinementCtx,
+  issues: ValidationIssue[],
   data: ListDataShape,
   commandCard: ListDataShape['commandCards'][number],
 ): void => {
+
+  // `id` is missing or not a valid list data ID:
+  if (!isListDataId(commandCard.id)) {
+    issues.push({
+      message: 'Please set an ID.',
+      path: ['commandCards'],
+    });
+  }
+
+  // `sourceId` is missing:
+  if (!commandCard.sourceId) {
+    issues.push({
+      message: 'Please select a card.',
+      path: ['commandCards'],
+    });
+  }
 
   // `appliedTo` does not reference an existing formation or unit:
   const allValidTargetIds = new Set([
@@ -340,8 +361,7 @@ export const validateCommandCard = (
     ...data.units.map((u) => u.id),
   ]);
   if (!allValidTargetIds.has(commandCard.appliedTo)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Command card references a non-existent target.',
       path: ['commandCards'],
     });
@@ -353,20 +373,37 @@ export const validateCommandCard = (
  * - Unit's source era matches the force diagram's era (if a force diagram is set and the era can be resolved)
  * - Unit's source force diagram is a recognized key (if a force diagram is set and expected era is resolved)
  * - `formationId` references an existing formation, or is the special `'support'` value
- * @param ctx - Zod refinement context
+ * @param issues - Collected validation issues
  * @param data - The full list data being validated
  * @param unit - The specific unit to validate
  * @param context - Static game-system context
  */
 export const validateUnit = (
-  ctx: z.RefinementCtx,
+  issues: ValidationIssue[],
   data: ListDataShape,
   unit: ListDataShape['units'][number],
   context: ListDataContext,
 ): void => {
   const path = ['units'];
 
-  if (data.meta.forceDiagram) {
+  // `id` is missing or not a valid list data ID:
+  if (!isListDataId(unit.id)) {
+    issues.push({
+      message: 'Please set an ID.',
+      path,
+    });
+  }
+
+  // `sourceId` is missing, or not a recognized unit key (when the game system has any units yet):
+  const hasUnits = Object.keys(context.units).length > 0;
+  if (!unit.sourceId || (hasUnits && !(unit.sourceId in context.units))) {
+    issues.push({
+      message: 'Please select a unit.',
+      path,
+    });
+  }
+
+  if (data.meta.forceDiagram && unit.sourceId) {
     const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
     const expectedEra = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expectedEra) {
@@ -375,8 +412,7 @@ export const validateUnit = (
 
         // Source force diagram is not a recognized key:
         if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+          issues.push({
             message: 'Unit source has an unrecognized force diagram.',
             path,
           });
@@ -387,8 +423,7 @@ export const validateUnit = (
 
             // Source era does not match the force diagram's era:
             if (sourceEra && sourceEra !== expectedEra) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
+              issues.push({
                 message: 'Unit does not match the force diagram\'s era.',
                 path,
               });
@@ -401,8 +436,7 @@ export const validateUnit = (
 
   // `formationId` does not reference an existing formation (and is not 'support'):
   if (unit.formationId !== 'support' && !new Set(data.formations.map((f) => f.id)).has(unit.formationId)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    issues.push({
       message: 'Unit references a non-existent formation.',
       path,
     });
