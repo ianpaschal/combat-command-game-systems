@@ -9,6 +9,15 @@ export const getFactionDisplayName = (
   key?: string,
 ): string | undefined => getDisplayName(factions, key as Faction);
 
+export const getFactionDisplayAdjective = (
+  key?: string,
+): string | undefined => {
+  if (!key || !(key in factions)) {
+    return undefined;
+  }
+  return factions[key as Faction].displayAdjective;
+};
+
 export const getFactionAlignment = (
   key: string,
 ): Alignment | undefined => {

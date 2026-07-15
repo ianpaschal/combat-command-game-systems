@@ -7,3 +7,12 @@ export const getAlignmentOptions = (): SelectOption<Alignment>[] => getOptions(a
 export const getAlignmentDisplayName = (
   key?: string,
 ): string | undefined => getDisplayName(alignments, key as Alignment);
+
+export const getAlignmentDisplayAdjective = (
+  key?: string,
+): string | undefined => {
+  if (!key || !(key in alignments)) {
+    return undefined;
+  }
+  return alignments[key as Alignment].displayAdjective;
+};

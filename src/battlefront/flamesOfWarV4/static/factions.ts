@@ -20,6 +20,8 @@ export enum Faction {
 export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   [Faction.Australia]: {
     displayName: 'Australia',
+    displayAdjective: 'Australian',
+    displayPlural: 'Australians',
     alignment: {
       [Era.EW]: Alignment.Allies,
       [Era.MW]: Alignment.Allies,
@@ -28,6 +30,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Finland]: {
     displayName: 'Finland',
+    displayAdjective: 'Finnish',
+    displayPlural: 'Finns',
     alignment: {
       [Era.EW]: Alignment.Flexible,
       [Era.MW]: Alignment.Flexible,
@@ -36,6 +40,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.France]: {
     displayName: 'France',
+    displayAdjective: 'French',
+    displayPlural: 'French',
     alignment: {
       [Era.EW]: Alignment.Allies,
       [Era.MW]: Alignment.Allies,
@@ -44,6 +50,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Germany]: {
     displayName: 'Germany',
+    displayAdjective: 'German',
+    displayPlural: 'Germans',
     alignment: {
       [Era.EW]: Alignment.Axis,
       [Era.MW]: Alignment.Axis,
@@ -52,6 +60,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.GreatBritain]: {
     displayName: 'Great Britain',
+    displayAdjective: 'British',
+    displayPlural: 'British',
     alignment: {
       [Era.EW]: Alignment.Allies,
       [Era.MW]: Alignment.Allies,
@@ -60,6 +70,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Hungary]: {
     displayName: 'Hungary',
+    displayAdjective: 'Hungarian',
+    displayPlural: 'Hungarians',
     alignment: {
       [Era.EW]: Alignment.Axis,
       [Era.MW]: Alignment.Axis,
@@ -68,6 +80,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Italy]: {
     displayName: 'Italy',
+    displayAdjective: 'Italian',
+    displayPlural: 'Italians',
     alignment: {
       [Era.EW]: Alignment.Axis,
       [Era.MW]: Alignment.Axis,
@@ -76,6 +90,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Japan]: {
     displayName: 'Japan',
+    displayAdjective: 'Japanese',
+    displayPlural: 'Japanese',
     alignment: {
       [Era.EW]: Alignment.Axis,
       [Era.MW]: Alignment.Axis,
@@ -84,6 +100,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Poland]: {
     displayName: 'Poland',
+    displayAdjective: 'Polish',
+    displayPlural: 'Poles',
     alignment: {
       [Era.EW]: Alignment.Allies,
       [Era.LW]: Alignment.Allies,
@@ -91,6 +109,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Romania]: {
     displayName: 'Romania',
+    displayAdjective: 'Romanian',
+    displayPlural: 'Romanians',
     alignment: {
       [Era.MW]: Alignment.Flexible,
       [Era.LW]: Alignment.Flexible,
@@ -98,6 +118,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.SovietUnion]: {
     displayName: 'Soviet Union',
+    displayAdjective: 'Soviet',
+    displayPlural: 'Soviets',
     alignment: {
       [Era.EW]: Alignment.Flexible,
       [Era.MW]: Alignment.Allies,
@@ -106,6 +128,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.UnitedStates]: {
     displayName: 'United States',
+    displayAdjective: 'American',
+    displayPlural: 'Americans',
     alignment: {
       [Era.MW]: Alignment.Allies,
       [Era.LW]: Alignment.Allies,

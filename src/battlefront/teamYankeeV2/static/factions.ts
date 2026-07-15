@@ -29,6 +29,8 @@ export enum Faction {
 export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   [Faction.Anzac]: {
     displayName: 'ANZAC',
+    displayAdjective: 'ANZAC',
+    displayPlural: 'ANZAC',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -36,6 +38,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Belgium]: {
     displayName: 'Belgium',
+    displayAdjective: 'Belgian',
+    displayPlural: 'Belgians',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -43,6 +47,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Canada]: {
     displayName: 'Canada',
+    displayAdjective: 'Canadian',
+    displayPlural: 'Canadians',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -50,6 +56,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Cuba]: {
     displayName: 'Cuba',
+    displayAdjective: 'Cuban',
+    displayPlural: 'Cubans',
     alignment: {
       [Era.Early]: Alignment.WarsawPact,
       [Era.Default]: Alignment.WarsawPact,
@@ -57,6 +65,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Czechoslovakia]: {
     displayName: 'Czechoslovakia',
+    displayAdjective: 'Czechoslovak',
+    displayPlural: 'Czechoslovaks',
     alignment: {
       [Era.Early]: Alignment.WarsawPact,
       [Era.Default]: Alignment.WarsawPact,
@@ -64,6 +74,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Denmark]: {
     displayName: 'Denmark',
+    displayAdjective: 'Danish',
+    displayPlural: 'Danes',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -71,6 +83,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.EastGermany]: {
     displayName: 'East Germany',
+    displayAdjective: 'East German',
+    displayPlural: 'East Germans',
     alignment: {
       [Era.Early]: Alignment.WarsawPact,
       [Era.Default]: Alignment.WarsawPact,
@@ -78,6 +92,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Finland]: {
     displayName: 'Finland',
+    displayAdjective: 'Finnish',
+    displayPlural: 'Finns',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -85,6 +101,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.France]: {
     displayName: 'France',
+    displayAdjective: 'French',
+    displayPlural: 'French',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -92,6 +110,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.GreatBritain]: {
     displayName: 'Great Britain',
+    displayAdjective: 'British',
+    displayPlural: 'British',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -99,6 +119,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Iran]: {
     displayName: 'Iran',
+    displayAdjective: 'Iranian',
+    displayPlural: 'Iranians',
     alignment: {
       [Era.Early]: Alignment.WarsawPact,
       [Era.Default]: Alignment.WarsawPact,
@@ -106,6 +128,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Iraq]: {
     displayName: 'Iraq',
+    displayAdjective: 'Iraqi',
+    displayPlural: 'Iraqis',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -113,6 +137,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Israel]: {
     displayName: 'Israel',
+    displayAdjective: 'Israeli',
+    displayPlural: 'Israelis',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -120,6 +146,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Netherlands]: {
     displayName: 'The Netherlands',
+    displayAdjective: 'Dutch',
+    displayPlural: 'Dutch',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -127,6 +155,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Norway]: {
     displayName: 'Norway',
+    displayAdjective: 'Norwegian',
+    displayPlural: 'Norwegians',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -134,6 +164,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Poland]: {
     displayName: 'Poland',
+    displayAdjective: 'Polish',
+    displayPlural: 'Poles',
     alignment: {
       [Era.Early]: Alignment.WarsawPact,
       [Era.Default]: Alignment.WarsawPact,
@@ -141,6 +173,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.SovietUnion]: {
     displayName: 'Soviet Union',
+    displayAdjective: 'Soviet',
+    displayPlural: 'Soviets',
     alignment: {
       [Era.Early]: Alignment.WarsawPact,
       [Era.Default]: Alignment.WarsawPact,
@@ -148,6 +182,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Sweden]: {
     displayName: 'Sweden',
+    displayAdjective: 'Swedish',
+    displayPlural: 'Swedes',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -155,6 +191,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.Syria]: {
     displayName: 'Syria',
+    displayAdjective: 'Syrian',
+    displayPlural: 'Syrians',
     alignment: {
       [Era.Early]: Alignment.WarsawPact,
       [Era.Default]: Alignment.WarsawPact,
@@ -162,6 +200,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.UnitedStates]: {
     displayName: 'United States',
+    displayAdjective: 'American',
+    displayPlural: 'Americans',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,
@@ -169,6 +209,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   },
   [Faction.WestGermany]: {
     displayName: 'West Germany',
+    displayAdjective: 'West German',
+    displayPlural: 'West Germans',
     alignment: {
       [Era.Early]: Alignment.Nato,
       [Era.Default]: Alignment.Nato,

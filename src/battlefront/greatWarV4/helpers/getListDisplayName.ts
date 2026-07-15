@@ -1,6 +1,6 @@
 import { ListData } from '../schema/listData';
-import { getAlignmentDisplayName } from '../static/alignments.helpers';
-import { getFactionDisplayName } from '../static/factions.helpers';
+import { getAlignmentDisplayAdjective } from '../static/alignments.helpers';
+import { getFactionDisplayAdjective } from '../static/factions.helpers';
 import { getForceDiagramDisplayName } from '../static/forceDiagrams.helpers';
 
 export const getListDisplayName = (listData?: Partial<ListData>): string => {
@@ -10,16 +10,16 @@ export const getListDisplayName = (listData?: Partial<ListData>): string => {
     if (forceDiagram) {
       return forceDiagram;
     }
-    const faction = getFactionDisplayName(listData?.meta?.faction);
+    const faction = getFactionDisplayAdjective(listData?.meta?.faction);
     if (faction) {
       return faction;
     }
-    const alignment = getAlignmentDisplayName(listData?.meta?.alignment);
+    const alignment = getAlignmentDisplayAdjective(listData?.meta?.alignment);
     if (alignment) {
       return alignment;
     }
     return 'Unknown';
   };
 
-  return `${getPrefix()} Force'`;
+  return `${getPrefix()} Force`;
 };

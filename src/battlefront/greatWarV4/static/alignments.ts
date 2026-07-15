@@ -8,8 +8,12 @@ export enum Alignment {
 export const alignments: Record<Alignment, AlignmentMetadata> = {
   [Alignment.AlliedPowers]: {
     displayName: 'Allied Powers',
+    displayAdjective: 'Allied Powers',
+    displayPlural: 'Allied Powers',
   },
   [Alignment.CentralPowers]: {
     displayName: 'Central Powers',
+    displayAdjective: 'Central Powers',
+    displayPlural: 'Central Powers',
   },
 } as const;

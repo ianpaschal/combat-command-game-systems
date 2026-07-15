@@ -3,7 +3,10 @@ import { MatchOutcomeType } from './static/matchOutcomeTypes';
 import { MissionName } from './static/missionNames';
 import { GenericMetadata, GenericPublicationMetadata } from '../../common/types';
 
-export type AlignmentMetadata = GenericMetadata;
+export type AlignmentMetadata = GenericMetadata & {
+  displayAdjective: string;
+  displayPlural: string;
+};
 
 export type BattlePlanMetadata = GenericMetadata;
 

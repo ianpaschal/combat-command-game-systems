@@ -24,7 +24,7 @@ describe('getListDisplayName()', () => {
       },
     };
     const result = getListDisplayName(list);
-    expect(result).toEqual('Israeli Force\'');
+    expect(result).toEqual('Israeli Force');
   });
 
   it('falls back to the faction display name when there is no force diagram.', () => {
@@ -37,7 +37,7 @@ describe('getListDisplayName()', () => {
       },
     };
     const result = getListDisplayName(list);
-    expect(result).toEqual('Great Britain Force\'');
+    expect(result).toEqual('British Force');
   });
 
   it('falls back to the alignment display name when there is no force diagram or faction.', () => {
@@ -49,12 +49,12 @@ describe('getListDisplayName()', () => {
       },
     };
     const result = getListDisplayName(list);
-    expect(result).toEqual('Warsaw Pact Force\'');
+    expect(result).toEqual('Warsaw Pact Force');
   });
 
   it('falls back to "Unknown" when there is no force diagram, faction, or alignment.', () => {
     const list: Partial<ListData> = {};
     const result = getListDisplayName(list);
-    expect(result).toEqual('Unknown Force\'');
+    expect(result).toEqual('Unknown Force');
   });
 });
