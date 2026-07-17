@@ -1,5 +1,9 @@
 import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
+import {
+  getDisplayAdjective,
+  getDisplayName,
+  getOptions,
+} from '../../../common/_internal';
 import { Alignment, alignments } from './alignments';
 
 export const getAlignmentOptions = (): SelectOption<Alignment>[] => getOptions(alignments);
@@ -10,9 +14,4 @@ export const getAlignmentDisplayName = (
 
 export const getAlignmentDisplayAdjective = (
   key?: string,
-): string | undefined => {
-  if (!key || !(key in alignments)) {
-    return undefined;
-  }
-  return alignments[key as Alignment].displayAdjective;
-};
+): string | undefined => getDisplayAdjective(alignments, key as Alignment);

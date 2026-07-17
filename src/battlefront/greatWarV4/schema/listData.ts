@@ -1,5 +1,10 @@
 import { ValidateListDataResult, ValidationIssue } from '../../../common';
-import { ListDataOptions, validateListDataShape } from '../../_shared/schema/listData';
+import {
+  ListDataOptions,
+  validateListDataShape,
+  validatePointsLimit,
+  validateSlot,
+} from '../../_shared/schema/listData';
 import { Alignment, alignments } from '../static/alignments';
 import { Faction, factions } from '../static/factions';
 import { ForceDiagram, forceDiagrams } from '../static/forceDiagrams';
@@ -62,23 +67,11 @@ const validate = async (
   const issues: ValidationIssue[] = validateListDataShape({ ...formData, meta }, context, options);
 
   for (const unit of formData.units) {
-    if (!unit.slotId) {
-      issues.push({ message: 'Please select a slot.', path: ['units'] });
-    }
+    validateSlot(issues, unit);
   }
 
   const pointsLimit = Number(formData.meta.pointsLimit);
-  if (!Number.isFinite(pointsLimit)) {
-    issues.push({
-      message: 'Please set a points limit.',
-      path: ['meta', 'pointsLimit'],
-    });
-  } else if (pointsLimit < 0) {
-    issues.push({
-      message: 'Points limit must be 0 or greater.',
-      path: ['meta', 'pointsLimit'],
-    });
-  }
+  validatePointsLimit(issues, pointsLimit);
 
   if (issues.length > 0) {
     return { success: false, issues };

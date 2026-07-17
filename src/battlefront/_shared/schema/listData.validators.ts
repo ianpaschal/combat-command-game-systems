@@ -56,7 +56,7 @@ export const hasNoDuplicateIds = (
     ...values.formations.map((f) => f.id),
     ...values.units.map((u) => u.id),
     ...values.commandCards.map((c) => c.id),
-  ];
+  ].filter((id): id is string => id !== undefined);
   return new Set(allIds).size === allIds.length;
 };
 
@@ -262,6 +262,50 @@ export const validateLegality = (
 };
 
 /**
+ * Validates the list's points limit. Checks:
+ * - Value is a finite number
+ * - Value is 0 or greater
+ * @param issues - Collected validation issues
+ * @param pointsLimit - The list's parsed points limit
+ */
+export const validatePointsLimit = (
+  issues: ValidationIssue[],
+  pointsLimit: number,
+): void => {
+  const path = ['meta', 'pointsLimit'];
+
+  if (!Number.isFinite(pointsLimit)) {
+    issues.push({
+      message: 'Please set a points limit.',
+      path,
+    });
+  } else if (pointsLimit < 0) {
+    issues.push({
+      message: 'Points limit must be 0 or greater.',
+      path,
+    });
+  }
+};
+
+/**
+ * Validates a single unit's slot assignment. Checks:
+ * - `slotId` is present
+ * @param issues - Collected validation issues
+ * @param unit - The specific unit to validate
+ */
+export const validateSlot = (
+  issues: ValidationIssue[],
+  unit: { slotId?: string },
+): void => {
+  if (!unit.slotId) {
+    issues.push({
+      message: 'Please select a slot.',
+      path: ['units'],
+    });
+  }
+};
+
+/**
  * Validates a single formation against the list's selected force diagram. Checks:
  * - Formation's source era matches the force diagram's era (if a force diagram is set and the era can be resolved)
  * - Formation's source force diagram is a recognized key (if a force diagram is set and expected era is resolved)
@@ -384,13 +428,12 @@ export const validateUnit = (
   unit: ListDataShape['units'][number],
   context: ListDataContext,
 ): void => {
-  const path = ['units'];
 
   // `id` is missing or not a valid list data ID:
   if (!isListDataId(unit.id)) {
     issues.push({
       message: 'Please set an ID.',
-      path,
+      path: ['units'],
     });
   }
 
@@ -399,7 +442,7 @@ export const validateUnit = (
   if (!unit.sourceId || (hasUnits && !(unit.sourceId in context.units))) {
     issues.push({
       message: 'Please select a unit.',
-      path,
+      path: ['units'],
     });
   }
 
@@ -414,7 +457,7 @@ export const validateUnit = (
         if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
           issues.push({
             message: 'Unit source has an unrecognized force diagram.',
-            path,
+            path: ['units'],
           });
         } else {
           const sourceSeriesKey = context.forceDiagrams[sourceData.sourceForceDiagram]?.series;
@@ -425,7 +468,7 @@ export const validateUnit = (
             if (sourceEra && sourceEra !== expectedEra) {
               issues.push({
                 message: 'Unit does not match the force diagram\'s era.',
-                path,
+                path: ['units'],
               });
             }
           }
@@ -438,7 +481,7 @@ export const validateUnit = (
   if (unit.formationId !== 'support' && !new Set(data.formations.map((f) => f.id)).has(unit.formationId)) {
     issues.push({
       message: 'Unit references a non-existent formation.',
-      path,
+      path: ['units'],
     });
   }
 };

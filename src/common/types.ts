@@ -46,6 +46,10 @@ export type ValidationIssue = {
   message: string;
 };
 
-export type ValidateListDataResult<T> =
-  | { success: true; data: T }
-  | { success: false; issues: ValidationIssue[] };
+export type ValidateListDataResult<T> = {
+  success: true;
+  data: T;
+} | {
+  success: false;
+  issues: ValidationIssue[];
+};

@@ -15,6 +15,7 @@ import {
 } from './listData.validators';
 
 export type { ListDataContext, ListDataOptions, ListDataShape } from './listData.validators';
+export { validatePointsLimit, validateSlot } from './listData.validators';
 
 /**
  * Runs the cross-field validation rules shared by every game system's list data, returning any
