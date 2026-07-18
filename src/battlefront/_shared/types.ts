@@ -25,12 +25,12 @@ export type ListDataCommandCard = {
   appliedTo: string;
 };
 
-export type ListDataFormation<TSourceId> = {
+export type ListDataFormation<TSourceId extends string> = {
   id: string;
   sourceId: TSourceId;
 };
 
-export type ListDataUnit<TSourceId> = {
+export type ListDataUnit<TSourceId extends string> = {
   id: string;
   sourceId: TSourceId;
   formationId: string;

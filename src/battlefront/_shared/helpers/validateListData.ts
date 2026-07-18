@@ -62,18 +62,30 @@ export const validateListData = <TListData>(
   }
 
   const formations = getValue(data, ['formations']);
-  for (const formation of Array.isArray(formations) ? formations : []) {
-    issues.push(...validateFormation(data, formation, context));
+  if (Array.isArray(formations)) {
+    for (const formation of formations) {
+      issues.push(...validateFormation(data, formation, context));
+    }
+  } else {
+    issues.push({ path: ['formations'], message: 'Formations must be a list.' });
   }
 
   const units = getValue(data, ['units']);
-  for (const unit of Array.isArray(units) ? units : []) {
-    issues.push(...validateUnit(data, unit, context), ...validateSlot(unit));
+  if (Array.isArray(units)) {
+    for (const unit of units) {
+      issues.push(...validateUnit(data, unit, context), ...validateSlot(unit));
+    }
+  } else {
+    issues.push({ path: ['units'], message: 'Units must be a list.' });
   }
 
   const commandCards = getValue(data, ['commandCards']);
-  for (const card of Array.isArray(commandCards) ? commandCards : []) {
-    issues.push(...validateCommandCard(data, card));
+  if (Array.isArray(commandCards)) {
+    for (const card of commandCards) {
+      issues.push(...validateCommandCard(data, card));
+    }
+  } else {
+    issues.push({ path: ['commandCards'], message: 'Command cards must be a list.' });
   }
 
   if (options?.requireLegal) {

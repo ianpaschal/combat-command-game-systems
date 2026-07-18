@@ -9,7 +9,7 @@
  */
 export const getValue = (data: unknown, path: (string | number)[]): unknown => (
   path.reduce<unknown>((current, key) => (
-    typeof current === 'object' && current !== null && key in current ? (
+    typeof current === 'object' && current !== null && Object.prototype.hasOwnProperty.call(current, key) ? (
       (current as Record<string, unknown>)[key]
     ) : (
       undefined

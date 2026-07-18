@@ -68,9 +68,12 @@ describe('validateListData', () => {
     expect(runRefinements('nope').success).toBe(false);
   });
 
-  it('treats missing formations/units/commandCards as empty instead of throwing.', () => {
+  it('rejects missing formations/units/commandCards instead of throwing.', () => {
     const result = runRefinements({ meta: validData.meta });
-    expect(result.success).toBe(true);
+    expect(result.success).toBe(false);
+    expect(getIssueMessages(result, ['formations'])).toContain('Formations must be a list.');
+    expect(getIssueMessages(result, ['units'])).toContain('Units must be a list.');
+    expect(getIssueMessages(result, ['commandCards'])).toContain('Command cards must be a list.');
   });
 
   it('treats a missing formations list as having no valid targets when checking units/commandCards, instead of throwing.', () => {

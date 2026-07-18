@@ -77,7 +77,7 @@ export const validateForceDiagram = (
   }
 
   // Exists but not a recognized force diagram key:
-  if (typeof value === 'string' && !(value in context.forceDiagrams)) {
+  if (typeof value === 'string' && !getValue(context.forceDiagrams, [value])) {
     issues.push({
       message: 'Please select a force diagram.',
       path,
@@ -125,7 +125,7 @@ export const validateFaction = (
   }
 
   // Exists but not a recognized faction key:
-  if (typeof value === 'string' && !(value in context.factions)) {
+  if (typeof value === 'string' && !getValue(context.factions, [value])) {
     issues.push({
       message: 'Please select a faction.',
       path,
@@ -166,7 +166,7 @@ export const validateAlignment = (
   }
 
   // Exists but not a recognized alignment key:
-  if (typeof value === 'string' && !(value in context.alignments)) {
+  if (typeof value === 'string' && !getValue(context.alignments, [value])) {
     issues.push({
       message: 'Please select an alignment.',
       path,
@@ -219,7 +219,7 @@ export const validateEra = (
   }
 
   // Not a recognized era key:
-  if (typeof value !== 'string' || !(value in context.eras)) {
+  if (typeof value !== 'string' || !getValue(context.eras, [value])) {
     issues.push({
       message: 'Please select an era.',
       path,
@@ -318,8 +318,9 @@ export const validateSlot = (
   unit: unknown,
 ): ValidationIssue[] => {
   const issues: ValidationIssue[] = [];
+  const slotId = getValue(unit, ['slotId']);
 
-  if (!getValue(unit, ['slotId'])) {
+  if (typeof slotId !== 'string' || slotId.length === 0) {
     issues.push({
       message: 'Please select a slot.',
       path: ['units'],
@@ -363,7 +364,7 @@ export const validateFormation = (
   // `sourceId` is missing, or not a recognized unit key (when the game system
   // has any units yet):
   const hasUnits = Object.keys(context.units).length > 0;
-  if (!sourceId || (hasUnits && (typeof sourceId !== 'string' || !(sourceId in context.units)))) {
+  if (typeof sourceId !== 'string' || sourceId.length === 0 || (hasUnits && !getValue(context.units, [sourceId]))) {
     issues.push({
       message: 'Please select a formation.',
       path: ['formations'],
@@ -379,7 +380,7 @@ export const validateFormation = (
       if (sourceData) {
 
         // Source force diagram is not a recognized key:
-        if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
+        if (!getValue(context.forceDiagrams, [sourceData.sourceForceDiagram])) {
           issues.push({
             message: 'Formation source has an unrecognized force diagram.',
             path: ['formations'],
@@ -433,7 +434,7 @@ export const validateCommandCard = (
   }
 
   // `sourceId` is missing:
-  if (!sourceId) {
+  if (typeof sourceId !== 'string' || sourceId.length === 0) {
     issues.push({
       message: 'Please select a card.',
       path: ['commandCards'],
@@ -491,7 +492,7 @@ export const validateUnit = (
 
   // `sourceId` is missing, or not a recognized unit key (when the game system has any units yet):
   const hasUnits = Object.keys(context.units).length > 0;
-  if (!sourceId || (hasUnits && (typeof sourceId !== 'string' || !(sourceId in context.units)))) {
+  if (typeof sourceId !== 'string' || sourceId.length === 0 || (hasUnits && !getValue(context.units, [sourceId]))) {
     issues.push({
       message: 'Please select a unit.',
       path: ['units'],
@@ -507,7 +508,7 @@ export const validateUnit = (
       if (sourceData) {
 
         // Source force diagram is not a recognized key:
-        if (!(sourceData.sourceForceDiagram in context.forceDiagrams)) {
+        if (!getValue(context.forceDiagrams, [sourceData.sourceForceDiagram])) {
           issues.push({
             message: 'Unit source has an unrecognized force diagram.',
             path: ['units'],
