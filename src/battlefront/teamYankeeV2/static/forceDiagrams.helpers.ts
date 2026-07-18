@@ -13,19 +13,25 @@ export type GetForceDiagramOptionsFilters = {
   series?: Series | null;
 };
 
-export const getForceDiagramOptions = (filters?: GetForceDiagramOptionsFilters): SelectOption<ForceDiagram>[] => {
-  const entries = Object.entries(forceDiagrams) as [ForceDiagram, { faction: Faction; series: Series; displayName: string }][];
+export const getForceDiagramOptions = (
+  filters?: GetForceDiagramOptionsFilters,
+): SelectOption<ForceDiagram>[] => {
+  const entries = Object.entries(forceDiagrams) as [ForceDiagram, {
+    faction: Faction;
+    series: Series;
+    displayName: string;
+  }][];
   const filtered = filters ? (
     entries.filter(([, { faction, series: diagramSeries }]) => {
       const alignment = factions[faction].alignment[series[diagramSeries].era];
       return (
-        filters.faction === undefined || faction === filters.faction
+        filters.faction == null || faction === filters.faction
       ) && (
-        filters.alignment === undefined || alignment === filters.alignment
+        filters.alignment == null || alignment === filters.alignment
       ) && (
-        filters.series === undefined || diagramSeries === filters.series
+        filters.series == null || diagramSeries === filters.series
       ) && (
-        filters.era === undefined || series[diagramSeries].era === filters.era
+        filters.era == null || series[diagramSeries].era === filters.era
       );
     })) : entries;
   return filtered.map(([key, { displayName }]) => ({

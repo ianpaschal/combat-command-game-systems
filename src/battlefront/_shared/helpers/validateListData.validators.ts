@@ -1,4 +1,5 @@
 import { ValidationIssue } from '../../../common';
+import { getValue } from '../../../common/_internal';
 import { isListDataId } from '../../../common/schemas/listDataId';
 
 /**
@@ -25,59 +26,47 @@ export type ListDataOptions = {
 };
 
 /**
- * Structural shape of a list's data, as seen by the cross-field validators. Game systems without
- * an `era` concept (e.g. GreatWarV4) simply never populate `meta.era`.
- */
-export type ListDataShape = {
-  meta: {
-    forceDiagram?: string;
-    faction?: string;
-    alignment?: string;
-    era?: string;
-  };
-  formations: { id?: string; sourceId?: string }[];
-  units: { id?: string; sourceId?: string; formationId?: string; slotId?: string }[];
-  commandCards: { id?: string; sourceId?: string; appliedTo?: string }[];
-};
-
-/**
- * Checks that all IDs across formations, units, and command cards are unique within the list.
- * @param values - List data containing formations, units, and command cards
+ * Checks that all IDs across formations, units, and command cards are unique
+ * within the list.
+ *
+ * @param data - The full list data being validated
  * @returns `true` if all IDs are unique
  */
-export const hasNoDuplicateIds = (
-  values: {
-    formations: { id?: string }[];
-    units: { id?: string }[];
-    commandCards: { id?: string }[];
-  },
-): boolean => {
+export const hasNoDuplicateIds = (data: unknown): boolean => {
+  const idsOf = (items: unknown): string[] => (
+    Array.isArray(items) ? (
+      items.map((item) => getValue(item, ['id'])).filter((id): id is string => typeof id === 'string')
+    ) : []
+  );
   const allIds = [
-    ...values.formations.map((f) => f.id),
-    ...values.units.map((u) => u.id),
-    ...values.commandCards.map((c) => c.id),
-  ].filter((id): id is string => id !== undefined);
+    ...idsOf(getValue(data, ['formations'])),
+    ...idsOf(getValue(data, ['units'])),
+    ...idsOf(getValue(data, ['commandCards'])),
+  ];
   return new Set(allIds).size === allIds.length;
 };
 
 /**
- * Validates the list's selected force diagram. Checks:
+ * Validates the list's selected force diagram.
+ *
+ * Checks:
  * - Missing but required (if `options.requiredFields.forceDiagram` is set)
  * - Value is a recognized force diagram key
  * - Force diagram belongs to the selected faction
- * @param issues - Collected validation issues
+ *
  * @param data - The full list data being validated
  * @param context - Static game-system context (force diagrams, factions, etc.)
  * @param options - Schema creation options (required fields, legality)
+ * @returns Any issues found
  */
 export const validateForceDiagram = (
-  issues: ValidationIssue[],
-  data: ListDataShape,
+  data: unknown,
   context: ListDataContext,
   options?: ListDataOptions,
-): void => {
-  const value = data.meta.forceDiagram;
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
   const path = ['meta', 'forceDiagram'];
+  const value = getValue(data, path);
 
   // Missing but required:
   if (options?.requiredFields?.forceDiagram && !value) {
@@ -88,7 +77,7 @@ export const validateForceDiagram = (
   }
 
   // Exists but not a recognized force diagram key:
-  if (value && !(value in context.forceDiagrams)) {
+  if (typeof value === 'string' && !(value in context.forceDiagrams)) {
     issues.push({
       message: 'Please select a force diagram.',
       path,
@@ -96,31 +85,36 @@ export const validateForceDiagram = (
   }
 
   // Exists but does not belong to the selected faction:
-  if (value && context.forceDiagrams[value]?.faction !== data.meta.faction) {
+  if (typeof value === 'string' && context.forceDiagrams[value]?.faction !== getValue(data, ['meta', 'faction'])) {
     issues.push({
       message: 'The selected force diagram is not a valid option for the selected faction.',
       path,
     });
   }
+
+  return issues;
 };
 
 /**
- * Validates the list's selected faction. Checks:
+ * Validates the list's selected faction.
+ *
+ * Checks:
  * - Missing but required (if `options.requiredFields.faction` is set)
  * - Value is a recognized faction key
- * @param issues - Collected validation issues
+ *
  * @param data - The full list data being validated
  * @param context - Static game-system context
  * @param options - Schema creation options (required fields, legality)
+ * @returns Any issues found
  */
 export const validateFaction = (
-  issues: ValidationIssue[],
-  data: ListDataShape,
+  data: unknown,
   context: ListDataContext,
   options?: ListDataOptions,
-): void => {
-  const value = data.meta.faction;
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
   const path = ['meta', 'faction'];
+  const value = getValue(data, path);
 
   // Missing but required:
   if (options?.requiredFields?.faction && !value) {
@@ -131,32 +125,37 @@ export const validateFaction = (
   }
 
   // Exists but not a recognized faction key:
-  if (value && !(value in context.factions)) {
+  if (typeof value === 'string' && !(value in context.factions)) {
     issues.push({
       message: 'Please select a faction.',
       path,
     });
   }
+
+  return issues;
 };
 
 /**
- * Validates the list's selected alignment. Checks:
+ * Validates the list's selected alignment.
+ *
+ * Checks:
  * - Missing but required (if `options.requiredFields.alignment` is set)
  * - Value is a recognized alignment key
  * - Alignment matches the alignment of the selected faction
- * @param issues - Collected validation issues
+ *
  * @param data - The full list data being validated
  * @param context - Static game-system context
  * @param options - Schema creation options (required fields, legality)
+ * @returns Any issues found
  */
 export const validateAlignment = (
-  issues: ValidationIssue[],
-  data: ListDataShape,
+  data: unknown,
   context: ListDataContext,
   options?: ListDataOptions,
-): void => {
-  const value = data.meta.alignment;
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
   const path = ['meta', 'alignment'];
+  const value = getValue(data, path);
 
   // Missing but required:
   if (options?.requiredFields?.alignment && !value) {
@@ -167,7 +166,7 @@ export const validateAlignment = (
   }
 
   // Exists but not a recognized alignment key:
-  if (value && !(value in context.alignments)) {
+  if (typeof value === 'string' && !(value in context.alignments)) {
     issues.push({
       message: 'Please select an alignment.',
       path,
@@ -175,12 +174,14 @@ export const validateAlignment = (
   }
 
   // Exists but does not match the selected faction's alignment:
-  if (value && data.meta.faction) {
-    const alignmentData = context.factions[data.meta.faction]?.alignment;
+  const faction = getValue(data, ['meta', 'faction']);
+  if (value && typeof faction === 'string') {
+    const alignmentData = context.factions[faction]?.alignment;
+    const era = getValue(data, ['meta', 'era']);
     const alignment = typeof alignmentData === 'string' ? (
       alignmentData
     ) : (
-      data.meta.era ? alignmentData?.[data.meta.era] : undefined
+      typeof era === 'string' ? alignmentData?.[era] : undefined
     );
     if (alignment !== undefined && alignment !== value) {
       issues.push({
@@ -189,30 +190,36 @@ export const validateAlignment = (
       });
     }
   }
+
+  return issues;
 };
 
 /**
- * Validates the list's selected era. Checks:
+ * Validates the list's selected era.
+ *
+ * Checks:
  * - Value is a recognized era key
- * - Era matches the era implied by the selected force diagram's series (if a force diagram is set)
- * @param issues - Collected validation issues
+ * - Era matches the era implied by the selected force diagram's series (if a
+ *   force diagram is set)
+ *
  * @param data - The full list data being validated
  * @param context - Static game-system context
+ * @returns Any issues found
  */
 export const validateEra = (
-  issues: ValidationIssue[],
-  data: ListDataShape,
+  data: unknown,
   context: ListDataContext,
-): void => {
-  const value = data.meta.era;
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
   const path = ['meta', 'era'];
+  const value = getValue(data, path);
 
   if (!context.eras) {
-    return;
+    return issues;
   }
 
   // Not a recognized era key:
-  if (!value || !(value in context.eras)) {
+  if (typeof value !== 'string' || !(value in context.eras)) {
     issues.push({
       message: 'Please select an era.',
       path,
@@ -220,8 +227,9 @@ export const validateEra = (
   }
 
   // Does not match the era implied by the selected force diagram's series:
-  if (data.meta.forceDiagram) {
-    const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
+  const forceDiagram = getValue(data, ['meta', 'forceDiagram']);
+  if (typeof forceDiagram === 'string') {
+    const seriesKey = context.forceDiagrams[forceDiagram]?.series;
     const expected = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expected && value !== expected) {
       issues.push({
@@ -230,22 +238,29 @@ export const validateEra = (
       });
     }
   }
+
+  return issues;
 };
 
 /**
- * Validates that the list meets minimum legal requirements. Checks:
+ * Validates that the list meets minimum legal requirements.
+ *
+ * Checks:
  * - At least one formation is present
  * - At least one unit is present
- * @param issues - Collected validation issues
+ *
  * @param data - The full list data being validated
+ * @returns Any issues found
  */
 export const validateLegality = (
-  issues: ValidationIssue[],
-  data: ListDataShape,
-): void => {
+  data: unknown,
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
+  const formations = getValue(data, ['formations']);
+  const units = getValue(data, ['units']);
 
   // At least one formation:
-  if (data.formations.length === 0) {
+  if (!Array.isArray(formations) || formations.length === 0) {
     issues.push({
       message: 'At least one formation is required.',
       path: ['formations'],
@@ -253,28 +268,31 @@ export const validateLegality = (
   }
 
   // At least one unit:
-  if (data.units.length === 0) {
+  if (!Array.isArray(units) || units.length === 0) {
     issues.push({
       message: 'At least one unit is required.',
       path: ['units'],
     });
   }
+
+  return issues;
 };
 
 /**
  * Validates the list's points limit. Checks:
  * - Value is a finite number
  * - Value is 0 or greater
- * @param issues - Collected validation issues
- * @param pointsLimit - The list's parsed points limit
+ *
+ * @param pointsLimit - The list's raw points limit
+ * @returns Any issues found
  */
 export const validatePointsLimit = (
-  issues: ValidationIssue[],
-  pointsLimit: number,
-): void => {
+  pointsLimit: unknown,
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
   const path = ['meta', 'pointsLimit'];
 
-  if (!Number.isFinite(pointsLimit)) {
+  if (typeof pointsLimit !== 'number' || !Number.isFinite(pointsLimit)) {
     issues.push({
       message: 'Please set a points limit.',
       path,
@@ -285,64 +303,79 @@ export const validatePointsLimit = (
       path,
     });
   }
+
+  return issues;
 };
 
 /**
  * Validates a single unit's slot assignment. Checks:
  * - `slotId` is present
- * @param issues - Collected validation issues
+ *
  * @param unit - The specific unit to validate
+ * @returns Any issues found
  */
 export const validateSlot = (
-  issues: ValidationIssue[],
-  unit: { slotId?: string },
-): void => {
-  if (!unit.slotId) {
+  unit: unknown,
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
+
+  if (!getValue(unit, ['slotId'])) {
     issues.push({
       message: 'Please select a slot.',
       path: ['units'],
     });
   }
+
+  return issues;
 };
 
 /**
- * Validates a single formation against the list's selected force diagram. Checks:
- * - Formation's source era matches the force diagram's era (if a force diagram is set and the era can be resolved)
- * - Formation's source force diagram is a recognized key (if a force diagram is set and expected era is resolved)
- * @param issues - Collected validation issues
+ * Validates a single formation against the list's selected force diagram.
+ *
+ * Checks:
+ * - Formation's source era matches the force diagram's era (if a force diagram
+ *   is set and the era can be resolved)
+ * - Formation's source force diagram is a recognized key (if a force diagram is
+ *   set and expected era is resolved)
+ *
  * @param data - The full list data being validated
  * @param formation - The specific formation to validate
  * @param context - Static game-system context
+ * @returns Any issues found
  */
 export const validateFormation = (
-  issues: ValidationIssue[],
-  data: ListDataShape,
-  formation: ListDataShape['formations'][number],
+  data: unknown,
+  formation: unknown,
   context: ListDataContext,
-): void => {
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
+  const id = getValue(formation, ['id']);
+  const sourceId = getValue(formation, ['sourceId']);
 
   // `id` is missing or not a valid list data ID:
-  if (!isListDataId(formation.id)) {
+  if (!isListDataId(id)) {
     issues.push({
       message: 'Please set an ID.',
       path: ['formations'],
     });
   }
 
-  // `sourceId` is missing, or not a recognized unit key (when the game system has any units yet):
+  // `sourceId` is missing, or not a recognized unit key (when the game system
+  // has any units yet):
   const hasUnits = Object.keys(context.units).length > 0;
-  if (!formation.sourceId || (hasUnits && !(formation.sourceId in context.units))) {
+  if (!sourceId || (hasUnits && (typeof sourceId !== 'string' || !(sourceId in context.units)))) {
     issues.push({
       message: 'Please select a formation.',
       path: ['formations'],
     });
   }
 
-  if (data.meta.forceDiagram && formation.sourceId) {
-    const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
+  const forceDiagram = getValue(data, ['meta', 'forceDiagram']);
+  if (typeof forceDiagram === 'string' && typeof sourceId === 'string') {
+    const seriesKey = context.forceDiagrams[forceDiagram]?.series;
     const expectedEra = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expectedEra) {
-      const sourceData = context.units[formation.sourceId];
+      const sourceData = context.units[sourceId];
       if (sourceData) {
 
         // Source force diagram is not a recognized key:
@@ -368,23 +401,31 @@ export const validateFormation = (
       }
     }
   }
+
+  return issues;
 };
 
 /**
- * Validates a single command card against the list. Checks:
+ * Validates a single command card against the list.
+ *
+ * Checks:
  * - `appliedTo` references an existing formation or unit ID
- * @param issues - Collected validation issues
+ *
  * @param data - The full list data being validated
  * @param commandCard - The specific command card to validate
+ * @returns Any issues found
  */
 export const validateCommandCard = (
-  issues: ValidationIssue[],
-  data: ListDataShape,
-  commandCard: ListDataShape['commandCards'][number],
-): void => {
+  data: unknown,
+  commandCard: unknown,
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
+  const id = getValue(commandCard, ['id']);
+  const sourceId = getValue(commandCard, ['sourceId']);
+  const appliedTo = getValue(commandCard, ['appliedTo']);
 
   // `id` is missing or not a valid list data ID:
-  if (!isListDataId(commandCard.id)) {
+  if (!isListDataId(id)) {
     issues.push({
       message: 'Please set an ID.',
       path: ['commandCards'],
@@ -392,7 +433,7 @@ export const validateCommandCard = (
   }
 
   // `sourceId` is missing:
-  if (!commandCard.sourceId) {
+  if (!sourceId) {
     issues.push({
       message: 'Please select a card.',
       path: ['commandCards'],
@@ -400,37 +441,48 @@ export const validateCommandCard = (
   }
 
   // `appliedTo` does not reference an existing formation or unit:
+  const idsOf = (items: unknown): (string | undefined)[] => (
+    Array.isArray(items) ? items.map((item) => getValue(item, ['id']) as string | undefined) : []
+  );
   const allValidTargetIds = new Set([
-    ...data.formations.map((f) => f.id),
-    ...data.units.map((u) => u.id),
-  ]);
-  if (!allValidTargetIds.has(commandCard.appliedTo)) {
+    ...idsOf(getValue(data, ['formations'])),
+    ...idsOf(getValue(data, ['units'])),
+  ].filter((targetId): targetId is string => targetId !== undefined));
+  if (typeof appliedTo !== 'string' || !allValidTargetIds.has(appliedTo)) {
     issues.push({
       message: 'Command card references a non-existent target.',
       path: ['commandCards'],
     });
   }
+
+  return issues;
 };
 
 /**
- * Validates a single unit against the list and selected force diagram. Checks:
+ * Validates a single unit against the list and selected force diagram.
+ *
+ * Checks:
  * - Unit's source era matches the force diagram's era (if a force diagram is set and the era can be resolved)
  * - Unit's source force diagram is a recognized key (if a force diagram is set and expected era is resolved)
  * - `formationId` references an existing formation, or is the special `'support'` value
- * @param issues - Collected validation issues
+ *
  * @param data - The full list data being validated
  * @param unit - The specific unit to validate
  * @param context - Static game-system context
+ * @returns Any issues found
  */
 export const validateUnit = (
-  issues: ValidationIssue[],
-  data: ListDataShape,
-  unit: ListDataShape['units'][number],
+  data: unknown,
+  unit: unknown,
   context: ListDataContext,
-): void => {
+): ValidationIssue[] => {
+  const issues: ValidationIssue[] = [];
+  const id = getValue(unit, ['id']);
+  const sourceId = getValue(unit, ['sourceId']);
+  const formationId = getValue(unit, ['formationId']);
 
   // `id` is missing or not a valid list data ID:
-  if (!isListDataId(unit.id)) {
+  if (!isListDataId(id)) {
     issues.push({
       message: 'Please set an ID.',
       path: ['units'],
@@ -439,18 +491,19 @@ export const validateUnit = (
 
   // `sourceId` is missing, or not a recognized unit key (when the game system has any units yet):
   const hasUnits = Object.keys(context.units).length > 0;
-  if (!unit.sourceId || (hasUnits && !(unit.sourceId in context.units))) {
+  if (!sourceId || (hasUnits && (typeof sourceId !== 'string' || !(sourceId in context.units)))) {
     issues.push({
       message: 'Please select a unit.',
       path: ['units'],
     });
   }
 
-  if (data.meta.forceDiagram && unit.sourceId) {
-    const seriesKey = context.forceDiagrams[data.meta.forceDiagram]?.series;
+  const forceDiagram = getValue(data, ['meta', 'forceDiagram']);
+  if (typeof forceDiagram === 'string' && typeof sourceId === 'string') {
+    const seriesKey = context.forceDiagrams[forceDiagram]?.series;
     const expectedEra = seriesKey ? context.series?.[seriesKey]?.era : undefined;
     if (expectedEra) {
-      const sourceData = context.units[unit.sourceId];
+      const sourceData = context.units[sourceId];
       if (sourceData) {
 
         // Source force diagram is not a recognized key:
@@ -478,10 +531,18 @@ export const validateUnit = (
   }
 
   // `formationId` does not reference an existing formation (and is not 'support'):
-  if (unit.formationId !== 'support' && !new Set(data.formations.map((f) => f.id)).has(unit.formationId)) {
+  const formations = getValue(data, ['formations']);
+  const allFormationIds = new Set(
+    (Array.isArray(formations) ? formations : [])
+      .map((f) => getValue(f, ['id']))
+      .filter((fid): fid is string => typeof fid === 'string'),
+  );
+  if (formationId !== 'support' && (typeof formationId !== 'string' || !allFormationIds.has(formationId))) {
     issues.push({
       message: 'Unit references a non-existent formation.',
       path: ['units'],
     });
   }
+
+  return issues;
 };

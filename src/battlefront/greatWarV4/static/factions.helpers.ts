@@ -1,5 +1,9 @@
 import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
+import {
+  getDisplayAdjective,
+  getDisplayName,
+  getOptions,
+} from '../../../common/_internal';
 import { Alignment } from './alignments';
 import { Faction, factions } from './factions';
 
@@ -11,12 +15,7 @@ export const getFactionDisplayName = (
 
 export const getFactionDisplayAdjective = (
   key?: string,
-): string | undefined => {
-  if (!key || !(key in factions)) {
-    return undefined;
-  }
-  return factions[key as Faction].displayAdjective;
-};
+): string | undefined => getDisplayAdjective(factions, key as Faction);
 
 export const getFactionAlignment = (
   key: string,

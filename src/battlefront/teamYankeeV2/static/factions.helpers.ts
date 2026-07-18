@@ -36,10 +36,10 @@ export const getFactionOptions = (
         if (forceDiagram.faction !== key) {
           return false;
         }
-        if (filters.era !== undefined && series[forceDiagram.series].era !== filters.era) {
+        if (filters.era != null && series[forceDiagram.series].era !== filters.era) {
           return false;
         }
-        if (filters.alignment !== undefined) {
+        if (filters.alignment != null) {
           const forceDiagramAlignment = factions[forceDiagram.faction].alignment[series[forceDiagram.series].era];
           if (forceDiagramAlignment !== filters.alignment) {
             return false;

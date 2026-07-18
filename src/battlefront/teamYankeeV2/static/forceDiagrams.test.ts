@@ -5,9 +5,10 @@ import {
 } from 'vitest';
 
 import { Alignment } from './alignments';
+import { Era } from './eras';
 import { Faction } from './factions';
 import { ForceDiagram } from './forceDiagrams';
-import { getForceDiagramOptions } from './forceDiagrams.helpers';
+import { getForceDiagramEra, getForceDiagramOptions } from './forceDiagrams.helpers';
 import { Series } from './series';
 
 describe('TeamYankeeV2.getForceDiagramOptions', () => {
@@ -58,9 +59,22 @@ describe('TeamYankeeV2.getForceDiagramOptions', () => {
     });
   });
 
+  describe('era filter', () => {
+    it('returns only force diagrams for the given era.', () => {
+      const result = getForceDiagramOptions({ era: Era.Default });
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(({ value }) => getForceDiagramEra(value) === Era.Default)).toBe(true);
+    });
+
+    it('returns an empty array if no force diagrams match.', () => {
+      const result = getForceDiagramOptions({ era: Era.Early });
+      expect(result).toEqual([]);
+    });
+  });
+
   describe('combined filters', () => {
     it('returns force diagrams matching all provided filters.', () => {
-      const result = getForceDiagramOptions({ alignment: Alignment.Nato, series: Series.Default });
+      const result = getForceDiagramOptions({ alignment: Alignment.Nato, era: Era.Default, series: Series.Default });
       expect(result.length).toBeGreaterThan(0);
       expect(result.some(({ value }) => value === ForceDiagram.American)).toBe(true);
       expect(result.some(({ value }) => value === ForceDiagram.NatoForcesAnzac)).toBe(false);

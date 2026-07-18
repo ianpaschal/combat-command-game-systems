@@ -1,10 +1,10 @@
-import { ValidateListDataResult, ValidationIssue } from '../../../common';
+import { ValidateListDataResult } from '../../../common';
+import { ListDataOptions, validateListData } from '../../_shared/helpers/validateListData';
 import {
-  ListDataOptions,
-  validateListDataShape,
-  validatePointsLimit,
-  validateSlot,
-} from '../../_shared/schema/listData';
+  ListDataCommandCard,
+  ListDataFormation,
+  ListDataUnit,
+} from '../../_shared/types';
 import { Alignment, alignments } from '../static/alignments';
 import { Faction, factions } from '../static/factions';
 import { ForceDiagram, forceDiagrams } from '../static/forceDiagrams';
@@ -24,9 +24,9 @@ export type ListDataFormData = {
     alignment: Alignment | null;
     pointsLimit: number;
   };
-  formations: { id: string; sourceId: Unit }[];
-  units: { id: string; sourceId: Unit; formationId: string; slotId: string }[];
-  commandCards: { id: string; sourceId: string; appliedTo: string }[];
+  formations: ListDataFormation<Unit>[];
+  units: ListDataUnit<Unit>[];
+  commandCards: ListDataCommandCard[];
 };
 
 export type ListData = {
@@ -36,9 +36,9 @@ export type ListData = {
     alignment?: Alignment;
     pointsLimit: number;
   };
-  formations: { id: string; sourceId: Unit }[];
-  units: { id: string; sourceId: Unit; formationId: string; slotId: string }[];
-  commandCards: { id: string; sourceId: string; appliedTo: string }[];
+  formations: ListDataFormation<Unit>[];
+  units: ListDataUnit<Unit>[];
+  commandCards: ListDataCommandCard[];
 };
 
 const defaultValues: ListDataFormData = {
@@ -53,40 +53,12 @@ const defaultValues: ListDataFormData = {
   commandCards: [],
 };
 
-const validate = async (
-  rawFormData: unknown,
-  options?: ListDataOptions,
-): Promise<ValidateListDataResult<ListData>> => {
-  const formData = rawFormData as ListDataFormData;
-  const meta = {
-    forceDiagram: formData.meta.forceDiagram || undefined,
-    faction: formData.meta.faction || undefined,
-    alignment: formData.meta.alignment || undefined,
-  };
-
-  const issues: ValidationIssue[] = validateListDataShape({ ...formData, meta }, context, options);
-
-  for (const unit of formData.units) {
-    validateSlot(issues, unit);
-  }
-
-  const pointsLimit = Number(formData.meta.pointsLimit);
-  validatePointsLimit(issues, pointsLimit);
-
-  if (issues.length > 0) {
-    return { success: false, issues };
-  }
-
-  return {
-    success: true,
-    data: {
-      ...formData,
-      meta: { ...meta, pointsLimit },
-    },
-  };
-};
-
 export const listData = {
-  validate,
   defaultValues,
+  validate: async (
+    data: unknown,
+    options?: ListDataOptions,
+  ): Promise<ValidateListDataResult<ListData>> => (
+    validateListData<ListData>(data, context, options)
+  ),
 } as const;

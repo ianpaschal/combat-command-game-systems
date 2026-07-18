@@ -18,10 +18,9 @@ import { getIssueMessages } from '../_fixtures/getIssueMessages';
 import {
   ListDataContext,
   ListDataOptions,
-  ListDataShape,
-  validateListDataShape,
-} from './listData';
-import { hasNoDuplicateIds } from './listData.validators';
+  validateListData,
+} from './validateListData';
+import { hasNoDuplicateIds } from './validateListData.validators';
 
 const context: ListDataContext = {
   alignments,
@@ -32,45 +31,56 @@ const context: ListDataContext = {
   units,
 };
 
-const validData: ListDataShape = {
+const validData = {
   meta: {
-    forceDiagram: ForceDiagram.BerlinGerman,
-    faction: Faction.Germany,
-    alignment: Alignment.Axis,
-    era: Era.LW,
+    forceDiagram: ForceDiagram.BerlinGerman as string | undefined,
+    faction: Faction.Germany as string | undefined,
+    alignment: Alignment.Axis as string | undefined,
+    era: Era.LW as string | undefined,
+    pointsLimit: 100,
   },
   formations: [
     { id: 'form00', sourceId: Unit.LG469 },
   ],
   units: [
-    { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00' },
-    { id: 'unit01', sourceId: Unit.LG469, formationId: 'form00' },
+    { id: 'unit00', sourceId: Unit.LG469, formationId: 'form00', slotId: 'slot00' },
+    { id: 'unit01', sourceId: Unit.LG469, formationId: 'form00', slotId: 'slot01' },
   ],
-  commandCards: [],
+  commandCards: [] as { id?: string; sourceId?: string; appliedTo?: string }[],
 };
 
-/**
- * Wraps `validateListDataShape`'s issue array in a `ValidateListDataResult`-shaped result so
- * `getIssueMessages` can be reused as-is.
- */
 const runRefinements = (
-  data: ListDataShape,
+  data: unknown,
   testContext: ListDataContext = context,
   options?: ListDataOptions,
-): ValidateListDataResult<unknown> => {
-  const issues = validateListDataShape(data, testContext, options);
-  return issues.length === 0 ? (
-    { success: true, data }
-  ) : (
-    { success: false, issues }
-  );
-};
+): ValidateListDataResult<unknown> => validateListData(data, testContext, options);
 
-describe('validateListDataShape', () => {
+describe('validateListData', () => {
 
   it('accepts valid data.', () => {
     const result = runRefinements(validData, context);
     expect(result.success).toBe(true);
+  });
+
+  it('rejects non-object data instead of throwing.', () => {
+    expect(runRefinements(undefined).success).toBe(false);
+    expect(runRefinements(null).success).toBe(false);
+    expect(runRefinements('nope').success).toBe(false);
+  });
+
+  it('treats missing formations/units/commandCards as empty instead of throwing.', () => {
+    const result = runRefinements({ meta: validData.meta });
+    expect(result.success).toBe(true);
+  });
+
+  it('treats a missing formations list as having no valid targets when checking units/commandCards, instead of throwing.', () => {
+    const result = runRefinements({
+      meta: validData.meta,
+      units: [{ id: 'unit00', sourceId: Unit.LG469, formationId: 'form00', slotId: 'slot00' }],
+      commandCards: [{ id: 'card00', sourceId: 'some-card', appliedTo: 'unit00' }],
+    });
+    expect(result.success).toBe(false);
+    expect(getIssueMessages(result, ['units'])).toContain('Unit references a non-existent formation.');
   });
 
   describe('.meta.forceDiagram', () => {
@@ -319,5 +329,8 @@ describe('hasNoDuplicateIds', () => {
       ...validData,
       units: [validData.units[0], validData.units[0]],
     })).toBe(false);
+  });
+  it('treats missing formations/units/commandCards as having no IDs.', () => {
+    expect(hasNoDuplicateIds({})).toBe(true);
   });
 });

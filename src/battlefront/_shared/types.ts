@@ -19,6 +19,24 @@ export type EraMetadata = GenericMetadata & {
   shortName: string;
 };
 
+export type ListDataCommandCard = {
+  id: string;
+  sourceId: string;
+  appliedTo: string;
+};
+
+export type ListDataFormation<TSourceId> = {
+  id: string;
+  sourceId: TSourceId;
+};
+
+export type ListDataUnit<TSourceId> = {
+  id: string;
+  sourceId: TSourceId;
+  formationId: string;
+  slotId: string;
+};
+
 export type MatchOutcomeTypeMetadata = GenericMetadata;
 
 export type MatrixData = GenericMetadata & {
