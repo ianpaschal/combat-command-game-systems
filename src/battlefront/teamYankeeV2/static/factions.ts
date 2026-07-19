@@ -1,7 +1,6 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
-import { FactionMetadata } from '../../_shared/types';
+import { FactionMetadata } from '../types';
 import { Alignment } from './alignments';
+import { Era } from './eras';
 
 export enum Faction {
   Anzac = 'anzac',
@@ -27,104 +26,194 @@ export enum Faction {
   WestGermany = 'west_germany',
 }
 
-export const factions: Record<Faction, FactionMetadata<Alignment>> = {
+export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   [Faction.Anzac]: {
     displayName: 'ANZAC',
-    alignment: Alignment.Nato,
+    displayAdjective: 'ANZAC',
+    displayPlural: 'ANZAC',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Belgium]: {
     displayName: 'Belgium',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Belgian',
+    displayPlural: 'Belgians',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Canada]: {
     displayName: 'Canada',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Canadian',
+    displayPlural: 'Canadians',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Cuba]: {
     displayName: 'Cuba',
-    alignment: Alignment.WarsawPact,
+    displayAdjective: 'Cuban',
+    displayPlural: 'Cubans',
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Czechoslovakia]: {
     displayName: 'Czechoslovakia',
-    alignment: Alignment.WarsawPact,
+    displayAdjective: 'Czechoslovak',
+    displayPlural: 'Czechoslovaks',
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Denmark]: {
     displayName: 'Denmark',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Danish',
+    displayPlural: 'Danes',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.EastGermany]: {
     displayName: 'East Germany',
-    alignment: Alignment.WarsawPact,
+    displayAdjective: 'East German',
+    displayPlural: 'East Germans',
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Finland]: {
     displayName: 'Finland',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Finnish',
+    displayPlural: 'Finns',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.France]: {
     displayName: 'France',
-    alignment: Alignment.Nato,
+    displayAdjective: 'French',
+    displayPlural: 'French',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.GreatBritain]: {
     displayName: 'Great Britain',
-    alignment: Alignment.Nato,
+    displayAdjective: 'British',
+    displayPlural: 'British',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Iran]: {
     displayName: 'Iran',
-    alignment: Alignment.WarsawPact,
+    displayAdjective: 'Iranian',
+    displayPlural: 'Iranians',
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Iraq]: {
     displayName: 'Iraq',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Iraqi',
+    displayPlural: 'Iraqis',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Israel]: {
     displayName: 'Israel',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Israeli',
+    displayPlural: 'Israelis',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Netherlands]: {
     displayName: 'The Netherlands',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Dutch',
+    displayPlural: 'Dutch',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Norway]: {
     displayName: 'Norway',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Norwegian',
+    displayPlural: 'Norwegians',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Poland]: {
     displayName: 'Poland',
-    alignment: Alignment.WarsawPact,
+    displayAdjective: 'Polish',
+    displayPlural: 'Poles',
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.SovietUnion]: {
     displayName: 'Soviet Union',
-    alignment: Alignment.WarsawPact,
+    displayAdjective: 'Soviet',
+    displayPlural: 'Soviets',
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.Sweden]: {
     displayName: 'Sweden',
-    alignment: Alignment.Nato,
+    displayAdjective: 'Swedish',
+    displayPlural: 'Swedes',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.Syria]: {
     displayName: 'Syria',
-    alignment: Alignment.WarsawPact,
+    displayAdjective: 'Syrian',
+    displayPlural: 'Syrians',
+    alignment: {
+      [Era.Early]: Alignment.WarsawPact,
+      [Era.Default]: Alignment.WarsawPact,
+    },
   },
   [Faction.UnitedStates]: {
     displayName: 'United States',
-    alignment: Alignment.Nato,
+    displayAdjective: 'American',
+    displayPlural: 'Americans',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
   [Faction.WestGermany]: {
     displayName: 'West Germany',
-    alignment: Alignment.Nato,
+    displayAdjective: 'West German',
+    displayPlural: 'West Germans',
+    alignment: {
+      [Era.Early]: Alignment.Nato,
+      [Era.Default]: Alignment.Nato,
+    },
   },
 } as const;
-
-export const getFactionOptions = (): SelectOption<Faction>[] => getOptions(factions);
-
-export const getFactionDisplayName = (
-  key: Faction,
-): string | undefined => getDisplayName(factions, key);
-
-export const getFactionAlignment = (
-  key: string,
-): Alignment | undefined => {
-  if (key in factions) {
-    return factions[key as Faction].alignment;
-  }
-  return undefined;
-};

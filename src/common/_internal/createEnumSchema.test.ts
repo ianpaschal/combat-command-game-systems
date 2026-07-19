@@ -93,4 +93,13 @@ describe('createEnumSchemaFromKeys()', () => {
     const schema = createEnumSchemaFromKeys({});
     expect(schema instanceof z.ZodString).toBe(true);
   });
+
+  it('uses the errorMap message for an empty record.', () => {
+    const schema = createEnumSchemaFromKeys({}, {
+      errorMap: () => ({ message: 'Required' }),
+    });
+
+    expect(schema instanceof z.ZodString).toBe(true);
+    expect(() => schema.parse('')).toThrow('Required');
+  });
 });

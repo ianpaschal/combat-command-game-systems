@@ -1,10 +1,6 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
-import { ForceDiagramMetadata } from '../../_shared/types';
-import { Alignment } from './alignments';
-import { Era } from './eras';
-import { Faction, factions } from './factions';
-import { Series, series } from './series';
+import { ForceDiagramMetadata } from '../types';
+import { Faction } from './factions';
+import { Series } from './series';
 
 export enum ForceDiagram {
   American = 'american',
@@ -142,42 +138,4 @@ export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, S
     faction: Faction.WestGermany,
     series: Series.Default,
   },
-};
-
-export const getForceDiagramOptions = (): SelectOption<ForceDiagram>[] => getOptions(forceDiagrams);
-
-export const getForceDiagramDisplayName = (
-  key: ForceDiagram,
-): string | undefined => getDisplayName(forceDiagrams, key);
-
-export const getForceDiagramFaction = (
-  key?: string,
-): Faction | undefined => {
-  if (key && key in forceDiagrams) {
-    return forceDiagrams[key as ForceDiagram].faction;
-  }
-  return undefined;
-};
-
-export const getForceDiagramSeries = (
-  key?: string,
-): Series | undefined => {
-  if (key && key in forceDiagrams) {
-    return forceDiagrams[key as ForceDiagram].series;
-  }
-  return undefined;
-};
-
-export const getForceDiagramAlignment = (
-  key?: string,
-): Alignment | undefined => {
-  const faction = getForceDiagramFaction(key);
-  return faction ? factions[faction].alignment : undefined;
-};
-
-export const getForceDiagramEra = (
-  key?: string,
-): Era | undefined => {
-  const s = getForceDiagramSeries(key);
-  return s ? series[s].era : undefined;
 };

@@ -1,5 +1,3 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
 import { SeriesMetadata } from '../../_shared/types';
 import { Era } from './eras';
 
@@ -38,9 +36,3 @@ export const series: Record<Series, SeriesMetadata<Era>> = {
     era: Era.Default,
   },
 } as const;
-
-export const getSeriesOptions = (): SelectOption<Series>[] => getOptions(series);
-
-export const getSeriesDisplayName = (
-  key: Series,
-): string | undefined => getDisplayName(series, key);

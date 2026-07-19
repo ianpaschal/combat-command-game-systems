@@ -1,7 +1,6 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
-import { FactionMetadata } from '../../_shared/types';
+import { FactionMetadata } from '../types';
 import { Alignment } from './alignments';
+import { Era } from './eras';
 
 export enum Faction {
   Australia = 'australia',
@@ -18,68 +17,122 @@ export enum Faction {
   UnitedStates = 'united_states',
 }
 
-export const factions: Record<Faction, FactionMetadata<Alignment>> = {
+export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
   [Faction.Australia]: {
     displayName: 'Australia',
-    alignment: Alignment.Allies,
+    displayAdjective: 'Australian',
+    displayPlural: 'Australians',
+    alignment: {
+      [Era.EW]: Alignment.Allies,
+      [Era.MW]: Alignment.Allies,
+      [Era.LW]: Alignment.Allies,
+    },
   },
   [Faction.Finland]: {
     displayName: 'Finland',
-    alignment: Alignment.Flexible,
+    displayAdjective: 'Finnish',
+    displayPlural: 'Finns',
+    alignment: {
+      [Era.EW]: Alignment.Flexible,
+      [Era.MW]: Alignment.Flexible,
+      [Era.LW]: Alignment.Flexible,
+    },
   },
   [Faction.France]: {
     displayName: 'France',
-    alignment: Alignment.Allies,
+    displayAdjective: 'French',
+    displayPlural: 'French',
+    alignment: {
+      [Era.EW]: Alignment.Allies,
+      [Era.MW]: Alignment.Allies,
+      [Era.LW]: Alignment.Allies,
+    },
   },
   [Faction.Germany]: {
     displayName: 'Germany',
-    alignment: Alignment.Axis,
+    displayAdjective: 'German',
+    displayPlural: 'Germans',
+    alignment: {
+      [Era.EW]: Alignment.Axis,
+      [Era.MW]: Alignment.Axis,
+      [Era.LW]: Alignment.Axis,
+    },
   },
   [Faction.GreatBritain]: {
     displayName: 'Great Britain',
-    alignment: Alignment.Allies,
+    displayAdjective: 'British',
+    displayPlural: 'British',
+    alignment: {
+      [Era.EW]: Alignment.Allies,
+      [Era.MW]: Alignment.Allies,
+      [Era.LW]: Alignment.Allies,
+    },
   },
   [Faction.Hungary]: {
     displayName: 'Hungary',
-    alignment: Alignment.Axis,
+    displayAdjective: 'Hungarian',
+    displayPlural: 'Hungarians',
+    alignment: {
+      [Era.EW]: Alignment.Axis,
+      [Era.MW]: Alignment.Axis,
+      [Era.LW]: Alignment.Axis,
+    },
   },
   [Faction.Italy]: {
     displayName: 'Italy',
-    alignment: Alignment.Axis,
+    displayAdjective: 'Italian',
+    displayPlural: 'Italians',
+    alignment: {
+      [Era.EW]: Alignment.Axis,
+      [Era.MW]: Alignment.Axis,
+      [Era.LW]: Alignment.Flexible,
+    },
   },
   [Faction.Japan]: {
     displayName: 'Japan',
-    alignment: Alignment.Axis,
+    displayAdjective: 'Japanese',
+    displayPlural: 'Japanese',
+    alignment: {
+      [Era.EW]: Alignment.Axis,
+      [Era.MW]: Alignment.Axis,
+      [Era.LW]: Alignment.Axis,
+    },
   },
   [Faction.Poland]: {
     displayName: 'Poland',
-    alignment: Alignment.Allies,
+    displayAdjective: 'Polish',
+    displayPlural: 'Poles',
+    alignment: {
+      [Era.EW]: Alignment.Allies,
+      [Era.LW]: Alignment.Allies,
+    },
   },
   [Faction.Romania]: {
     displayName: 'Romania',
-    alignment: Alignment.Flexible,
+    displayAdjective: 'Romanian',
+    displayPlural: 'Romanians',
+    alignment: {
+      [Era.MW]: Alignment.Flexible,
+      [Era.LW]: Alignment.Flexible,
+    },
   },
   [Faction.SovietUnion]: {
     displayName: 'Soviet Union',
-    alignment: Alignment.Allies,
+    displayAdjective: 'Soviet',
+    displayPlural: 'Soviets',
+    alignment: {
+      [Era.EW]: Alignment.Flexible,
+      [Era.MW]: Alignment.Allies,
+      [Era.LW]: Alignment.Allies,
+    },
   },
   [Faction.UnitedStates]: {
     displayName: 'United States',
-    alignment: Alignment.Allies,
+    displayAdjective: 'American',
+    displayPlural: 'Americans',
+    alignment: {
+      [Era.MW]: Alignment.Allies,
+      [Era.LW]: Alignment.Allies,
+    },
   },
 } as const;
-
-export const getFactionOptions = (): SelectOption<Faction>[] => getOptions(factions);
-
-export const getFactionDisplayName = (
-  key: Faction,
-): string | undefined => getDisplayName(factions, key);
-
-export const getFactionAlignment = (
-  key: string,
-): Alignment | undefined => {
-  if (key in factions) {
-    return factions[key as Faction].alignment;
-  }
-  return undefined;
-};

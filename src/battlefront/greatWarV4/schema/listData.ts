@@ -1,13 +1,17 @@
-import { z } from 'zod';
+import lodash from 'lodash';
 
-import { commandCard } from '../../_shared/schema/commandCard';
-import { createFormationSchema } from '../../_shared/schema/formation';
-import { createListDataSchema, CreateListDataSchemaOptions } from '../../_shared/schema/listData';
-import { createUnitSchema } from '../../_shared/schema/unit';
+import { ValidateListDataResult } from '../../../common';
+import { ListDataOptions, validateListData } from '../../_shared/helpers/validateListData';
+import {
+  ListDataCommandCard,
+  ListDataFormation,
+  ListDataUnit,
+} from '../../_shared/types';
 import { Alignment, alignments } from '../static/alignments';
 import { Faction, factions } from '../static/factions';
 import { ForceDiagram, forceDiagrams } from '../static/forceDiagrams';
 import { Unit, units } from '../static/units';
+import { gameSystemConfig } from './gameSystemConfig';
 
 const context = {
   alignments,
@@ -23,25 +27,49 @@ export type ListDataFormData = {
     alignment: Alignment | null;
     pointsLimit: number;
   };
-  formations: z.infer<ReturnType<typeof createFormationSchema<z.ZodNativeEnum<typeof Unit>>>>[];
-  units: z.infer<ReturnType<typeof createUnitSchema<z.ZodNativeEnum<typeof Unit>>>>[];
-  commandCards: z.infer<typeof commandCard>[];
+  formations: ListDataFormation<Unit>[];
+  units: ListDataUnit<Unit>[];
+  commandCards: ListDataCommandCard[];
+};
+
+export type ListData = {
+  meta: {
+    forceDiagram?: ForceDiagram;
+    faction?: Faction;
+    alignment?: Alignment;
+    pointsLimit: number;
+  };
+  formations: ListDataFormation<Unit>[];
+  units: ListDataUnit<Unit>[];
+  commandCards: ListDataCommandCard[];
+};
+
+const defaultValues: ListDataFormData = {
+  meta: {
+    forceDiagram: null,
+    faction: null,
+    alignment: null,
+    pointsLimit: 100,
+  },
+  formations: [],
+  units: [],
+  commandCards: [],
 };
 
 export const listData = {
-  schema: createListDataSchema(context),
-  createSchema: (options?: CreateListDataSchemaOptions) => createListDataSchema(context, options),
-  defaultValues: {
-    meta: {
-      forceDiagram: null,
-      faction: null,
-      alignment: null,
-      pointsLimit: 100,
-    },
-    formations: [],
-    units: [],
-    commandCards: [],
-  } satisfies ListDataFormData,
+  defaultValues,
+  getDefaultValues: (config: unknown): ListDataFormData => {
+    const { points } = gameSystemConfig.schema.parse(config);
+    return lodash.merge({}, defaultValues, {
+      meta: {
+        pointsLimit: points,
+      },
+    });
+  },
+  validate: async (
+    data: unknown,
+    options?: ListDataOptions,
+  ): Promise<ValidateListDataResult<ListData>> => (
+    validateListData<ListData>(data, context, options)
+  ),
 } as const;
-
-export type ListData = z.infer<ReturnType<typeof listData.createSchema>>;

@@ -3,7 +3,10 @@ import { MatchOutcomeType } from './static/matchOutcomeTypes';
 import { MissionName } from './static/missionNames';
 import { GenericMetadata, GenericPublicationMetadata } from '../../common/types';
 
-export type AlignmentMetadata = GenericMetadata;
+export type AlignmentMetadata = GenericMetadata & {
+  displayAdjective: string;
+  displayPlural: string;
+};
 
 export type BattlePlanMetadata = GenericMetadata;
 
@@ -16,13 +19,22 @@ export type EraMetadata = GenericMetadata & {
   shortName: string;
 };
 
-export type FactionMetadata<TAlignment extends string> = GenericMetadata & {
-  alignment: TAlignment;
+export type ListDataCommandCard = {
+  id: string;
+  sourceId: string;
+  appliedTo: string;
 };
 
-export type ForceDiagramMetadata<TFaction extends string, TSeries extends string = string> = GenericMetadata & {
-  faction: TFaction;
-  series?: TSeries;
+export type ListDataFormation<TSourceId extends string> = {
+  id: string;
+  sourceId: TSourceId;
+};
+
+export type ListDataUnit<TSourceId extends string> = {
+  id: string;
+  sourceId: TSourceId;
+  formationId: string;
+  slotId: string;
 };
 
 export type MatchOutcomeTypeMetadata = GenericMetadata;

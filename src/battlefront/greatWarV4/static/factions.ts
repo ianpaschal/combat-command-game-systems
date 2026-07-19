@@ -1,6 +1,4 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
-import { FactionMetadata } from '../../_shared/types';
+import { FactionMetadata } from '../types';
 import { Alignment } from './alignments';
 
 export enum Faction {
@@ -14,37 +12,32 @@ export enum Faction {
 export const factions: Record<Faction, FactionMetadata<Alignment>> = {
   [Faction.Belgium]: {
     displayName: 'Belgium',
+    displayAdjective: 'Belgian',
+    displayPlural: 'Belgians',
     alignment: Alignment.AlliedPowers,
   },
   [Faction.France]: {
     displayName: 'France',
+    displayAdjective: 'French',
+    displayPlural: 'French',
     alignment: Alignment.AlliedPowers,
   },
   [Faction.Germany]: {
     displayName: 'Germany',
+    displayAdjective: 'German',
+    displayPlural: 'Germans',
     alignment: Alignment.CentralPowers,
   },
   [Faction.GreatBritain]: {
     displayName: 'Great Britain',
+    displayAdjective: 'British',
+    displayPlural: 'British',
     alignment: Alignment.AlliedPowers,
   },
   [Faction.UnitedStates]: {
     displayName: 'United States',
+    displayAdjective: 'American',
+    displayPlural: 'Americans',
     alignment: Alignment.AlliedPowers,
   },
 } as const;
-
-export const getFactionOptions = (): SelectOption<Faction>[] => getOptions(factions);
-
-export const getFactionDisplayName = (
-  key: Faction,
-): string | undefined => getDisplayName(factions, key);
-
-export const getFactionAlignment = (
-  key: string,
-): Alignment | undefined => {
-  if (key in factions) {
-    return factions[key as Faction].alignment;
-  }
-  return undefined;
-};

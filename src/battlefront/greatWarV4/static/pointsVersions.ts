@@ -1,5 +1,3 @@
-import { SelectOption } from '../../../common';
-import { getDisplayName, getOptions } from '../../../common/_internal';
 import { PointsVersionMetadata } from '../types';
 
 export enum PointsVersion {
@@ -13,9 +11,3 @@ export const pointsVersions: Record<PointsVersion, PointsVersionMetadata> = {
     activeAt: '2019-01-01T00:00:00+00:00',
   },
 } as const;
-
-export const getPointsVersionOptions = (): SelectOption<PointsVersion>[] => getOptions(pointsVersions);
-
-export const getPointsVersionDisplayName = (
-  key: PointsVersion,
-): string | undefined => getDisplayName(pointsVersions, key);

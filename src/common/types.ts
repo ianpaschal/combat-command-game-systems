@@ -40,3 +40,16 @@ export type TournamentPairingOrderMethodMetadata = GenericMetadata;
 export type TournamentPairingPolicyMetadata = GenericMetadata;
 
 export type TournamentRoundPhaseMetadata = GenericMetadata;
+
+export type ValidationIssue = {
+  path: (string | number)[];
+  message: string;
+};
+
+export type ValidateListDataResult<T> = {
+  success: true;
+  data: T;
+} | {
+  success: false;
+  issues: ValidationIssue[];
+};
