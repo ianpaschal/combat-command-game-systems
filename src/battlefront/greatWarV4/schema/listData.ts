@@ -1,3 +1,5 @@
+import lodash from 'lodash';
+
 import { ValidateListDataResult } from '../../../common';
 import { ListDataOptions, validateListData } from '../../_shared/helpers/validateListData';
 import {
@@ -9,6 +11,7 @@ import { Alignment, alignments } from '../static/alignments';
 import { Faction, factions } from '../static/factions';
 import { ForceDiagram, forceDiagrams } from '../static/forceDiagrams';
 import { Unit, units } from '../static/units';
+import { gameSystemConfig } from './gameSystemConfig';
 
 const context = {
   alignments,
@@ -55,6 +58,14 @@ const defaultValues: ListDataFormData = {
 
 export const listData = {
   defaultValues,
+  getDefaultValues: (config: unknown): ListDataFormData => {
+    const { points } = gameSystemConfig.schema.parse(config);
+    return lodash.merge({}, defaultValues, {
+      meta: {
+        pointsLimit: points,
+      },
+    });
+  },
   validate: async (
     data: unknown,
     options?: ListDataOptions,

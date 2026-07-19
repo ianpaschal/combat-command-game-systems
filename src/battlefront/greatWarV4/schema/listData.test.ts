@@ -9,6 +9,7 @@ import { Alignment } from '../static/alignments';
 import { Faction } from '../static/factions';
 import { ForceDiagram } from '../static/forceDiagrams';
 import { Unit } from '../static/units';
+import { gameSystemConfig } from './gameSystemConfig';
 import { listData,ListDataFormData } from './listData';
 
 describe('GreatWarV4.listData', () => {
@@ -70,6 +71,20 @@ describe('GreatWarV4.listData', () => {
     });
   });
 
+  describe('.getDefaultValues', () => {
+    it('returns default values with pointsLimit seeded from config.', () => {
+      const result = listData.getDefaultValues(gameSystemConfig.defaultValues);
+      expect(result.meta.pointsLimit).toBe(gameSystemConfig.defaultValues.points);
+      expect(result.meta.faction).toBeNull();
+      expect(result.meta.alignment).toBeNull();
+      expect(result.meta.forceDiagram).toBeNull();
+    });
+
+    it('throws if config is not a valid game system config.', () => {
+      expect(() => listData.getDefaultValues({ invalid: true })).toThrow();
+    });
+  });
+
   describe('.formations[n].id', () => {
     it('should emit an error if value is missing.', async () => {
       const result = await listData.validate({
@@ -92,6 +107,15 @@ describe('GreatWarV4.listData', () => {
       const result = await listData.validate({
         ...validData,
         formations: [{ id: 'form00', sourceId: '' as Unit }],
+      });
+      expect(result.success).toBe(false);
+      expect(getIssueMessages(result, ['formations'])).toContain('Please select a formation.');
+    });
+
+    it('should emit an error if value is not a valid Great War V4 unit ID.', async () => {
+      const result = await listData.validate({
+        ...validData,
+        formations: [{ id: 'form00', sourceId: 'not_a_real_unit' as Unit }],
       });
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['formations'])).toContain('Please select a formation.');
@@ -120,6 +144,15 @@ describe('GreatWarV4.listData', () => {
       const result = await listData.validate({
         ...validData,
         units: [{ id: 'unit00', sourceId: '' as Unit, formationId: 'form00', slotId: 'hq_0' }],
+      });
+      expect(result.success).toBe(false);
+      expect(getIssueMessages(result, ['units'])).toContain('Please select a unit.');
+    });
+
+    it('should emit an error if value is not a valid Great War V4 unit ID.', async () => {
+      const result = await listData.validate({
+        ...validData,
+        units: [{ id: 'unit00', sourceId: 'not_a_real_unit' as Unit, formationId: 'form00', slotId: 'hq_0' }],
       });
       expect(result.success).toBe(false);
       expect(getIssueMessages(result, ['units'])).toContain('Please select a unit.');

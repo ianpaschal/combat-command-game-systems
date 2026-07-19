@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import lodash from 'lodash';
 
 import { ValidateListDataResult } from '../../../common';
 import { ListDataOptions, validateListData } from '../../_shared/helpers/validateListData';
@@ -67,7 +67,7 @@ export const listData = {
   defaultValues,
   getDefaultValues: (config: unknown): ListDataFormData => {
     const { era, points } = gameSystemConfig.schema.parse(config);
-    return merge({}, defaultValues, {
+    return lodash.merge({}, defaultValues, {
       meta: {
         era,
         pointsLimit: points,
