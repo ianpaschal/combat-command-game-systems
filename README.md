@@ -10,6 +10,7 @@ This package includes game system configurations, mission data, faction informat
 |:------------|:-------|:-----------:|:-------------:|:-----:|
 | **Flames of War, 4th Ed.** | Ready | ✅ | ✅ | ⚠️ |
 | **Team Yankee, 2nd Ed.** | Ready | ✅ | ✅ | - |
+| **Bolt Action, 3rd Ed.** | Ready | ✅ | ✅ | - |
 | **Fate of a Nation** | Planned | - | - | - |
 | **'Nam** | Planned | - | - | - |
 | **Checkpoint Charlie** | Planned | - | - | - |

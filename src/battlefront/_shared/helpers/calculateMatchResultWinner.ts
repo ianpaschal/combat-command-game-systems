@@ -1,4 +1,4 @@
-import { ScoreOverride } from '../schema/scoreOverride';
+import { ScoreOverride, Winner } from '../../../common';
 import { MatchOutcomeType } from '../static/matchOutcomeTypes';
 import { MissionData } from '../types';
 
@@ -7,7 +7,7 @@ export const calculateMatchResultWinner = (
   attacker?: 0 | 1,
   outcomeType?: MatchOutcomeType,
   scoreOverride?: ScoreOverride,
-): -1 | 0 | 1 | undefined => {
+): Winner | undefined => {
   if (scoreOverride) {
     if (scoreOverride.player0Score > scoreOverride.player1Score) {
       return 0;
