@@ -9,6 +9,7 @@ export enum Series {
   EasternFront = 'eastern_front',
   FortressEurope = 'fortress_europe',
   Leviathans = 'leviathans',
+  LiberationOfItaly = 'liberation_of_italy',
   NorthAfrica = 'north_africa',
   Pacific = 'pacific',
 }
@@ -40,6 +41,10 @@ export const series: Record<Series, SeriesMetadata<Era>> = {
   },
   [Series.Leviathans]: {
     displayName: 'Leviathans',
+    era: Era.LW,
+  },
+  [Series.LiberationOfItaly]: {
+    displayName: 'Liberation of Italy',
     era: Era.LW,
   },
   [Series.NorthAfrica]: {
