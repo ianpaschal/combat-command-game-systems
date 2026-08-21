@@ -2,6 +2,7 @@ import { getDisplayName, getOptions } from '../_internal';
 import { GameSystemMetadata, SelectOption } from '../types';
 
 export enum GameSystem {
+  BoltActionV3 = 'bolt_action_v3',
   FlamesOfWarV4 = 'flames_of_war_v4',
 
   /* It's unclear what version should be used for Great War. It probably has not
@@ -19,6 +20,9 @@ export enum GameSystem {
 }
 
 const gameSystems: Record<GameSystem, GameSystemMetadata> = {
+  [GameSystem.BoltActionV3]: {
+    displayName: 'Bolt Action (3rd Ed.)',
+  },
   [GameSystem.FlamesOfWarV4]: {
     displayName: 'Flames of War (4th Ed.)',
   },

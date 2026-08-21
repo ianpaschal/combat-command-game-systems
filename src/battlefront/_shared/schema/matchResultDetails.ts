@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 import { createEnumSchema } from '../../../common/_internal';
+import { scoreOverride } from '../../../common/schemas/scoreOverride';
 import { BattlePlan } from '../static/battlePlans';
 import { MatchOutcomeType } from '../static/matchOutcomeTypes';
 import { isWinnerValid } from './matchResultDetails.validators';
-import { scoreOverride } from './scoreOverride';
 
 export const createMatchResultDetailsSchema = <
   TFaction extends Record<string, string>,

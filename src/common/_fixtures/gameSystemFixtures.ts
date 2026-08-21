@@ -1,9 +1,16 @@
 import * as FlamesOfWarV4 from '../../battlefront/flamesOfWarV4';
 import * as GreatWarV4 from '../../battlefront/greatWarV4';
 import * as TeamYankeeV2 from '../../battlefront/teamYankeeV2';
+import * as BoltActionV3 from '../../warlord/boltActionV3';
 import { GameSystem } from '../static/gameSystems';
 
 export type GameSystemTypeMap = {
+  [GameSystem.BoltActionV3]: {
+    name: string;
+    gameSystem: GameSystem.BoltActionV3,
+    gameSystemConfig: BoltActionV3.GameSystemConfig;
+    matchResultDetails: BoltActionV3.MatchResultDetails;
+  };
   [GameSystem.FlamesOfWarV4]: {
     name: string;
     gameSystem: GameSystem.FlamesOfWarV4,
@@ -34,6 +41,23 @@ type GameSystemFixture = {
 }[GameSystem];
 
 export const gameSystemFixtures: GameSystemFixture[] = [
+  {
+    name: 'Bolt Action v3',
+    gameSystem: GameSystem.BoltActionV3,
+    gameSystemConfig: {
+      maxOrderDice: 12,
+      maxUnits: 15,
+      missionTypes: [BoltActionV3.MissionType.Battle],
+      points: 1000,
+    },
+    matchResultDetails: {
+      mission: BoltActionV3.Mission.KeyPositions,
+      player0UnitsLost: 2,
+      player1UnitsLost: 3,
+      turnsPlayed: 6,
+      winner: 0,
+    },
+  },
   {
     name: 'Flames of War v4',
     gameSystem: GameSystem.FlamesOfWarV4,

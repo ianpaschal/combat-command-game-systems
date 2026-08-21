@@ -76,6 +76,8 @@ src/
 │   │   └── schema/       # Zod schemas for validation
 │   ├── flamesOfWarV4/    # Flames of War 4th Edition
 │   └── teamYankeeV2/     # Team Yankee 2nd Edition
+├── warlord/              # Warlord Games game data
+│   └── boltActionV3/     # Bolt Action 3rd Edition
 └── common/               # Cross-system shared data
 ```
 

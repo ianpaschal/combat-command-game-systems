@@ -1,22 +1,16 @@
-import * as FlamesOfWarV4 from '../../battlefront/flamesOfWarV4';
-import * as GreatWarV4 from '../../battlefront/greatWarV4';
-import * as TeamYankeeV2 from '../../battlefront/teamYankeeV2';
 import { GameSystem } from '../static/gameSystems';
+import { GameSystemConfigByGameSystem, GameSystemConfigOptions } from '../types';
 import { getGameSystem } from './getGameSystem';
-
-type GameSystemGameSystemConfig = {
-  [GameSystem.FlamesOfWarV4]: FlamesOfWarV4.GameSystemConfig;
-  [GameSystem.GreatWarV4]: GreatWarV4.GameSystemConfig;
-  [GameSystem.TeamYankeeV2]: TeamYankeeV2.GameSystemConfig;
-};
 
 export const validateGameSystemConfig = <TGameSystem extends GameSystem>(
   gameSystem: TGameSystem,
-  details: unknown,
-): GameSystemGameSystemConfig[TGameSystem] | null => {
+  data: unknown,
+  options?: GameSystemConfigOptions,
+): GameSystemConfigByGameSystem[TGameSystem] | null => {
   const { gameSystemConfig } = getGameSystem(gameSystem);
-  if (!gameSystemConfig.schema.safeParse(details).success) {
+  const schema = options && 'getSchema' in gameSystemConfig ? gameSystemConfig.getSchema(options) : gameSystemConfig.schema;
+  if (!schema.safeParse(data).success) {
     return null;
   }
-  return details as GameSystemGameSystemConfig[TGameSystem];
+  return data as GameSystemConfigByGameSystem[TGameSystem];
 };

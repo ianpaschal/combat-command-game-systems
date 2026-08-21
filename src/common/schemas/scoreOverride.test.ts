@@ -4,11 +4,11 @@ import {
   it,
 } from 'vitest';
 
-import { getSchemaFieldErrors } from '../../../common/_internal/getSchemaFieldErrors';
+import { getSchemaFieldErrors } from '../_internal/getSchemaFieldErrors';
 import { ScoreOverride, scoreOverride } from './scoreOverride';
 
 describe('scoreOverride', () => {
-  
+
   const validData: ScoreOverride = {
     player0Score: 8,
     player1Score: 1,
