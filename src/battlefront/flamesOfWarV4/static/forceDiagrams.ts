@@ -3,6 +3,21 @@ import { Faction } from './factions';
 import { Series } from './series';
 
 export enum ForceDiagram {
+
+  // Mid-War:
+  AfrikaKorps = 'afrika_korps',
+  ArmouredFist = 'armoured_fist',
+  Avanti = 'avanti',
+  FightingFirst = 'fighting_first',
+  EnemyAtTheGates = 'enemy_at_the_gates',
+  GhostPanzers = 'ghost_panzers',
+  IronCross = 'iron_cross',
+  RedBanner = 'red_banner',
+  BraveRomania = 'brave_romania',
+  HungarianSteel = 'hungarian_steel',
+  WhiteDeath = 'white_death',
+
+  // Late War:
   BagrationFinnish = 'bagration_finnish',
   BagrationGerman = 'bagration_german',
   BagrationHungarian = 'bagration_hungarian',
@@ -25,21 +40,18 @@ export enum ForceDiagram {
   LeviathansBritish = 'leviathans_british',
   LeviathansGerman = 'leviathans_german',
   LeviathansSoviet = 'leviathans_soviet',
+  LiberationOfItalyAmerican = 'liberation_of_italy_american',
+  LiberationOfItalyBritish = 'liberation_of_italy_british',
+  LiberationOfItalyCIL = 'liberation_of_italy_cil',
+  LiberationOfItalyFrench = 'liberation_of_italy_french',
+  LiberationOfItalyGerman = 'liberation_of_italy_german',
+  LiberationOfItalyGruppiDiCombattimentoBritish = 'liberation_of_italy_gruppi_di_combattimento_british',
+  LiberationOfItalyGruppiDiCombattimentoUs = 'liberation_of_italy_gruppi_di_combattimento_us',
+  LiberationOfItalyRSI = 'liberation_of_italy_rsi',
   PacificAmerican = 'pacific_american',
   PacificAustralian = 'pacific_australian',
   PacificBritish = 'pacific_british',
   PacificJapanese = 'pacific_japanese',
-  AfrikaKorps = 'afrika_korps',
-  ArmouredFist = 'armoured_fist',
-  Avanti = 'avanti',
-  FightingFirst = 'fighting_first',
-  EnemyAtTheGates = 'enemy_at_the_gates',
-  GhostPanzers = 'ghost_panzers',
-  IronCross = 'iron_cross',
-  RedBanner = 'red_banner',
-  BraveRomania = 'brave_romania',
-  HungarianSteel = 'hungarian_steel',
-  WhiteDeath = 'white_death',
 }
 
 export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, Series>> = {
@@ -227,5 +239,45 @@ export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, S
     displayName: 'Fighting First',
     faction: Faction.UnitedStates,
     series: Series.NorthAfrica,
+  },
+  [ForceDiagram.LiberationOfItalyFrench]: {
+    displayName: 'Liberation of Italy: French',
+    faction: Faction.France,
+    series: Series.LiberationOfItaly,
+  },
+  [ForceDiagram.LiberationOfItalyGerman]: {
+    displayName: 'Liberation of Italy: German',
+    faction: Faction.Germany,
+    series: Series.LiberationOfItaly,
+  },
+  [ForceDiagram.LiberationOfItalyAmerican]: {
+    displayName: 'Liberation of Italy: American',
+    faction: Faction.UnitedStates,
+    series: Series.LiberationOfItaly,
+  },
+  [ForceDiagram.LiberationOfItalyBritish]: {
+    displayName: 'Liberation of Italy: British',
+    faction: Faction.GreatBritain,
+    series: Series.LiberationOfItaly,
+  },
+  [ForceDiagram.LiberationOfItalyRSI]: {
+    displayName: 'Liberation of Italy: RSI',
+    faction: Faction.ItalyAxis,
+    series: Series.LiberationOfItaly,
+  },
+  [ForceDiagram.LiberationOfItalyCIL]: {
+    displayName: 'Liberation of Italy: CIL',
+    faction: Faction.ItalyAllies,
+    series: Series.LiberationOfItaly,
+  },
+  [ForceDiagram.LiberationOfItalyGruppiDiCombattimentoUs]: {
+    displayName: 'Liberation of Italy: Gruppi di Combattimento (US)',
+    faction: Faction.ItalyAllies,
+    series: Series.LiberationOfItaly,
+  },
+  [ForceDiagram.LiberationOfItalyGruppiDiCombattimentoBritish]: {
+    displayName: 'Liberation of Italy: Gruppi di Combattimento (British)',
+    faction: Faction.ItalyAllies,
+    series: Series.LiberationOfItaly,
   },
 };

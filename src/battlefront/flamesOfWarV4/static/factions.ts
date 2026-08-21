@@ -10,6 +10,8 @@ export enum Faction {
   GreatBritain = 'great_britain',
   Hungary = 'hungary',
   Italy = 'italy',
+  ItalyAllies = 'italy_allies',
+  ItalyAxis = 'italy_axis',
   Japan = 'japan',
   Poland = 'poland',
   Romania = 'romania',
@@ -86,6 +88,22 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
       [Era.EW]: Alignment.Axis,
       [Era.MW]: Alignment.Axis,
       [Era.LW]: Alignment.Flexible,
+    },
+  },
+  [Faction.ItalyAllies]: {
+    displayName: 'Italy (Allies)',
+    displayAdjective: 'Italian (CIL)',
+    displayPlural: 'Italians (CIL)',
+    alignment: {
+      [Era.LW]: Alignment.Allies,
+    },
+  },
+  [Faction.ItalyAxis]: {
+    displayName: 'Italy (Axis)',
+    displayAdjective: 'Italian (RSI)',
+    displayPlural: 'Italians (RSI)',
+    alignment: {
+      [Era.LW]: Alignment.Axis,
     },
   },
   [Faction.Japan]: {
