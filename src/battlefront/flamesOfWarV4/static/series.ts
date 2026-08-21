@@ -4,6 +4,7 @@ import { Era } from './eras';
 export enum Series {
   Bagration = 'bagration',
   Berlin = 'berlin',
+  Blitzkrieg = 'blitzkrieg',
   Bulge = 'bulge',
   DDay = 'd_day',
   EasternFront = 'eastern_front',
@@ -22,6 +23,10 @@ export const series: Record<Series, SeriesMetadata<Era>> = {
   [Series.Berlin]: {
     displayName: 'Berlin',
     era: Era.LW,
+  },
+  [Series.Blitzkrieg]: {
+    displayName: 'Blitzkrieg',
+    era: Era.EW,
   },
   [Series.Bulge]: {
     displayName: 'Bulge',

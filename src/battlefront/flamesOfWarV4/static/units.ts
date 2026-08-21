@@ -2,6 +2,38 @@ import { UnitMetadata } from '../../_shared/types';
 import { ForceDiagram } from './forceDiagrams';
 
 export enum Unit {
+  EB101 = 'EB101',
+  EB106 = 'EB106',
+  EB107 = 'EB107',
+  EB110 = 'EB110',
+  EB113 = 'EB113',
+  EBBlitzkriegArmouredCarSquadron = 'EB_blitzkrieg_british_armoured_car_squadron',
+  EBBlitzkriegMotorcycleCompany = 'EB_blitzkrieg_british_motorcycle_company',
+  EF101 = 'EF101',
+  EF107 = 'EF107',
+  EF112 = 'EF112',
+  EF116 = 'EF116',
+  EF122 = 'EF122',
+  EF124 = 'EF124',
+  EFBlitzkriegAmr35ReconnaissanceSquadron = 'EF_blitzkrieg_french_amr_35_reconnaissance_squadron',
+  EFBlitzkriegCavalryCompany = 'EF_blitzkrieg_french_cavalry_company',
+  EFBlitzkriegHotchkissH39ReconnaissanceSquadron = 'EF_blitzkrieg_french_hotchkiss_h39_reconnaissance_squadron',
+  EFBlitzkriegMotorcycleFusiliersCompany = 'EF_blitzkrieg_french_motorcycle_fusiliers_company',
+  EFBlitzkriegSchneiderAmdReconnaissanceSquadron = 'EF_blitzkrieg_french_schneider_amd_reconnaissance_squadron',
+  EG101 = 'EG101',
+  EG105 = 'EG105',
+  EG109 = 'EG109',
+  EG111 = 'EG111',
+  EG117 = 'EG117',
+  EG121 = 'EG121',
+  EG127 = 'EG127',
+  EG141 = 'EG141',
+  EGBlitzkriegLightPioneerCompany = 'EG_blitzkrieg_german_light_pioneer_company',
+  EGBlitzkriegMotorcycleCompany = 'EG_blitzkrieg_german_motorcycle_company',
+  EGBlitzkriegPanzer35TTankCompany = 'EG_blitzkrieg_german_panzer_35_t_tank_company',
+  EGBlitzkriegPioneerCompany = 'EG_blitzkrieg_german_pioneer_company',
+  EGBlitzkriegWaffenSsMotorcycleCompany = 'EG_blitzkrieg_german_waffen_ss_motorcycle_company',
+  EGBlitzkriegWaffenSsStugAssaultGunBattery = 'EG_blitzkrieg_german_waffen_ss_stug_assault_gun_battery',
   LB101 = 'LB101',
   LB104 = 'LB104',
   LB107 = 'LB107',
@@ -397,6 +429,166 @@ export enum Unit {
 }
 
 export const units: Record<Unit, UnitMetadata<ForceDiagram>> = {
+  [Unit.EB101]: {
+    displayName: 'A13 Armoured Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegBritish,
+    isFormation: true,
+  },
+  [Unit.EB106]: {
+    displayName: 'Matilda II Tank Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegBritish,
+    isFormation: true,
+  },
+  [Unit.EB107]: {
+    displayName: 'Matilda I Tank Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegBritish,
+    isFormation: true,
+  },
+  [Unit.EB110]: {
+    displayName: 'Divisional Cavalry Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegBritish,
+    isFormation: true,
+  },
+  [Unit.EB113]: {
+    displayName: 'Rifle Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegBritish,
+    isFormation: true,
+  },
+  [Unit.EBBlitzkriegArmouredCarSquadron]: {
+    displayName: 'Armoured Car Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegBritish,
+    isFormation: true,
+  },
+  [Unit.EBBlitzkriegMotorcycleCompany]: {
+    displayName: 'Motorcycle Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegBritish,
+    isFormation: true,
+  },
+  [Unit.EF101]: {
+    displayName: 'Renault Char B1 Tank Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EF107]: {
+    displayName: 'Somua S35 Combat Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EF112]: {
+    displayName: 'Chasseurs Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EF116]: {
+    displayName: 'Motor Fusiliers Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EF122]: {
+    displayName: 'Panhard AMD Reconnaissance Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EF124]: {
+    displayName: 'Rifle Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EFBlitzkriegAmr35ReconnaissanceSquadron]: {
+    displayName: 'AMR 35 Reconnaissance Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EFBlitzkriegCavalryCompany]: {
+    displayName: 'Cavalry Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EFBlitzkriegHotchkissH39ReconnaissanceSquadron]: {
+    displayName: 'Hotchkiss H39 Reconnaissance Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EFBlitzkriegMotorcycleFusiliersCompany]: {
+    displayName: 'Motorcycle Fusiliers Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EFBlitzkriegSchneiderAmdReconnaissanceSquadron]: {
+    displayName: 'Schneider AMD Reconnaissance Squadron',
+    sourceForceDiagram: ForceDiagram.BlitzkriegFrench,
+    isFormation: true,
+  },
+  [Unit.EG101]: {
+    displayName: 'Light Tank Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EG105]: {
+    displayName: 'Medium Tank Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EG109]: {
+    displayName: 'Panzer 38(t) Tank Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EG111]: {
+    displayName: 'Motorised Rifle Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EG117]: {
+    displayName: 'Armoured Rifle Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EG121]: {
+    displayName: 'Armoured Car Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EG127]: {
+    displayName: 'Infantry Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EG141]: {
+    displayName: 'StuG Assault Gun Battery',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EGBlitzkriegLightPioneerCompany]: {
+    displayName: 'Light Pioneer Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EGBlitzkriegMotorcycleCompany]: {
+    displayName: 'Motorcycle Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EGBlitzkriegPanzer35TTankCompany]: {
+    displayName: 'Panzer 35(t) Tank Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EGBlitzkriegPioneerCompany]: {
+    displayName: 'Pioneer Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EGBlitzkriegWaffenSsMotorcycleCompany]: {
+    displayName: 'Waffen-SS Motorcycle Company',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
+  [Unit.EGBlitzkriegWaffenSsStugAssaultGunBattery]: {
+    displayName: 'Waffen-SS StuG Assault Gun Battery',
+    sourceForceDiagram: ForceDiagram.BlitzkriegGerman,
+    isFormation: true,
+  },
   [Unit.LB101]: {
     displayName: 'Sherman Armoured Squadron',
     sourceForceDiagram: ForceDiagram.FortressEuropeBritish,

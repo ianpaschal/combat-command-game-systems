@@ -4,6 +4,11 @@ import { Series } from './series';
 
 export enum ForceDiagram {
 
+  // Early War:
+  BlitzkriegBritish = 'blitzkrieg_british',
+  BlitzkriegFrench = 'blitzkrieg_french',
+  BlitzkriegGerman = 'blitzkrieg_german',
+
   // Mid-War:
   AfrikaKorps = 'afrika_korps',
   ArmouredFist = 'armoured_fist',
@@ -55,6 +60,21 @@ export enum ForceDiagram {
 }
 
 export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, Series>> = {
+  [ForceDiagram.BlitzkriegFrench]: {
+    displayName: 'Blitzkrieg: French',
+    faction: Faction.France,
+    series: Series.Blitzkrieg,
+  },
+  [ForceDiagram.BlitzkriegGerman]: {
+    displayName: 'Blitzkrieg: German',
+    faction: Faction.Germany,
+    series: Series.Blitzkrieg,
+  },
+  [ForceDiagram.BlitzkriegBritish]: {
+    displayName: 'Blitzkrieg: British',
+    faction: Faction.GreatBritain,
+    series: Series.Blitzkrieg,
+  },
   [ForceDiagram.BerlinGerman]: {
     displayName: 'Berlin: German',
     faction: Faction.Germany,
