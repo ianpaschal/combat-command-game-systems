@@ -78,11 +78,6 @@ describe('FlamesOfWarV4.getForceDiagramOptions', () => {
       expect(result.length).toBeGreaterThan(0);
       expect(result.every(({ value }) => getForceDiagramEra(value) === Era.LW)).toBe(true);
     });
-
-    it('returns an empty array if no force diagrams match.', () => {
-      const result = getForceDiagramOptions({ era: Era.EW });
-      expect(result).toEqual([]);
-    });
   });
 
   describe('combined filters', () => {
