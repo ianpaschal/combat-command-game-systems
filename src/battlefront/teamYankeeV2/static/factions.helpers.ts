@@ -16,18 +16,23 @@ export const getFactionOptions = (
   filters?: GetFactionOptionsFilters,
 ): SelectOption<Faction>[] => {
   const entries = Object.entries(factions) as [Faction, FactionMetadata<Era, Alignment>][];
-  const filtered = filters ? (
+  const era = filters?.era ?? undefined;
+  const alignment = filters?.alignment ?? undefined;
+  const filtered = (era || alignment) ? (
     entries.filter(([key, factionMetadata]) => {
-      if (filters.era && filters.alignment) {
-        if (factionMetadata.alignment[filters.era] !== filters.alignment) {
+      if (era && alignment) {
+        const factionAlignment = factionMetadata.alignment[era];
+        if (factionAlignment !== alignment && !(alignment !== Alignment.Flexible && factionAlignment === Alignment.Flexible)) {
           return false;
         }
-      } else if (filters.era) {
-        if (factionMetadata.alignment[filters.era] === undefined) {
+      } else if (era) {
+        if (factionMetadata.alignment[era] === undefined) {
           return false;
         }
-      } else if (filters.alignment) {
-        if (!Object.values(factionMetadata.alignment).some((factionAlignment) => factionAlignment === filters.alignment)) {
+      } else if (alignment) {
+        if (!Object.values(factionMetadata.alignment).some((factionAlignment) => (
+          factionAlignment === alignment || (alignment !== Alignment.Flexible && factionAlignment === Alignment.Flexible)
+        ))) {
           return false;
         }
       }
@@ -36,12 +41,12 @@ export const getFactionOptions = (
         if (forceDiagram.faction !== key) {
           return false;
         }
-        if (filters.era != null && series[forceDiagram.series].era !== filters.era) {
+        if (era && series[forceDiagram.series].era !== era) {
           return false;
         }
-        if (filters.alignment != null) {
+        if (alignment) {
           const forceDiagramAlignment = factions[forceDiagram.faction].alignment[series[forceDiagram.series].era];
-          if (forceDiagramAlignment !== filters.alignment) {
+          if (forceDiagramAlignment !== alignment && !(alignment !== Alignment.Flexible && forceDiagramAlignment === Alignment.Flexible)) {
             return false;
           }
         }
