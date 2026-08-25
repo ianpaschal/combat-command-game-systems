@@ -21,7 +21,8 @@ export const getFactionOptions = (
   const filtered = (era || alignment) ? (
     entries.filter(([key, factionMetadata]) => {
       if (era && alignment) {
-        if (factionMetadata.alignment[era] !== alignment) {
+        const factionAlignment = factionMetadata.alignment[era];
+        if (factionAlignment !== alignment && !(alignment !== Alignment.Flexible && factionAlignment === Alignment.Flexible)) {
           return false;
         }
       } else if (era) {
@@ -29,7 +30,9 @@ export const getFactionOptions = (
           return false;
         }
       } else if (alignment) {
-        if (!Object.values(factionMetadata.alignment).some((factionAlignment) => factionAlignment === alignment)) {
+        if (!Object.values(factionMetadata.alignment).some((factionAlignment) => (
+          factionAlignment === alignment || (alignment !== Alignment.Flexible && factionAlignment === Alignment.Flexible)
+        ))) {
           return false;
         }
       }
@@ -43,7 +46,7 @@ export const getFactionOptions = (
         }
         if (alignment) {
           const forceDiagramAlignment = factions[forceDiagram.faction].alignment[series[forceDiagram.series].era];
-          if (forceDiagramAlignment !== alignment) {
+          if (forceDiagramAlignment !== alignment && !(alignment !== Alignment.Flexible && forceDiagramAlignment === Alignment.Flexible)) {
             return false;
           }
         }
