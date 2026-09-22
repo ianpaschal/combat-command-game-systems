@@ -87,11 +87,10 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
     alignment: {
       [Era.EW]: Alignment.Axis,
       [Era.MW]: Alignment.Axis,
-      [Era.LW]: Alignment.Flexible,
     },
   },
   [Faction.ItalyAllies]: {
-    displayName: 'Italy (Allies)',
+    displayName: 'Italy (CIL)',
     displayAdjective: 'Italian (CIL)',
     displayPlural: 'Italians (CIL)',
     alignment: {
@@ -99,7 +98,7 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
     },
   },
   [Faction.ItalyAxis]: {
-    displayName: 'Italy (Axis)',
+    displayName: 'Italy (RSI)',
     displayAdjective: 'Italian (RSI)',
     displayPlural: 'Italians (RSI)',
     alignment: {
@@ -130,7 +129,8 @@ export const factions: Record<Faction, FactionMetadata<Era, Alignment>> = {
     displayAdjective: 'Romanian',
     displayPlural: 'Romanians',
     alignment: {
-      [Era.MW]: Alignment.Flexible,
+      [Era.EW]: Alignment.Axis,
+      [Era.MW]: Alignment.Axis,
       [Era.LW]: Alignment.Flexible,
     },
   },

@@ -5,6 +5,12 @@ import { Series } from './series';
 export enum ForceDiagram {
 
   // Early War:
+  BarbarossaFinnish = 'barbarossa_finnish',
+  BarbarossaGerman = 'barbarossa_german',
+  BarbarossaHungarian = 'barbarossa_hungarian',
+  BarbarossaPolish = 'barbarossa_polish',
+  BarbarossaRomanian = 'barbarossa_romanian',
+  BarbarossaSoviet = 'barbarossa_soviet',
   BlitzkriegBritish = 'blitzkrieg_british',
   BlitzkriegFrench = 'blitzkrieg_french',
   BlitzkriegGerman = 'blitzkrieg_german',
@@ -60,6 +66,38 @@ export enum ForceDiagram {
 }
 
 export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, Series>> = {
+
+  // Early War:
+  [ForceDiagram.BarbarossaFinnish]: {
+    displayName: 'Barbarossa: Finnish',
+    faction: Faction.Finland,
+    series: Series.Barbarossa,
+  },
+  [ForceDiagram.BarbarossaGerman]: {
+    displayName: 'Barbarossa: German',
+    faction: Faction.Germany,
+    series: Series.Barbarossa,
+  },
+  [ForceDiagram.BarbarossaHungarian]: {
+    displayName: 'Barbarossa: Hungarian',
+    faction: Faction.Hungary,
+    series: Series.Barbarossa,
+  },
+  [ForceDiagram.BarbarossaPolish]: {
+    displayName: 'Barbarossa: Polish',
+    faction: Faction.Poland,
+    series: Series.Blitzkrieg,
+  },
+  [ForceDiagram.BarbarossaRomanian]: {
+    displayName: 'Barbarossa: Romanian',
+    faction: Faction.Romania,
+    series: Series.Barbarossa,
+  },
+  [ForceDiagram.BarbarossaSoviet]: {
+    displayName: 'Barbarossa: Soviet',
+    faction: Faction.SovietUnion,
+    series: Series.Barbarossa,
+  },
   [ForceDiagram.BlitzkriegFrench]: {
     displayName: 'Blitzkrieg: French',
     faction: Faction.France,
@@ -75,6 +113,8 @@ export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, S
     faction: Faction.GreatBritain,
     series: Series.Blitzkrieg,
   },
+
+  // Late War + Mid-War
   [ForceDiagram.BerlinGerman]: {
     displayName: 'Berlin: German',
     faction: Faction.Germany,
@@ -206,7 +246,7 @@ export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, S
     series: Series.Pacific,
   },
   [ForceDiagram.EnemyAtTheGates]: {
-    displayName: 'Avanti',
+    displayName: 'Enemy at the Gates',
     faction: Faction.SovietUnion,
     series: Series.EasternFront,
   },
