@@ -23,7 +23,7 @@ export const series: Record<Series, SeriesMetadata<Era>> = {
   },
   [Series.Barbarossa]: {
     displayName: 'Barbarossa',
-    era: Era.LW,
+    era: Era.EW,
   },
   [Series.Berlin]: {
     displayName: 'Berlin',

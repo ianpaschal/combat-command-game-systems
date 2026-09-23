@@ -86,7 +86,7 @@ export const forceDiagrams: Record<ForceDiagram, ForceDiagramMetadata<Faction, S
   [ForceDiagram.BarbarossaPolish]: {
     displayName: 'Barbarossa: Polish',
     faction: Faction.Poland,
-    series: Series.Blitzkrieg,
+    series: Series.Barbarossa,
   },
   [ForceDiagram.BarbarossaRomanian]: {
     displayName: 'Barbarossa: Romanian',
