@@ -877,6 +877,7 @@ export const missionPackVersions: Record<MissionPackVersion, MissionPackMetadata
         firstTurn: 'attacker',
         minTurns: 6,
         victoryConditions: [
+          MatchOutcomeType.AttackRepelled,
           MatchOutcomeType.ObjectiveTaken,
         ],
       },
